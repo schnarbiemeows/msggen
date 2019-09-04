@@ -1,0 +1,245 @@
+/*
+ * Created 2019 by Dylan Kessler
+ */
+
+package com.scala.classes.business
+
+import java.util.Properties
+
+import com.scala.classes.posos.{SimpleAddress, SimpleAddressRecord, SimpleMemberAddressWrapper}
+import com.scala.classes.utilities.{Configuration, LogUtil, Randomizer}
+
+/**
+  * Singleton Class for creating random SimpleAddress object information
+  */
+object AddressTableRandomizer extends Randomizer {
+  /**
+    * configuration properties
+    */
+  var props:Properties = _
+
+  /**
+    * addressLine1, part 1
+    */
+  val randomStreets1 = Array("Apple Orchard","Lucky Pass","State","Laramy","Apple Blossom","Acadia","Winding","Snow Crest","Parkwood","Martin Luther King","Wall","Riverbend","Country","St. Charles","St. Abbey","Blatham")
+  /**
+    * addressLine1, part 2
+    */
+  val randomStreets2 = Array("Lane","Street","Road","Avenue","Way","Circle","Trail","Drive","Boulevard")
+  /**
+    *
+    */
+  val randomAddressLine2 = Array("Apt. 12","Suite 4","P.O. Box 12345","Upper Level")
+  /**
+    * list of random cities for each state
+    */
+  val alabamaCities = Array("Birmingham","Montgomery","Mobile")
+  val alaskaCities = Array("Nome","Anchorage","Juneau","Eagle","Circle")
+  val arizonaCities = Array("Pheonix","Tuscon")
+  val arkansasCities = Array("Little Rock","Fayetteville")
+  val californiaCities = Array("Los Angeles","San Fransisco","Sacramento","San Diego","Oakland","Riverside")
+  val colorodoCities = Array("Denver","Colorodo Springs","Boulder")
+  val connecticutCities = Array("Hartford","New Haven")
+  val delawareCities = Array("Dover","Newark","Wilmington")
+  val floridaCities = Array("Miami","Orlando","Tampa Bay","Boca Raton","Jacksonville")
+  val georgiaCities = Array("Atlanta","Savannah","Augusta")
+  val hawaiiCities = Array("Hilo","Honolulu")
+  val idahoCities = Array("Boise","Idaho Falls")
+  val illinoisCities = Array("Chicago","Springfield","Peoria")
+  val indianaCities = Array("Indianapolis","Fort Wayne","Bloomington")
+  val iowaCities = Array("Des Moines","Iowa City")
+  val kansasCities = Array("Wichita","Kansas City")
+  val kentuckyCities = Array("Louisville","Lexington")
+  val louisianaCities = Array("New Orleans","Baton Rouge")
+  val maineCities = Array("Portland","Bangor")
+  val marylandCities = Array("Baltimore","Annapolis","Ocean City","Silver Spring")
+  val massachusettsCities = Array("Boston","Worchester","Salem","Newton","Lowell")
+  val michiganCities = Array("Detroit","Lansing","East Lansing","Kalamazoo")
+  val minnesotaCities = Array("minneapolis","Saint Paul","Duluth")
+  val mississippiCities = Array("Jackson","Biloxi")
+  val missouriCities = Array("St. Louis","Kansas City","Springfield")
+  val montanaCities = Array("Butte","Missoula")
+  val nebraskaCities = Array("Lincoln","Omaha")
+  val nevadaCities = Array("Las Vegas","Reno","Caron City")
+  val newHampshireCities = Array("Portsmouth","Concord")
+  val newJerseyCities = Array("Newark","Jersey City","Hoboken","Trenton","Princeton")
+  val newMexicoCities = Array("Albuquerque","Santa Fe")
+  val newYorkCities = Array("NYC","Brooklyn","Albany","Buffalo","Queens")
+  val northCarolinaCities = Array("Raleigh","Charlotte","Durham","Greensboro","Chapel Hill")
+  val northDakotaCities = Array("Fargo","Bismark")
+  val ohioCities = Array("Cleveland","Cincinnati","Columbus","Dayton")
+  val oklahomaCities = Array("Oklahoma Cty","Tulsa")
+  val oregonCities = Array("Portland","Eugene","Salem")
+  val pennsylvaniaCities = Array("Philadelphia","Pittsburg","Harrisburg","Lancaster")
+  val rhodeIslandCities = Array("Providence","Newport")
+  val southCarolinaCities = Array("Charleston","Columbia")
+  val southDakotaCities = Array("SiouxFalls","Rapid City")
+  val tennesseeCities = Array("Nashville","Memphis","Gatlinburg","Knoxville")
+  val texasCities = Array("Austin","Dallas","San Antonio","Houston","Fort Worth")
+  val utahCities = Array("Salt Lake City","Provo","Ogden")
+  val vermontCities = Array("Burlington","Montpelier")
+  val virginiaCities = Array("Richmond","Norfolk","Alexandria","Charlottesville","Blacksburg")
+  val washingtonCities = Array("Seattle","Takoma","Sokane","Olympia","Redmond")
+  val westVirginiaCities = Array("Charleston","Huntington","Clarksburg")
+  val wisconsinCities = Array("Madison","Green Bay","Milwaukee")
+  val wyomingCities = Array("Casper","Cheyenne","Jackson")
+
+  /**
+    * map of each state -> city list
+    */
+  val usStates = Map("AL" -> alabamaCities,"AK" -> alaskaCities,"AZ" -> arizonaCities,
+    "AR" -> arkansasCities,"CA" -> californiaCities, "CO" -> colorodoCities,"CT" -> connecticutCities,
+    "DE" -> delawareCities,"FL" -> floridaCities, "GA" -> georgiaCities,"HI" -> hawaiiCities,
+    "ID" -> idahoCities,"IL" -> illinoisCities, "IN" -> indianaCities,"IA" -> iowaCities,
+    "KS" -> kansasCities,"KY" -> kentuckyCities,"LA" -> louisianaCities,"ME" -> maineCities,
+    "MD" -> marylandCities,"MA" -> massachusettsCities,"MI" -> michiganCities,"MN" -> minnesotaCities,
+    "MS" -> mississippiCities,"MO" -> missouriCities,"MT" -> montanaCities,"NE" -> nebraskaCities,
+    "NV" -> nevadaCities,"NH" -> newHampshireCities,"NJ" -> newJerseyCities,"NM" -> newMexicoCities,
+    "NY" -> newYorkCities,"NC" -> northCarolinaCities,"ND" -> northDakotaCities,"OH" -> ohioCities,
+    "OK" -> oklahomaCities,"OR" -> oregonCities,"PA" -> pennsylvaniaCities,"RI" -> rhodeIslandCities,
+    "SC" -> southCarolinaCities,"SD" -> southDakotaCities,"TN" -> tennesseeCities,"TX" -> texasCities,
+    "UT" -> utahCities,"VT" -> vermontCities,"VA" -> virginiaCities,"WA" -> washingtonCities,
+    "WV" -> westVirginiaCities,"WI" -> wisconsinCities,"WY" -> wyomingCities)
+
+
+
+  /**
+    * initialize
+    * @param inputprops = input properties
+    */
+  override def initialize(inputprops: Properties): Unit = {
+    this.props=inputprops
+    LogUtil.msggenThread2LoggerDEBUG("Address Arrays initialized")
+  }
+
+  /**
+    * generate a random address for the primary or dependent(child)
+    * random chance of having a second line to the address
+    * @param accountId = primary account ID #
+    * @return record:SimpleAddressRecord
+    */
+  def generateRandomAddressForPrimary(accountId: String): SimpleAddressRecord = {
+    var record:SimpleAddressRecord = new SimpleAddressRecord
+    record.accountId=(accountId)
+    var address:SimpleAddress = new SimpleAddress
+    address.addressLine1=(generateRandomStreetAddress1())
+    if(makeBinaryDecision(0.1)) {
+      address.addressLine2=(generateRandomStreetAddress2())
+    }
+    address.stateCode=(generateRandomState())
+    address.city=(generateRandomCity(address.stateCode))
+    address.zip5=(padZipCode(generateRandomZipCode()))
+    record.address=(address)
+    record
+  }
+
+  /**
+    * generate a random address for the spouse(same as the primary's)
+    * @param accountId = primary account ID #
+    * @param primary = primary object
+    * @return record:SimpleAddressRecord
+    */
+  def generateRandomAddressForSpouse(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
+    var record = new SimpleAddressRecord
+    record.address=(primary.simpleAddressRecord.address)
+    record.accountId=(accountId)
+    record
+  }
+
+  /**
+    * generate a random address for the dependent(child)
+    * random chance they can have a different address than the primary, otherwise
+    * they should have the same address
+    * @param accountId = primary account ID #
+    * @param primary = primary object
+    * @return record:SimpleAddressRecord
+    */
+  def generateRandomAddressForDependent(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
+    val chance:Double = this.props.getProperty(Configuration.CHILD_PERCENT).toDouble
+    var record = new SimpleAddressRecord
+    if(makeBinaryDecision(chance)) {
+      LogUtil.msggenMasterLoggerDEBUG(s"generating a different address for a dependent ${accountId}");
+      record = generateRandomAddressForPrimary(accountId)
+    } else {
+      record.address=(primary.simpleAddressRecord.address)
+      record.accountId=(accountId)
+    }
+    record
+  }
+
+  /**
+    * generate a random street address 1
+    * @return String
+    */
+  def generateRandomStreetAddress1(): String = {
+    var addr1length = randomStreets1.length
+    var addr2length = randomStreets2.length
+    var index1 = this.randomInteger(0,addr1length)
+    var index2 = this.randomInteger(0,addr2length)
+    randomStreets1(index1)+" "+randomStreets2(index2)
+  }
+
+  /**
+    * generate a random street address 1
+    * @return String
+    */
+  def generateRandomStreetAddress2(): String = {
+    var addr2length = randomAddressLine2.length
+    var index2 = this.randomInteger(0,addr2length)
+    randomAddressLine2(index2)
+  }
+
+  /**
+    * generate a random state
+    * @return String
+    */
+  def generateRandomState(): String = {
+    var stateCodes = usStates.keys.toList
+    var stateCodesLength = stateCodes.length
+    var index = this.randomInteger(0,stateCodesLength)
+    stateCodes(index)
+  }
+
+  /**
+    * generate a random city for a given state
+    * @param stateCode = state code to generate a city for
+    * @return String
+    */
+  def generateRandomCity(stateCode: String): String = {
+    var stateCitiesOption:Option[Array[String]] = usStates.get(stateCode)
+    var stateCitieslength:Int = 0
+    var stateCities:Array[String] = stateCitiesOption.getOrElse(null)
+    if(stateCities!=null) {
+      stateCitieslength = stateCities.size
+      var index = this.randomInteger(0,stateCitieslength)
+      stateCities(index)
+    } else {
+      null
+    }
+  }
+
+  /**
+    * generate a random 5-digit zip code
+    * @return Int
+    */
+  def generateRandomZipCode(): Int = {
+    this.randomInteger(0,99999)
+  }
+
+  /**
+    * pad a 5-digit zip code(if needed) and convert to String
+    * @param zip = zip to pad
+    * @return String
+    */
+  def padZipCode(zip: Int): String = {
+    var length = zip.toString.length
+    if(length==5) {
+      zip.toString
+    }
+    var zipStr:String = zip.toString
+    for(count <- 0 until 5-length) {
+      zipStr = "0".concat(zipStr)
+    }
+    zipStr
+  }
+}
