@@ -4,7 +4,7 @@
 
 package com.scala
 
-import classes.utilities.{DateUtils, LogUtil, PropertyLoader}
+import classes.utilities.{DateUtils, LogUtil, PropertyLoader, StringUtils}
 import classes.business._
 /**
   * @author ${user.name}
@@ -15,11 +15,24 @@ object App {
     * main method
     *
     * @param args - argv[0] = Int: = the mode
-    *             args[1] = String: = the config file name(located in /home/ubuntu/config folder)
+    *             args[1] = String: = the config file name(located in /home/schnarbies/config folder)
     *
     */
   def main(args: Array[String]) {
     LogUtil.msggenMasterLoggerDEBUG("BEGIN - mssgen program");
+    if(args(0)==null||args(1)==null)
+    {
+      if(args(0)==null) {
+        LogUtil.msggenMasterLoggerDEBUG("Mode is missing, exiting program")
+      } else {
+        LogUtil.msggenMasterLoggerDEBUG("configuration file is not specified, exiting program");
+      }
+      System.exit(1)
+    }
+    if(!StringUtils.isInteger(args(0))) {
+      LogUtil.msggenMasterLoggerDEBUG("Mode is not a number, exiting program")
+      System.exit(1)
+    }
     val mode: Int = Integer.parseInt(args(0))
     var config: String = args(1)
     LogUtil.msggenMasterLoggerDEBUG(s"Mode = ${mode}");

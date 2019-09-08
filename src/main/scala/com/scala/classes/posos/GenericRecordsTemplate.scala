@@ -9,6 +9,18 @@ import com.scala.classes.utilities.Configuration
 
 import scala.collection.mutable.ArrayBuffer
 
+/**
+  * this class contains all of the meta-data associated with a particular
+  * request for data generation(a file or files of random data that we want to
+  * generate). The class contains 3 different items:
+  * 1. meta-data information about all of the fields in our data, what
+  * the field names are, what data types they are, what their data formatting rules
+  * are, and what all of the different possible values that each field could have
+  * 2. assorted meta-data like how many files we want to make, how many records in
+  * each file, etc..
+  * 3. A list of all of the records that are generated
+  * @param properties
+  */
 class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate {
   /**
     * the names of the fields we are generating records for

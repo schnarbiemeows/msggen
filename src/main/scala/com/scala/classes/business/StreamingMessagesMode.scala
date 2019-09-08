@@ -8,9 +8,11 @@ import java.util.Properties
 
 import com.scala.classes.posos.GenericRecordsTemplate
 import com.scala.classes.utilities.{DateUtils, FileIO, LogUtil}
+import com.scala.classes.validators.ExcelDataSheetValidator
 
 /**
-  *
+  * mode for the generation of records of any kind of random data, as described by an excel
+  * spreadsheet whose location is specified by the mode4.sourcefile property
   */
 class StreamingMessagesMode(val mode: Int, val properties: Properties) extends Mode {
 
@@ -29,7 +31,13 @@ class StreamingMessagesMode(val mode: Int, val properties: Properties) extends M
     //
     // 1. read in excel spreadsheet data
     FileIO.readInSpreadsheet(records)
-    //
+    // 2. validate the data
+    val templateValidated:Boolean = new ExcelDataSheetValidator(records).validate()
+    if(templateValidated) {
+      LogUtil.msggenMasterLoggerDEBUG("template not validated")
+    } else {
+      LogUtil.msggenMasterLoggerDEBUG("template not validated")
+    }
     LogUtil.msggenMasterLoggerDEBUG("DONE - generating streaming message information to file")
     val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
     LogUtil.logTime(s"StreamingMessagesMode run() method time = ${runEnd._1} milliseconds")

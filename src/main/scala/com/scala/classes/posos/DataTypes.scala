@@ -21,7 +21,7 @@ object DataTypes {
     * RandomTime : start time followed by end time
     * RandomMoney : minimum followed my maximum amount
     */
-  val validRandomEnums:Set[String] = Set("RandomString", "RandomInt", "RandomLong" , "RandomFloat", "RandomDouble", "RandomDate", "RandomTime", "RandomMoney")
+  val validRandoms:Set[String] = Set("RandomString", "RandomInt", "RandomLong" , "RandomFloat", "RandomDouble", "RandomDate", "RandomTime", "RandomMoney")
   /**
     * for these data types, the user will be supplying a path to an external file which will have the values for
     * that particular data type. These fields are used like foreign key links to other tables
@@ -35,7 +35,7 @@ object DataTypes {
   val validRanges:Set[String] = Set("RangedString", "RangedInt", "RangedLong" , "RangedFloat", "RangedDouble", "RangedDate", "RangedTime", "RangedMoney")
 
   def isValidDataType(dataType: String):Boolean = {
-    validEnums.contains(dataType)||validRandomEnums.contains(dataType)||
+    validEnums.contains(dataType)||validRandoms.contains(dataType)||
       validExternals.contains(dataType)||validRanges.contains(dataType)
   }
 }

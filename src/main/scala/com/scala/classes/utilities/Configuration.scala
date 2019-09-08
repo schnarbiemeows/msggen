@@ -11,6 +11,9 @@ object Configuration {
 
   val PROPERTY_FILE_LOCATION = "config.properties"
   val SYSTEM:String = "system"
+  val DELIMITTER1 = "~"
+  val EQUALS = "="
+  val DEFAULT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   val ALPHA_NUMERIC_STRING:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
   val LETTERS:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   val NUMBERS:String = "0123456789"
@@ -39,4 +42,5 @@ object Configuration {
   val MODE4_EXTRNL_FILE = "mode4.externalfile"
   val MODE4_OUTPUT_FILE = "mode4.outputfile.folder"
   val MODE4_FILE_PREPENDER = "mode4.outputfile.prepender"
+  val MODE4_STRING_DATA_RULE = "mode4.fieldname.possiblecharacters"
 }

@@ -133,7 +133,7 @@ object FileIO {
   }
 
   /**
-    * method to read in a spreadsheet and populate a RecordsTemplate
+    * method to read in an excel spreadsheet template and populate a RecordsTemplate
     * @param records = RecordsTemplate to populate
     */
   def readInSpreadsheet(records:RecordsTemplate):Unit = {
@@ -142,12 +142,25 @@ object FileIO {
     LogUtil.msggenMasterLoggerDEBUG("entering readInSpreadsheet() method")
     val sourceFile:String = records.sourcefile
     try {
+      /**
+        * open and read in the excel template
+        */
       LogUtil.msggenMasterLoggerDEBUG("attempting to open workbook")
       val workbook = WorkbookFactory.create(new File(sourceFile))
       val formatter = new DataFormatter()
       LogUtil.msggenMasterLoggerDEBUG("opened workbook")
       val sheet1 = workbook.getSheetAt(0)
       LogUtil.msggenMasterLoggerDEBUG("reading in the Column names")
+
+      /**
+        * load in the header Rows:
+        * field names
+        * data types
+        * formats
+        */
+      /**
+        * field names
+        */
       val headerIterator = sheet1.getRow(0).cellIterator()
       val fieldsAndCounter:Tuple2[Int,Array[String]] = getFieldsTypesOrFormats(headerIterator,formatter)
       var runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
@@ -156,26 +169,41 @@ object FileIO {
       records.fields = fieldsAndCounter._2
       val numberOfColumns:Int = fieldsAndCounter._1
       LogUtil.msggenMasterLoggerDEBUG("reading in the Data Types of each Column")
+      /**
+        * field data types
+        */
       val dataTypeIterator = sheet1.getRow(1).cellIterator()
       records.dataTypes = getFieldsTypesOrFormats(dataTypeIterator,formatter)._2
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Types of each Column took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
       LogUtil.msggenMasterLoggerDEBUG("reading in the Data Formatting Information for each Column")
+      /**
+        * field formats
+        */
       val formatIterator = sheet1.getRow(2).cellIterator()
       records.dataFormats = getFieldsTypesOrFormats(formatIterator,formatter)._2
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Formatting Information took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
-      // test for checking the header information
-      //check(records)
+
+      //check(records) // <- test for checking the header information
+      /**
+        *
+        * load in the possible values that each field could have
+        */
       LogUtil.msggenMasterLoggerDEBUG("reading in the Data Value Information for each Column")
       records.dataValues = getDataValues(sheet1, numberOfColumns, formatter)
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Value Information took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
-      // test for checking the dataValues information
-      //checkValues(records)
+
+      //checkValues(records) // <- test for checking the dataValues information
+      /**
+        * close the workbook
+        * TODO - see if we can somehow run the template validator in parallel with the closing of the
+        * notebook, since closing the notebook takes so long
+        */
       workbook.close()
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"closing the Workbook took => ${runEndLocal._1} milliseconds")
@@ -238,6 +266,10 @@ object FileIO {
     * @return Array(Array(String))
     */
   def getDataValues(sheet1:Sheet, numberOfColumns:Int, formatter:DataFormatter): Array[Array[String]] = {
+    /**
+      * TODO - this program will crash if any cells of the first row are blank
+      * fix this
+      */
     var dataValues:Array[Array[String]] = new Array(numberOfColumns)
     var arrayOfString:Array[String] = new Array[String](numberOfColumns)
     // initialize our Strings
