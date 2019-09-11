@@ -193,7 +193,7 @@ object FileIO {
         * load in the possible values that each field could have
         */
       LogUtil.msggenMasterLoggerDEBUG("reading in the Data Value Information for each Column")
-      records.dataValues = getDataValues(sheet1, numberOfColumns, formatter)
+      records.dataQualifiers = getDataValues(sheet1, numberOfColumns, formatter)
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Value Information took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
@@ -311,9 +311,9 @@ object FileIO {
   }
 
   def checkValues(records:RecordsTemplate):Unit = {
-    val dataValuesLength:Int = records.dataValues.length
+    val dataValuesLength:Int = records.dataQualifiers.length
     for(i <- 0 until dataValuesLength) {
-      val items = records.dataValues(i)
+      val items = records.dataQualifiers(i)
       val itemLength:Int = items.length
       for(j <- 0 until itemLength) {
         print(items(j)+" ")

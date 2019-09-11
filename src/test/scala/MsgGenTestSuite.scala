@@ -10,9 +10,9 @@ import org.junit.runners.Suite
   * main Junit testing class : run this to run all tests
   */
 @RunWith(classOf[Suite])
-@Suite.SuiteClasses(Array(classOf[DateUtilsTest],classOf[NumUtilitiesTest],classOf[StringFormatValidatorTest],
-classOf[IntLongFormatValidatorTest],classOf[DateTimeFormatValidatorTest],classOf[FloatDoubleFormatValidatorTest],
-classOf[MoneyFormatValidatorTest]))
+@Suite.SuiteClasses(Array(classOf[DateUtilsTest],classOf[NumUtilitiesTest],classOf[StringQualifiersValidatorTest],
+classOf[IntLongQualifiersValidatorTest],classOf[DateTimeQualifiersValidatorTest],classOf[FloatDoubleQualifiersValidatorTest],
+classOf[MoneyQualifiersValidatorTest]))
 class MsgGenTestSuite {
 
 }

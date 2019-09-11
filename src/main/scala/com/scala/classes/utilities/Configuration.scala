@@ -11,7 +11,7 @@ object Configuration {
 
   val PROPERTY_FILE_LOCATION = "config.properties"
   val SYSTEM:String = "system"
-  val DELIMITTER1 = "~"
+  val DELIMITTER1 = ","
   val EQUALS = "="
   val DEFAULT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   val ALPHA_NUMERIC_STRING:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

@@ -10,30 +10,48 @@ import com.scala.classes.utilities.{Configuration, StringUtils}
 /**
   *
   */
-object StringFormatValidator {
+object StringQualifiersValidator extends Validator {
 
   /**
-    * method to validate that the specified format rule(s) is(are) correct
-    * right now,
-    * @param format = format specified
+    * main validation method - currently not used
+    * TODO - maybe refactor to remove this reference
+    * @return
+    */
+  override def validate(): Boolean = {true}
+
+  /**
+    * this method checks to make sure that there is at least 1 value
+    * for the particular Enum data type
+    * @param dataType = data type name
+    * @param format = data format(string of comma separated keywords)
+    * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumStringFormat(format:String):Tuple2[Boolean,String] = {
+  def validateEnumStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
-    // TODO - finish
+    if(qualifiers.length==0) {
+      isValidated = false
+      message = "no values specified"
+    }
     (isValidated,message)
   }
 
   /**
-    * method that validates the rules for a RandomString data type
-    * @param format = format specified  
+    *
+    * @param dataType = data type name
+    * @param format = data format(string of comma separated keywords)
+    * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomStringFormat(format:String):Tuple2[Boolean,String] = {
+  def validateRandomStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message: String = "NONE"
-    if (format != "NONE") {
+    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
+    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
+
+    }
+    /*if (format != "NONE") {
       val items = format.split(Configuration.DELIMITTER1)
       for (item <- items) {
         val oneOrTwoItems: Array[String] = item.split(Configuration.EQUALS)
@@ -93,31 +111,47 @@ object StringFormatValidator {
           message = "multiple equals sign in the key/value pair"
         }
       }
-    }
+    }*/
     (isValidated, message)
   }
 
   /**
     *
-    * @param format = format specified
+    * @param dataType = data type name
+    * @param format = data format(string of comma separated keywords)
+    * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalStringFormat(format:String):Tuple2[Boolean,String] = {
+  def validateExternalStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
-    // TODO - finish
+    if(qualifiers.length==0) {
+      isValidated = false
+      message = "has no file path specified"
+    } else {
+      val filepath = qualifiers(0)
+      if(!valdateFileExists(filepath)) {
+        isValidated = false
+        message = "file path specified is incorrect, or the file does not exist"
+      }
+    }
     (isValidated,message)
   }
 
   /**
     *
-    * @param format = format specified
+    * @param dataType = data type name
+    * @param format = data format(string of comma separated keywords)
+    * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeStringFormat(format:String):Tuple2[Boolean,String] = {
+  def validateRangeStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
-    // TODO - finish
+    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
+    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
+      // TODO - finish
+    }
     (isValidated,message)
   }
 

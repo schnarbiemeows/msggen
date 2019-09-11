@@ -20,11 +20,15 @@ class ExcelDataSheetValidatorTest {
   var properties:Properties = _
   var template:GenericRecordsTemplate = _
   var validator:ExcelDataSheetValidator = _
+  var mocks:ExcelSheetValidatorTestMocks = _
 
+  /**
+    *
+    */
   @Before
   def initialize():Unit = {
     properties = PropertyLoader.getProperties("config.properties")
-    var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
+    mocks = new ExcelSheetValidatorTestMocks(properties)
     template = mocks.getBasicTemplate()
 
   }
@@ -61,5 +65,233 @@ class ExcelDataSheetValidatorTest {
     template.dataTypes = Array("String","String","String")
     validator = new ExcelDataSheetValidator(template)
     validator.validateTheDataTypes()
+  }
+
+  @Test
+  def testDataFormats():Unit = {
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumString")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    var isValid:Boolean = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomString")
+    template.dataFormats = Array("length","chars","upper","lower")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalString")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedString")
+    template.dataFormats = Array("length","chars","upper","lower")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumInt")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomInt")
+    template.dataFormats = Array("length","min","max")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalInt")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedInt")
+    template.dataFormats = Array("length","min","max")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumLong")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomLong")
+    template.dataFormats = Array("length","min","max")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalLong")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedLong")
+    template.dataFormats = Array("length","min","max")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumFloat")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomFloat")
+    template.dataFormats = Array("length","signDigits","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalFloat")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedFloat")
+    template.dataFormats = Array("length","signDigits","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumDouble")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomDouble")
+    template.dataFormats = Array("length","signDigits","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalDouble")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedDouble")
+    template.dataFormats = Array("length","signDigits","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumDate")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomDate")
+    template.dataFormats = Array("startdate","enddate","format")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalDate")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedDate")
+    template.dataFormats = Array("startdate","enddate","format")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumTime")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomTime")
+    template.dataFormats = Array("starttime","endtime","format")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalTime")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedTime")
+    template.dataFormats = Array("starttime","endtime","format")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("EnumMoney")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RandomMoney")
+    template.dataFormats = Array("length","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("ExternalMoney")
+    template.dataFormats = Array("NONE")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
+    template = mocks.getBlankTemplate()
+    template.dataTypes = Array("RangedMoney")
+    template.dataFormats = Array("length","min","max","roundup","rounddown","round")
+    validator = new ExcelDataSheetValidator(template)
+    isValid = validator.validateDataFormats()
+    assertTrue(isValid)
+
   }
 }

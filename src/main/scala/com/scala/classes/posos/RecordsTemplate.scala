@@ -48,7 +48,7 @@ trait RecordsTemplate {
   /**
     * all of the possible values that each field could have
     */
-  var dataValues:Array[Array[String]]
+  var dataQualifiers:Array[Array[String]]
   /**
     * the current array of records
     */

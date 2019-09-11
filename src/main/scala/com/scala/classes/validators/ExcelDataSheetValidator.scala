@@ -33,6 +33,8 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
       LogUtil.msggenMasterLoggerDEBUG("data types validated")
       validateDataFormats()
       LogUtil.msggenMasterLoggerDEBUG("data formats validated")
+      validateDataQualifiers()
+      LogUtil.msggenMasterLoggerDEBUG("data values validated")
 
     } catch {
       case e:Exception => {LogUtil.msggenMasterLoggerERROR("Exception occurred : "+e+" , exiting program")}
@@ -116,69 +118,87 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
     isValidated
   }
 
-  /**
-    *
-    * @throws com.scala.classes.exception.InvalidDataFormatException
-    * @return
-    */
   @throws(classOf[InvalidDataFormatException])
   def validateDataFormats():Boolean = {
     var isValidated = true
     val dataTypes = template.dataTypes
     val formats = template.dataFormats
     var resultOfValidator:Tuple2[Boolean,String] = null
-    for(i <- 0 until dataTypes.length){
+    for(i <- 0 until dataTypes.length) {
       val dataType = dataTypes(i)
       val format = formats(i)
-      dataType match {
-        case "EnumString" => resultOfValidator = StringFormatValidator.validateEnumStringFormat(format)
-        case "RandomString" => resultOfValidator = StringFormatValidator.validateRandomStringFormat(format)
-        case "ExternalString" => resultOfValidator = StringFormatValidator.validateExternalStringFormat(format)
-        case "RangedString" => resultOfValidator = StringFormatValidator.validateRangeStringFormat(format)
-        case "EnumInt" => resultOfValidator = IntLongFormatValidator.validateEnumIntFormat(format)
-        case "RandomInt" => resultOfValidator = IntLongFormatValidator.validateRandomIntFormat(format)
-        case "ExternalInt" => resultOfValidator = IntLongFormatValidator.validateExternalIntFormat(format)
-        case "RangedInt" => resultOfValidator = IntLongFormatValidator.validateRangeIntFormat(format)
-        case "EnumLong" => resultOfValidator = IntLongFormatValidator.validateEnumLongFormat(format)
-        case "RandomLong" => resultOfValidator = IntLongFormatValidator.validateRandomLongFormat(format)
-        case "ExternalLong" => resultOfValidator = IntLongFormatValidator.validateExternalLongFormat(format)
-        case "RangedLong" => resultOfValidator = IntLongFormatValidator.validateRangeLongFormat(format)
-        case "EnumFloat" => resultOfValidator = FloatDoubleFormatValidator.validateEnumFloatFormat(format)
-        case "RandomFloat" => resultOfValidator = FloatDoubleFormatValidator.validateRandomFloatFormat(format)
-        case "ExternalFloat" => resultOfValidator = FloatDoubleFormatValidator.validateExternalFloatFormat(format)
-        case "RangedFloat" => resultOfValidator = FloatDoubleFormatValidator.validateRangeFloatFormat(format)
-        case "EnumDouble" => resultOfValidator = FloatDoubleFormatValidator.validateEnumDoubleFormat(format)
-        case "RandomDouble" => resultOfValidator = FloatDoubleFormatValidator.validateRandomDoubleFormat(format)
-        case "ExternalDouble" => resultOfValidator = FloatDoubleFormatValidator.validateExternalDoubleFormat(format)
-        case "RangedDouble" => resultOfValidator = FloatDoubleFormatValidator.validateRangeDoubleFormat(format)
-        case "EnumDate" => resultOfValidator = DateTimeFormatValidator.validateEnumDateFormat(format)
-        case "RandomDate" => resultOfValidator = DateTimeFormatValidator.validateRandomDateFormat(format)
-        case "ExternalDate" => resultOfValidator = DateTimeFormatValidator.validateExternalDateFormat(format)
-        case "RangedDate" => resultOfValidator = DateTimeFormatValidator.validateRangeDateFormat(format)
-        case "EnumTime" => resultOfValidator = DateTimeFormatValidator.validateEnumTimeFormat(format)
-        case "RandomTime" => resultOfValidator = DateTimeFormatValidator.validateRandomTimeFormat(format)
-        case "ExternalTime" => resultOfValidator = DateTimeFormatValidator.validateExternalTimeFormat(format)
-        case "RangedTime" => resultOfValidator = DateTimeFormatValidator.validateRangeTimeFormat(format)
-        case "EnumMoney" => resultOfValidator = MoneyFormatValidator.validateEnumMoneyFormat(format)
-        case "RandomMoney" => resultOfValidator = MoneyFormatValidator.validateRandomMoneyFormat(format)
-        case "ExternalMoney" => resultOfValidator = MoneyFormatValidator.validateExternalMoneyFormat(format)
-        case "RangedMoney" => resultOfValidator = MoneyFormatValidator.validateRangeMoneyFormat(format)
-      }
+      resultOfValidator = validateFormat(dataType,format)
       if(resultOfValidator._1==false) {
         throw new InvalidDataFormatException(s"index ${i} , ${dataType} format ${format} , is invalid : ${resultOfValidator._2}")
       } else {
         LogUtil.msggenMasterLoggerDEBUG(s"index ${i} , ${dataType} format ${format} , is valid")
       }
     }
-
     isValidated
   }
 
-  def validateValuesData():Boolean = {
+  /**
+    *
+    * @throws com.scala.classes.exception.InvalidDataFormatException
+    * @return
+    */
+  @throws(classOf[InvalidDataQualifierException])
+  def validateDataQualifiers():Boolean = {
     var isValidated = true
-    // TODO - finish
+    val fields = template.fields
+    val dataTypes = template.dataTypes
+    val formats = template.dataFormats
+    val allQualifiers = template.dataQualifiers
+    var resultOfValidator:Tuple2[Boolean,String] = null
+    for(i <- 0 until dataTypes.length){
+      val field = fields(i)
+      val dataType = dataTypes(i)
+      val format = formats(i)
+      val qualifiers = allQualifiers(i)
+      dataType match {
+        case "EnumString" => resultOfValidator = StringQualifiersValidator.validateEnumStringQualifiers(dataType,format,qualifiers)
+        case "RandomString" => resultOfValidator = StringQualifiersValidator.validateRandomStringQualifiers(dataType,format,qualifiers)
+        case "ExternalString" => resultOfValidator = StringQualifiersValidator.validateExternalStringQualifiers(dataType,format,qualifiers)
+        case "RangedString" => resultOfValidator = StringQualifiersValidator.validateRangeStringQualifiers(dataType,format,qualifiers)
+        case "EnumInt" => resultOfValidator = IntLongQualifiersValidator.validateEnumIntQualifiers(dataType,format,qualifiers)
+        case "RandomInt" => resultOfValidator = IntLongQualifiersValidator.validateRandomIntQualifiers(dataType,format,qualifiers)
+        case "ExternalInt" => resultOfValidator = IntLongQualifiersValidator.validateExternalIntQualifiers(dataType,format,qualifiers)
+        case "RangedInt" => resultOfValidator = IntLongQualifiersValidator.validateRangeIntQualifiers(dataType,format,qualifiers)
+        case "EnumLong" => resultOfValidator = IntLongQualifiersValidator.validateEnumLongQualifiers(dataType,format,qualifiers)
+        case "RandomLong" => resultOfValidator = IntLongQualifiersValidator.validateRandomLongQualifiers(dataType,format,qualifiers)
+        case "ExternalLong" => resultOfValidator = IntLongQualifiersValidator.validateExternalLongQualifiers(dataType,format,qualifiers)
+        case "RangedLong" => resultOfValidator = IntLongQualifiersValidator.validateRangeLongQualifiers(dataType,format,qualifiers)
+        case "EnumFloat" => resultOfValidator = FloatDoubleQualifiersValidator.validateEnumFloatQualifiers(dataType,format,qualifiers)
+        case "RandomFloat" => resultOfValidator = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(dataType,format,qualifiers)
+        case "ExternalFloat" => resultOfValidator = FloatDoubleQualifiersValidator.validateExternalFloatQualifiers(dataType,format,qualifiers)
+        case "RangedFloat" => resultOfValidator = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(dataType,format,qualifiers)
+        case "EnumDouble" => resultOfValidator = FloatDoubleQualifiersValidator.validateEnumDoubleQualifiers(dataType,format,qualifiers)
+        case "RandomDouble" => resultOfValidator = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(dataType,format,qualifiers)
+        case "ExternalDouble" => resultOfValidator = FloatDoubleQualifiersValidator.validateExternalDoubleQualifiers(dataType,format,qualifiers)
+        case "RangedDouble" => resultOfValidator = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(dataType,format,qualifiers)
+        case "EnumDate" => resultOfValidator = DateTimeQualifiersValidator.validateEnumDateQualifiers(dataType,format,qualifiers)
+        case "RandomDate" => resultOfValidator = DateTimeQualifiersValidator.validateRandomDateQualifiers(dataType,format,qualifiers)
+        case "ExternalDate" => resultOfValidator = DateTimeQualifiersValidator.validateExternalDateQualifiers(dataType,format,qualifiers)
+        case "RangedDate" => resultOfValidator = DateTimeQualifiersValidator.validateRangeDateQualifiers(dataType,format,qualifiers)
+        case "EnumTime" => resultOfValidator = DateTimeQualifiersValidator.validateEnumTimeQualifiers(dataType,format,qualifiers)
+        case "RandomTime" => resultOfValidator = DateTimeQualifiersValidator.validateRandomTimeQualifiers(dataType,format,qualifiers)
+        case "ExternalTime" => resultOfValidator = DateTimeQualifiersValidator.validateExternalTimeQualifiers(dataType,format,qualifiers)
+        case "RangedTime" => resultOfValidator = DateTimeQualifiersValidator.validateRangeTimeQualifiers(dataType,format,qualifiers)
+        case "EnumMoney" => resultOfValidator = MoneyQualifiersValidator.validateEnumMoneyQualifiers(dataType,format,qualifiers)
+        case "RandomMoney" => resultOfValidator = MoneyQualifiersValidator.validateRandomMoneyQualifiers(dataType,format,qualifiers)
+        case "ExternalMoney" => resultOfValidator = MoneyQualifiersValidator.validateExternalMoneyQualifiers(dataType,format,qualifiers)
+        case "RangedMoney" => resultOfValidator = MoneyQualifiersValidator.validateRangeMoneyQualifiers(dataType,format,qualifiers)
+      }
+      if(resultOfValidator._1==false) {
+        throw new InvalidDataQualifierException(s"field ${field} , has an invalid qualifier : ${resultOfValidator._2}")
+      } else {
+        LogUtil.msggenMasterLoggerDEBUG(s"all of the qualifiers for field : ${field} are valid")
+      }
+    }
     isValidated
   }
+
+
 
   def validatePresenceOfExternalFiles():Boolean = {
     var isValidated = true

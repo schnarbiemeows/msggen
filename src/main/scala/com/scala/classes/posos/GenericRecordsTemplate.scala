@@ -38,7 +38,7 @@ class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate 
   /**
     * all of the possible values that each field could have
     */
-  var dataValues:Array[Array[String]] = _
+  var dataQualifiers:Array[Array[String]] = _
   /**
     *
     */
