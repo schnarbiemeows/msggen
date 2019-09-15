@@ -24,6 +24,7 @@ object LogUtil {
     */
   def msggenMasterLoggerDEBUG(message: String): Unit = {
     this.msgenmasterLogger.debug(message)
+    println(message)
   }
 
   /**
@@ -144,6 +145,7 @@ object LogUtil {
     */
   def logTime(message: String): Unit = {
     this.msggenTimerLogger.debug(message)
+    println(message)
   }
 
   /**

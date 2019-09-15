@@ -4,8 +4,6 @@
 
 package com.scala.classes.posos
 
-import scala.collection.mutable.ArrayBuffer
-
 trait Record {
 
   val fields:Array[String]
@@ -39,4 +37,7 @@ trait Record {
       append(quotes).append(fieldValues(fieldArrayLength-1)).append(quotes).append(closed)
     json.toString()
   }
+
+  def toCSV():String
+  def toJSON():String
 }

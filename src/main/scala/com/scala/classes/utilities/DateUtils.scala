@@ -4,11 +4,9 @@
 
 package com.scala.classes.utilities
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.time.{Duration, LocalDate, LocalTime, Period}
-import java.time.LocalDate.{now, _}
+import java.time.LocalDate._
 import java.time.temporal.ChronoUnit
+import java.time.{Duration, LocalDate, LocalTime, Period}
 
 
 
@@ -27,6 +25,14 @@ object DateUtils {
     d.toString
   }
 
+  /**
+    * method to convert a LocalTime to a String
+    * @param t - the LocalTime to convert
+    * @return - the string equivalent
+    */
+  def getStringFromTime(t: LocalTime):String = {
+    t.toString
+  }
   /**
     * method to convert a String to a LocalDate
     * @param s - the string to convert

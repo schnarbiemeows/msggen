@@ -4,8 +4,6 @@
 
 package com.scala.classes.utilities
 
-import java.lang.NumberFormatException
-
 /**
   * utility class for manipulating strings
   */
@@ -24,5 +22,9 @@ object StringUtils {
       case e:NumberFormatException => isInteger = false
     }
     isInteger
+  }
+
+  def removeColons(input: String):String = {
+    input.replaceAll(":","")
   }
 }

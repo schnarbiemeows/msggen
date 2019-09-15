@@ -5,16 +5,14 @@
 package com.scala.classes.utilities
 
 import java.io.{BufferedWriter, File, FileWriter}
+import java.util.{Iterator, Properties}
 
 import com.google.gson.Gson
 import com.scala.classes.posos._
 import org.apache.poi.ss.usermodel._
-import java.io.{File, FileOutputStream}
-import java.util.Iterator
 
-import scala.collection.mutable
 import scala.collection.JavaConversions._
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 /**
   * this Object handles File Input and Output
@@ -50,6 +48,48 @@ object FileIO {
     }
   }
 
+  def writeGenericRecordToFile(records: Array[Record], filepath: String,properties:Properties): Unit = {
+    LogUtil.msggenMasterLoggerDEBUG("writing generic records to a file")
+    LogUtil.msggenMasterLoggerDEBUG(s"file path : ${filepath}")
+    val fileType = properties.get(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
+    LogUtil.msggenMasterLoggerDEBUG(s"file path : ${fileType}")
+    var outfile:BufferedWriter = null
+    try {
+      //LogUtil.msggenMasterLoggerDEBUG("HERE !")
+      outfile = new BufferedWriter(new FileWriter(new File(filepath+"."+fileType),true))
+      //LogUtil.msggenMasterLoggerDEBUG("HERE !! ")
+      if(records==null) {
+        LogUtil.msggenMasterLoggerDEBUG("records is NULL !! ")
+      }
+      LogUtil.msggenMasterLoggerDEBUG(s"records size is : ${records.length} ")
+      for(record <- records) {
+        if(Configuration.CSV.equals(fileType)) {
+          outfile.write(record.toCSV() + "\n")
+        } else if(Configuration.JSON.equals(fileType)) {
+          /*if(record==null) {
+            LogUtil.msggenMasterLoggerDEBUG("record is NULL !! ")
+          } else {
+            LogUtil.msggenMasterLoggerDEBUG("record is not null")
+            LogUtil.msggenMasterLoggerDEBUG(s"${record.toJSON()}")
+          }*/
+          outfile.write(record.toJSON() + "\n")
+        }
+        else {
+          outfile.write(record.toString + "\n")
+        }
+      }
+    }
+    catch {
+      case e: Exception => {
+        LogUtil.msggenMasterLoggerDEBUG("there was an issue writing generic records to a file")
+        e.printStackTrace()
+      }
+    }
+    finally {
+      LogUtil.msggenMasterLoggerDEBUG("closing our generic records file")
+      outfile.close()
+    }
+  }
   /**
     * method to pull the keys from the finalMap(account IDs), and output them to a file
     * for later message generation
@@ -211,7 +251,7 @@ object FileIO {
     }
     catch {
       case e: Exception => {
-        LogUtil.msggenMasterLoggerDEBUG("there was an issue reading in the spreadsheet")
+        LogUtil.msggenMasterLoggerERROR("there was an issue reading in the spreadsheet")
         e.printStackTrace()
       }
     }
@@ -320,5 +360,15 @@ object FileIO {
       }
       println()
     }
+  }
+
+  def readInExternalFiles(record: RecordsTemplate, properties: Properties):Boolean = {
+    val runStart = DateUtils.nowTime()
+    var runStartLocal = DateUtils.nowTime()
+    LogUtil.msggenMasterLoggerDEBUG("entering readInSpreadsheet() method")
+    // TODO
+    val runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+    LogUtil.logTime(s"readInExternalFiles took => ${runEndLocal._1} milliseconds")
+    true
   }
 }
