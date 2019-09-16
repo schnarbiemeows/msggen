@@ -13,33 +13,42 @@ import com.scala.classes.posos.{Record, RecordsTemplate}
 import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil, StringUtils}
 
 /**
-  *
+  * this is an actor class. This class is the parent controller actor for a process
+  * that makes,copies, and then creates text file of data
   */
 class RecordsMakerControllerActor(val template: RecordsTemplate, val properties: Properties,
                                   val finishedQueue:ArrayBlockingQueue[String])
   extends Actor {
 
   /**
-    * N = numThreads
+    * N = numThreads to use for making/coopying Record data
     */
   val numThreads:Int = properties.get(Configuration.MODE4_NUM_THREADS).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG("")
   LogUtil.msggenMasterLoggerDEBUG(s"numTheads = ${numThreads}")
   /**
-    * F = numFiles
+    * F = numFiles - number of output csv or json files to make with Record data
     */
   val numFiles:Int = properties.get(Configuration.MODE4_NUM_FILES).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG(s"numFiles = ${numFiles}")
   /**
-    * R = numRecordsPerFile
+    * R = numRecordsPerFile - number of Record records in each output file
     */
   val numRecordsPerFile:Int = properties.get(Configuration.MODE4_NUM_RECORDS).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG(s"numRecordsPerFile = ${numRecordsPerFile}")
   LogUtil.msggenMasterLoggerDEBUG("")
+  /**
+    * primary array for storing an intial batch of created Record objects
+    */
   var recordArray1:Array[Record] = new Array[Record](numRecordsPerFile)
+  /**
+    * second, double array for storing Record objects that will be written to
+    * output files, with dimensions of F x R
+    */
   var recordArray2 = Array.ofDim[Record](numFiles, numRecordsPerFile)
   /**
     * actors that will be used for making the records and transferring them from
+    * recordArray1 to recordArray2
     */
   var actors:Array[ActorRef] = new Array[ActorRef](numThreads)
   for(i <- 0 until actors.length) {
@@ -47,8 +56,27 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     actors(i) = context.actorOf(Props(new RecordMakerAndCopierActor(template,recordArray1,
       recordArray2,i)))
   }
+  /**
+    * actor that will be used to pull records from recordArray2 and write them out to a file
+    */
   var fileWriter: ActorRef = context.actorOf(Props(new FileWriterActor(recordArray2,properties)))
 
+  /**
+    * indexes and toggles used to keep track of how many records have been requested to
+    * be made or copied, how many records have successfully been made or copied, how many
+    * files havebeen requested to be created, and how many have been created.
+    *
+    * there are 3 phases to the process:
+    * 1. record making phase
+    * 2. record copying phase
+    * 3. file creation(csv or json)
+    *
+    * each phases will occur F times, because each file will need records made for it,
+    * copied for it, and then finally written out to file
+    * phase 3 for a file can run concurrently with phases 1 and 2 for the next file,
+    * but in general, phases 1 and 2 for a given file
+    * should happen in series
+    */
   var fileArrayIndex:Int = 0
   var makeRecordCount:Int = 0
   var copyRecordCount:Int = 0
@@ -59,6 +87,10 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   var inRecordCopyingPhase:Boolean = false
   var inFileMakingPhase:Boolean = false
 
+  /**
+    * main actor method
+    * @return
+    */
   override def receive: Receive = {
     case StartMessage => initiateRecordMaking()
     case FinishedMakingRecordMessage(threadNum) => incrementCheckAndCount(threadNum)
@@ -73,6 +105,12 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     }
   }
 
+  /**
+    * this method is used to initiate a record making phase. We need to initiate
+    * the phase by sending N requests to each of the N actors we are using
+    * then we need to toggle the inRecordMakingPhase on to indicate that we are
+    * in a record making phase
+    */
   def initiateRecordMaking():Unit = {
     LogUtil.msggenMasterLoggerDEBUG("")
     LogUtil.msggenMasterLoggerDEBUG("inside initiateRecordMaking")
@@ -85,6 +123,12 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     LogUtil.msggenMasterLoggerDEBUG("")
   }
 
+  /**
+    * this method is used to initiate a record copying phase. We need to initiate
+    * the phase by sending N requests to each of the N actors we are using
+    * then we need to toggle the inRecordCopyingPhase on to indicate that we are
+    * in a record copying phase
+    */
   def initiateRecordCopying():Unit = {
     LogUtil.msggenMasterLoggerDEBUG("")
     LogUtil.msggenMasterLoggerDEBUG("inside initiateRecordCopying")
@@ -97,6 +141,13 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     LogUtil.msggenMasterLoggerDEBUG("")
   }
 
+  /**
+    * method that is used to initiate a new request to make an output file
+    * this request is sent to a FileWriterActor using a WriteToFileMessage
+    * before that, the method generates the name of the file to be made
+    * after the message is sent, the inFileMakingPhase is toggled to indicate that
+    * we are in a file creation phase
+    */
   def initiateFileCreation():Unit = {
     LogUtil.msggenMasterLoggerDEBUG("")
     LogUtil.msggenMasterLoggerDEBUG("inside initiateFileCreation")
@@ -109,6 +160,13 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     LogUtil.msggenMasterLoggerDEBUG("")
   }
 
+  /**
+    * method that gets invoked each time a FinishedMakingRecordMessage message comes back
+    * from a RecordMakerAndCopierActor
+    * rules:
+    *
+    * @param number - the actor number of the sender
+    */
   def incrementCheckAndCount(number:Int):Unit = {
     recordMadeCount+=1
     LogUtil.msggenMasterLoggerDEBUG(s"inside incrementCheckAndCount, records made = ${recordMadeCount}")
@@ -132,6 +190,11 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     }
   }
 
+  /**
+    * method that gets invoked each time a FinishedCopyingRecordMessage message comes back
+    * from a RecordMakerAndCopierActor
+    * @param number - the actor number of the sender
+    */
   def incrementCopyAndCount(number:Int):Unit = {
     recordCopiedCount+=1
     LogUtil.msggenMasterLoggerDEBUG(s"inside incrementCopyAndCount, records copied = ${recordCopiedCount}")

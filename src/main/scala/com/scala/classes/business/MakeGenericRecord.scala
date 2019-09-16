@@ -8,14 +8,15 @@ import com.scala.classes.posos.{GenericRecord, Record, RecordsTemplate}
 import com.scala.classes.utilities.LogUtil
 
 /**
-  *
+  * this class is for making Record objects
   */
 object MakeGenericRecord {
 
   /**
-    *
-    * @param records
-    * @return
+    * this method makes a Generic record from the meta-data contained in a
+    * RecordsTemplate object
+    * @param records - template that contains the meta-data for making our record
+    * @return - Record = our new record
     */
   def makeRecord(records: RecordsTemplate):Record = {
     val fields = records.fields
