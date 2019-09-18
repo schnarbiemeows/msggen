@@ -4,6 +4,8 @@
 
 package com.scala.classes.validators
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
   * class used to validate the formats specified for the Date and time
   * data types
@@ -25,7 +27,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumDateQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -43,7 +45,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumTimeQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -60,7 +62,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomDateQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -77,7 +79,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomTimeQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -94,7 +96,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalDateQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -117,7 +119,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalTimeQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -140,7 +142,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeDateQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -157,7 +159,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeTimeQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)

@@ -4,6 +4,8 @@
 
 package com.scala.classes.validators
 
+import scala.collection.mutable.ArrayBuffer
+
 
 /**
   * class for validating the formats specified for the
@@ -26,7 +28,7 @@ object MoneyQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumMoneyQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -43,7 +45,7 @@ object MoneyQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomMoneyQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -60,7 +62,7 @@ object MoneyQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalMoneyQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -83,7 +85,7 @@ object MoneyQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeMoneyQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)

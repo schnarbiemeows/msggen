@@ -4,8 +4,7 @@
 
 package com.scala.classes.validators
 
-import com.scala.classes.posos.DataTypeFormats
-import com.scala.classes.utilities.{Configuration, StringUtils}
+import scala.collection.mutable.ArrayBuffer
 
 /**
   *
@@ -27,7 +26,7 @@ object StringQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumStringQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -44,7 +43,7 @@ object StringQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomStringQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message: String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -122,7 +121,7 @@ object StringQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalStringQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -145,7 +144,7 @@ object StringQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeStringQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeStringQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)

@@ -4,11 +4,14 @@
 
 package com.scala.classes.validators
 
+import java.util.Properties
+
 import com.scala.classes.posos.GenericRecordsTemplate
 import com.scala.classes.utilities.PropertyLoader
-import org.junit.{Before, Test}
 import org.junit.Assert._
-import java.util.Properties
+import org.junit.{Before, Test}
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * class for unit testing the IntLongFormatValidator class methods
@@ -38,7 +41,7 @@ class IntLongQualifiersValidatorTest {
     template.dataTypes = Array("EnumInt")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("something"))
+    template.dataQualifiers = Array(ArrayBuffer("something"))
     val results:Tuple2[Boolean,String] = IntLongQualifiersValidator.validateEnumIntQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
@@ -63,7 +66,7 @@ class IntLongQualifiersValidatorTest {
     template.dataTypes = Array("ExternalInt")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("C:\\home\\schnarbies\\output\\ssns.txt"))
+    template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
     val results:Tuple2[Boolean,String] = IntLongQualifiersValidator.validateExternalIntQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
@@ -88,7 +91,7 @@ class IntLongQualifiersValidatorTest {
     template.dataTypes = Array("EnumLong")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("something"))
+    template.dataQualifiers = Array(ArrayBuffer("something"))
     val results:Tuple2[Boolean,String] = IntLongQualifiersValidator.validateEnumLongQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
@@ -113,7 +116,7 @@ class IntLongQualifiersValidatorTest {
     template.dataTypes = Array("ExternalLong")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("C:\\home\\schnarbies\\output\\ssns.txt"))
+    template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
     val results:Tuple2[Boolean,String] = IntLongQualifiersValidator.validateExternalLongQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }

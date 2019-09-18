@@ -34,6 +34,10 @@ object MakeGenericRecord {
         case "RandomString" => fieldValues(i) = StringTypeMaker.makeRandomString(format, qualifiers)
         case "ExternalString" => fieldValues(i) = StringTypeMaker.makeExternalString(qualifiers)
         case "RangedString" => fieldValues(i) = StringTypeMaker.makeRangedString(format, qualifiers)
+        case "EnumLong" => fieldValues(i) = LongTypeMaker.makeEnumLong(qualifiers)
+        case "RandomLong" => fieldValues(i) = LongTypeMaker.makeRandomLong(format,qualifiers)
+        case "ExternalLong" => fieldValues(i) = LongTypeMaker.makeExternalLong(qualifiers)
+        case "RangedLong" => fieldValues(i) = LongTypeMaker.makeRangedLong(format,qualifiers)
         case _ => LogUtil.msggenMasterLoggerDEBUG("Data Type not found")
       }
     }

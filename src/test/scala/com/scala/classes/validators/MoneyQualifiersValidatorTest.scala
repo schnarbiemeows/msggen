@@ -4,11 +4,14 @@
 
 package com.scala.classes.validators
 
+import java.util.Properties
+
 import com.scala.classes.posos.GenericRecordsTemplate
 import com.scala.classes.utilities.PropertyLoader
-import org.junit.{Before, Test}
 import org.junit.Assert._
-import java.util.Properties
+import org.junit.{Before, Test}
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * class for unit testing the MoneyFormatValidator class methods
@@ -38,7 +41,7 @@ class MoneyQualifiersValidatorTest {
     template.dataTypes = Array("EnumMoney")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("something"))
+    template.dataQualifiers = Array(ArrayBuffer("something"))
     val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateEnumMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
@@ -63,7 +66,7 @@ class MoneyQualifiersValidatorTest {
     template.dataTypes = Array("ExternalMoney")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    template.dataQualifiers = Array(Array("C:\\home\\schnarbies\\output\\ssns.txt"))
+    template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
     val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateExternalMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }

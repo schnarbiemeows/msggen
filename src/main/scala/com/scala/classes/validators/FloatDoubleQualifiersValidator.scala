@@ -4,6 +4,8 @@
 
 package com.scala.classes.validators
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
   * class used for validating the formats sepcified for the Float
   * and Double data types
@@ -25,7 +27,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumFloatQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumFloatQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -43,7 +45,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumDoubleQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateEnumDoubleQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -61,7 +63,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomFloatQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomFloatQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -78,7 +80,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomDoubleQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRandomDoubleQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -95,7 +97,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalFloatQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalFloatQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -118,7 +120,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalDoubleQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateExternalDoubleQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -141,7 +143,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeFloatQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeFloatQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
@@ -158,7 +160,7 @@ object FloatDoubleQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeDoubleQualifiers(dataType: String, format: String, qualifiers: Array[String]):Tuple2[Boolean,String] = {
+  def validateRangeDoubleQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)

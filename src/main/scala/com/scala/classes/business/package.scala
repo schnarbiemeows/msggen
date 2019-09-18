@@ -4,6 +4,8 @@
 
 package com.scala.classes
 
+import java.util.concurrent.ThreadLocalRandom
+
 import com.scala.classes.utilities.Configuration
 
 import scala.util.Random
@@ -22,6 +24,17 @@ package object business {
     result
   }
 
+  /**
+    * method to generate a random integer
+    * @param min = minimum possible value
+    * @param max = maximum possible value
+    * @return result
+    */
+  def randomLong(min: Long, max: Long): Long = {
+    val rand: ThreadLocalRandom = ThreadLocalRandom.current()
+    val result = rand.nextLong(min,max)
+    result
+  }
   /**
     * method to generate a random alphanumeric String of a given length
     * @param size = length of the String

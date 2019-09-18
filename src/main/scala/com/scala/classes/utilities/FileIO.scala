@@ -13,6 +13,8 @@ import org.apache.poi.ss.usermodel._
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
+import scala.io.Source
 
 /**
   * this Object handles File Input and Output
@@ -305,12 +307,12 @@ object FileIO {
     * @param formatter = the data formatter needed by the spreadsheet object
     * @return Array(Array(String))
     */
-  def getDataValues(sheet1:Sheet, numberOfColumns:Int, formatter:DataFormatter): Array[Array[String]] = {
+  def getDataValues(sheet1:Sheet, numberOfColumns:Int, formatter:DataFormatter): Array[ArrayBuffer[String]] = {
     /**
       * TODO - this program will crash if any cells of the first row are blank
       * fix this
       */
-    var dataValues:Array[Array[String]] = new Array(numberOfColumns)
+    var dataValues:Array[ArrayBuffer[String]] = new Array[ArrayBuffer[String]](numberOfColumns)
     var arrayOfString:Array[String] = new Array[String](numberOfColumns)
     // initialize our Strings
     for(i <- 0 until arrayOfString.length) { arrayOfString(i)=""}
@@ -327,7 +329,7 @@ object FileIO {
       }
     }
     for(j <- 0 until arrayOfString.length) {
-      dataValues(j) = arrayOfString(j).split("~")
+      dataValues(j) = arrayOfString(j).split("~").to[ArrayBuffer]
     }
     dataValues
   }
@@ -362,11 +364,64 @@ object FileIO {
     }
   }
 
+  /**
+    * ths method will iterate through the data types, and
+    * if the data type in an external data type, it will open the file and
+    * download the file's contents(or a subsection of its contents)
+    * into that data type's qualifiers array. Then we can handle this data type
+    * the same as an Enum type
+    * @param record
+    * @param properties
+    * @return
+    */
   def readInExternalFiles(record: RecordsTemplate, properties: Properties):Boolean = {
     val runStart = DateUtils.nowTime()
     var runStartLocal = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("entering readInSpreadsheet() method")
-    // TODO
+    val fields = record.fields
+    val dataTypes = record.dataTypes
+    val formats = record.dataFormats
+    val allQualifiers = record.dataQualifiers
+    var resultOfValidator:Tuple2[Boolean,String] = null
+    for(i <- 0 until dataTypes.length) {
+      val field = fields(i)
+      val dataType = dataTypes(i)
+      val format = formats(i)
+      var qualifiers = allQualifiers(i)
+      if (dataType.toLowerCase.contains("external")) {
+        val filename = qualifiers(0)
+        val bufferedSource = Source.fromFile(filename)
+        if(filename.toLowerCase.endsWith(".csv")) {
+          LogUtil.msggenMasterLoggerDEBUG("reading in .csv file")
+          var counter:Int = 0
+          for (line <- bufferedSource.getLines) {
+            qualifiers(counter)=line  // TODO - add code to split line by "," to array and then take nth element
+            counter+=1
+          }
+        } else if(filename.toLowerCase.endsWith(".txt")) {
+          /**
+            * if its a text file, we assume that there is only a single item on each line
+            */
+          LogUtil.msggenMasterLoggerDEBUG("reading in .txt file")
+          var counter:Int = 0
+          var qualifiersSize:Int = qualifiers.length
+          for (line <- bufferedSource.getLines) {
+            if(counter<qualifiersSize) {
+              qualifiers(counter)=line  // TODO - add code to split line by "," to array and then take nth element
+            } else {
+              qualifiers+=line
+            }
+            counter+=1
+          }
+        } else { //
+          LogUtil.msggenMasterLoggerDEBUG("reading in .json file")
+          for (line <- bufferedSource.getLines) {
+            // TODO - add code
+          }
+        }
+        bufferedSource.close
+      }
+    }
     val runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
     LogUtil.logTime(s"readInExternalFiles took => ${runEndLocal._1} milliseconds")
     true

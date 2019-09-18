@@ -8,6 +8,8 @@ import java.util.Properties
 
 import com.scala.classes.posos.GenericRecordsTemplate
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
   * class used for createing mock objects to be used in tests
   * @param properties
@@ -23,7 +25,7 @@ class ExcelSheetValidatorTestMocks(val properties: Properties) {
     template.fields = Array()
     template.dataTypes = Array()
     template.dataFormats = Array()
-    template.dataQualifiers = Array(Array())
+    template.dataQualifiers = Array(ArrayBuffer())
     template
   }
   /**
@@ -35,7 +37,7 @@ class ExcelSheetValidatorTestMocks(val properties: Properties) {
     template.fields = Array("field1","field2","field3")
     template.dataTypes = Array("EnumString","EnumString","EnumString")
     template.dataFormats = Array("NONE","NONE","NONE")
-    template.dataQualifiers = Array(Array())
+    template.dataQualifiers = Array(ArrayBuffer())
     template
   }
 }

@@ -7,16 +7,16 @@ package com.scala.classes.business
 import scala.collection.mutable.ArrayBuffer
 
 /**
-  * this object generates each of the different String types
+  * this object generates each of the different Long types
   */
-object StringTypeMaker{
+object LongTypeMaker {
 
   /**
     *
     * @param qualifiers
     * @return
     */
-  def makeEnumString(qualifiers:ArrayBuffer[String]):String = {
+  def makeEnumLong(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
     var index = randomInteger(0,arrayLength)
     qualifiers(index)
@@ -28,10 +28,11 @@ object StringTypeMaker{
     * @param qualifiers
     * @return
     */
-  def makeRandomString(format: String,qualifiers:ArrayBuffer[String]):String = {
+  def makeRandomLong(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code
-    val length = 10
-    randomAlphaNumeric(length)
+    val min = -10
+    val max = 10
+    randomLong(min,max).toString
   }
 
   /**
@@ -39,7 +40,7 @@ object StringTypeMaker{
     * @param qualifiers
     * @return
     */
-  def makeExternalString(qualifiers:ArrayBuffer[String]):String = {
+  def makeExternalLong(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
     var index = randomInteger(0,arrayLength)
     qualifiers(index)
@@ -51,9 +52,10 @@ object StringTypeMaker{
     * @param qualifiers
     * @return
     */
-  def makeRangedString(format: String,qualifiers:ArrayBuffer[String]):String = {
+  def makeRangedLong(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code
-    val length = 10
-    randomAlphaNumeric(length)
+    val min = -10
+    val max = 10
+    randomLong(min,max).toString
   }
 }
