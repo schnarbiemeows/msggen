@@ -4,8 +4,6 @@
 
 package com.scala.classes.posos
 
-import scala.collection.immutable.HashMap
-
 /**
   * this object keeps track of all of the different types of
   * keywords that can be specified for each data type's data format
@@ -32,13 +30,13 @@ object DataTypeFormats {
     "ExternalLong" -> Set(),
     "RangedLong" -> Set("length","min","max"),
     "EnumFloat" -> Set(),
-    "RandomFloat" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RandomFloat" -> Set("length","signDigits","min","max","roundup","rounddown","roundhalf"),
     "ExternalFloat" -> Set(),
-    "RangedFloat" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RangedFloat" -> Set("length","signDigits","min","max","roundup","rounddown","roundhalf"),
     "EnumDouble" -> Set(),
-    "RandomDouble" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RandomDouble" -> Set("length","signDigits","min","max","roundup","rounddown","roundhalf"),
     "ExternalDouble" -> Set(),
-    "RangedDouble" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RangedDouble" -> Set("length","signDigits","min","max","roundup","rounddown","roundhalf"),
     "EnumDate" -> Set(),
     "RandomDate" -> Set("startdate","enddate","format"),
     "ExternalDate" -> Set(),
@@ -48,9 +46,9 @@ object DataTypeFormats {
     "ExternalTime" -> Set(),
     "RangedTime" -> Set("starttime","endtime","format"),
     "EnumMoney" -> Set(),
-    "RandomMoney" -> Set("length","min","max","roundup","rounddown","round"),
+    "RandomMoney" -> Set("length","min","max","roundup","rounddown","roundhalf"),
     "ExternalMoney" -> Set(),
-    "RangedMoney" -> Set("length","min","max","roundup","rounddown","round")
+    "RangedMoney" -> Set("length","min","max","roundup","rounddown","roundhalf")
   )
 
   val keysThatNeedQualifiers:Map[String,Set[String]] = Map("EnumString" -> Set(),
@@ -66,13 +64,13 @@ object DataTypeFormats {
     "ExternalLong" -> Set(),
     "RangedLong" -> Set("length","min","max"),
     "EnumFloat" -> Set(),
-    "RandomFloat" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RandomFloat" -> Set("length","signDigits","min","max"),
     "ExternalFloat" -> Set(),
-    "RangedFloat" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RangedFloat" -> Set("length","signDigits","min","max"),
     "EnumDouble" -> Set(),
-    "RandomDouble" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RandomDouble" -> Set("length","signDigits","min","max"),
     "ExternalDouble" -> Set(),
-    "RangedDouble" -> Set("length","signDigits","min","max","roundup","rounddown","round"),
+    "RangedDouble" -> Set("length","signDigits","min","max"),
     "EnumDate" -> Set(),
     "RandomDate" -> Set("startdate","enddate","format"),
     "ExternalDate" -> Set(),
@@ -82,9 +80,9 @@ object DataTypeFormats {
     "ExternalTime" -> Set(),
     "RangedTime" -> Set("starttime","endtime","format"),
     "EnumMoney" -> Set(),
-    "RandomMoney" -> Set("length","min","max","roundup","rounddown","round"),
+    "RandomMoney" -> Set("length","min","max"),
     "ExternalMoney" -> Set(),
-    "RangedMoney" -> Set("length","min","max","roundup","rounddown","round")
+    "RangedMoney" -> Set("length","min","max")
   )
 
 

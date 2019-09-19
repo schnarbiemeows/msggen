@@ -50,6 +50,12 @@ object FileIO {
     }
   }
 
+  /**
+    * method to write an array of records out to either csv files or json files
+    * @param records - array of records to process
+    * @param filepath - full path to the file
+    * @param properties - singleton Properties object
+    */
   def writeGenericRecordToFile(records: Array[Record], filepath: String,properties:Properties): Unit = {
     LogUtil.msggenMasterLoggerDEBUG("writing generic records to a file")
     LogUtil.msggenMasterLoggerDEBUG(s"file path : ${filepath}")
@@ -57,11 +63,11 @@ object FileIO {
     LogUtil.msggenMasterLoggerDEBUG(s"file path : ${fileType}")
     var outfile:BufferedWriter = null
     try {
-      //LogUtil.msggenMasterLoggerDEBUG("HERE !")
+      LogUtil.msggenMasterLoggerDEBUG("opening BufferedWriter")
       outfile = new BufferedWriter(new FileWriter(new File(filepath+"."+fileType),true))
-      //LogUtil.msggenMasterLoggerDEBUG("HERE !! ")
+      LogUtil.msggenMasterLoggerDEBUG("BufferedWriter open")
       if(records==null) {
-        LogUtil.msggenMasterLoggerDEBUG("records is NULL !! ")
+        LogUtil.msggenMasterLoggerDEBUG("there are no records to process !! ")
       }
       LogUtil.msggenMasterLoggerDEBUG(s"records size is : ${records.length} ")
       for(record <- records) {
@@ -333,6 +339,11 @@ object FileIO {
     }
     dataValues
   }
+
+  /**
+    * test method for checking records
+    * @param records
+    */
   def check(records:RecordsTemplate):Unit = {
     val fields = records.fields
     val datatypes = records.dataTypes
@@ -352,6 +363,10 @@ object FileIO {
     println()
   }
 
+  /**
+    * test method for checking record values
+    * @param records
+    */
   def checkValues(records:RecordsTemplate):Unit = {
     val dataValuesLength:Int = records.dataQualifiers.length
     for(i <- 0 until dataValuesLength) {

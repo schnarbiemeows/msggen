@@ -23,7 +23,7 @@ class MoneyQualifiersValidatorTest {
   var template:GenericRecordsTemplate = _
 
   /**
-    *
+    * initialization
     */
   @Before
   def initialize():Unit = {
@@ -34,7 +34,7 @@ class MoneyQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the EnumMoney data type
     */
   @Test
   def validateEnumMoneyQualifiersTest():Unit = {
@@ -47,19 +47,48 @@ class MoneyQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RandomMoney data type
     */
   @Test
   def validateRandomMoneyQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RandomMoney")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
-    *
+    * Junit tests for the ExternalMoney data type
     */
   @Test
   def validateExternalMoneyQualifiersTest():Unit = {
@@ -72,14 +101,43 @@ class MoneyQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RangedMoney data type
     */
   @Test
   def validateRangeMoneyQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RangedMoney")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 }

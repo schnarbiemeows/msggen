@@ -12,9 +12,9 @@ import scala.collection.mutable.ArrayBuffer
 object LongTypeMaker {
 
   /**
-    *
-    * @param qualifiers
-    * @return
+    * this method generates a random EnumLong
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeEnumLong(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
@@ -23,10 +23,10 @@ object LongTypeMaker {
   }
 
   /**
-    *
-    * @param format
-    * @param qualifiers
-    * @return
+    * this method generates a random RandomLong
+    * @param format - formatting specifications for the field
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeRandomLong(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code
@@ -36,9 +36,9 @@ object LongTypeMaker {
   }
 
   /**
-    *
-    * @param qualifiers
-    * @return
+    * this method generates a random ExternalLong
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeExternalLong(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
@@ -47,10 +47,10 @@ object LongTypeMaker {
   }
 
   /**
-    *
-    * @param format
-    * @param qualifiers
-    * @return
+    * this method generates a random RangedLong
+    * @param format - formatting specifications for the field
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeRangedLong(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code

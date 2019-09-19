@@ -12,9 +12,9 @@ import scala.collection.mutable.ArrayBuffer
 object IntTypeMaker {
 
   /**
-    *
-    * @param qualifiers
-    * @return
+    * this method generates a random EnumInt
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeEnumInt(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
@@ -23,10 +23,10 @@ object IntTypeMaker {
   }
 
   /**
-    *
-    * @param format
-    * @param qualifiers
-    * @return
+    * this method generates a random RandomInt
+    * @param format - formatting specifications for the field
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeRandomInt(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code
@@ -36,9 +36,9 @@ object IntTypeMaker {
   }
 
   /**
-    *
-    * @param qualifiers
-    * @return
+    * this method generates a random ExternalInt
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeExternalInt(qualifiers:ArrayBuffer[String]):String = {
     var arrayLength = qualifiers.length
@@ -47,10 +47,10 @@ object IntTypeMaker {
   }
 
   /**
-    *
-    * @param format
-    * @param qualifiers
-    * @return
+    * this method generates a random RangedInt
+    * @param format - formatting specifications for the field
+    * @param qualifiers - array of possible values
+    * @return - string
     */
   def makeRangedInt(format: String,qualifiers:ArrayBuffer[String]):String = {
     // TODO - add formatting code

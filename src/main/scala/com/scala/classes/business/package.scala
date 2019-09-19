@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom
 
 import com.scala.classes.utilities.Configuration
 
+import scala.math.BigDecimal
 import scala.util.Random
 
 package object business {
@@ -50,4 +51,46 @@ package object business {
     }
     builder.toString
   }
+
+  /**
+    * method to generate a random money value
+    * @param min = lowest possile value
+    * @param max = highest possible value
+    * @return Double
+    */
+  def randomMoney(min: Double ,max: Double):Double = {
+    val rand = new Random
+    var generatedDouble:Double = rand.nextDouble()*(max-min)+min
+    var roundedDouble = BigDecimal(generatedDouble).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+    roundedDouble
+  }
+
+  /**
+    * method to generate a random Double value
+    * @param min = lowest possile value
+    * @param max = highest possible value
+    * @param precision = precision after the decimal point
+    * @return Double
+    */
+  def randomDouble(min: Double ,max: Double, precision:Int):Double = {
+    val rand = new Random
+    var generatedDouble:Double = rand.nextDouble()*(max-min)+min
+    var roundedDouble = BigDecimal(generatedDouble).setScale(precision, BigDecimal.RoundingMode.HALF_UP).toDouble
+    roundedDouble
+  }
+
+  /**
+    * method to generate a random Float value
+    * @param min = lowest possile value
+    * @param max = highest possible value
+    * @param precision = precision after the decimal point
+    * @return Float
+    */
+  def randomFloat(min: Float ,max: Float, precision:Int):Double = {
+    val rand = new Random
+    var generatedFloat:Float = rand.nextFloat()*(max-min)+min
+    var roundedFloat:Float = BigDecimal(generatedFloat).setScale(2, BigDecimal.RoundingMode.HALF_UP).toFloat
+    roundedFloat
+  }
+
 }
