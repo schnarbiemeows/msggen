@@ -23,7 +23,7 @@ class FloatDoubleQualifiersValidatorTest {
   var template:GenericRecordsTemplate = _
 
   /**
-    *
+    * initialization
     */
   @Before
   def initialize():Unit = {
@@ -34,31 +34,82 @@ class FloatDoubleQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the EnumFloat data type
     */
   @Test
   def validateEnumFloatQualifiersTest():Unit = {
     template.dataTypes = Array("EnumFloat")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateEnumFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateEnumFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    template.dataQualifiers(0) = ArrayBuffer("10.00")
+    results = FloatDoubleQualifiersValidator.validateEnumFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the RandomFloat data type
     */
   @Test
   def validateRandomFloatQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RandomFloat")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that signDigits value is not numeric
+    template.dataFormats = Array("length,min,max,signDigits")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","99","x")
+    results = FloatDoubleQualifiersValidator.validateRandomFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
-    *
+    * Junit tests for the ExternalFloat data type
     */
   @Test
   def validateExternalFloatQualifiersTest():Unit = {
@@ -71,43 +122,141 @@ class FloatDoubleQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RangedFloat data type
     */
   @Test
   def validateRangeFloatQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RangedFloat")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that signDigits value is not numeric
+    template.dataFormats = Array("length,min,max,signDigits")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","99","x")
+    results = FloatDoubleQualifiersValidator.validateRangeFloatQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
-    *
+    * Junit tests for the EnumDouble data type
     */
   @Test
   def validateEnumDoubleQualifiersTest():Unit = {
     template.dataTypes = Array("EnumDouble")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateEnumDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateEnumDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    template.dataQualifiers(0) = ArrayBuffer("10.00")
+    results = FloatDoubleQualifiersValidator.validateEnumDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the RandomDouble data type
     */
   @Test
   def validateRandomDoubleQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RandomDouble")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that signDigits value is not numeric
+    template.dataFormats = Array("length,min,max,signDigits")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","99","x")
+    results = FloatDoubleQualifiersValidator.validateRandomDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
-    *
+    * Junit tests for the ExternalDouble data type
     */
   @Test
   def validateExternalDoubleQualifiersTest():Unit = {
@@ -120,14 +269,61 @@ class FloatDoubleQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RangedDouble data type
     */
   @Test
   def validateRangeDoubleQualifiersTest():Unit = {
+    // testing a fail when min and max are not specified
     template.dataTypes = Array("RangedDouble")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a valid value for the length format
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // testing an invalid value for the length format
+    template.dataQualifiers(0) = ArrayBuffer("abc","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
+    template.dataQualifiers(0) = ArrayBuffer("abc","123","-10","10")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that only one of roundup, rounddown, or roundhalf can be specified
+    template.dataFormats = Array("length,min,max,roundup,roundhalf")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","456")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is greater than max value
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that signDigits value is not numeric
+    template.dataFormats = Array("length,min,max,signDigits")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","99","x")
+    results = FloatDoubleQualifiersValidator.validateRangeDoubleQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 }

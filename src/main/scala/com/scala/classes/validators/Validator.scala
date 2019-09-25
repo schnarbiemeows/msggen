@@ -17,7 +17,7 @@ trait Validator {
 
   /**
     * main validation method
-    * @return
+    * @return - Boolean
     */
   def validate():Boolean
 
@@ -25,9 +25,9 @@ trait Validator {
     * this method will search the DataTypeFormats.keywords Map according to the
     * dataTypeName key, and make sure that all of the keywords listed in the format
     * string are found in the Set for that data type
-    * @param dataTypeName
-    * @param format
-    * @return
+    * @param dataTypeName - data type
+    * @param format - list of formats for this data type
+    * @return - (isValidated,message)
     */
   def validateFormat(dataTypeName:String, format:String):Tuple2[Boolean,String] = {
     var isValidated = true
@@ -49,9 +49,9 @@ trait Validator {
     * this method will filter out any keywords in the format string that do not need
     * the return array should index the same as the values array, so returnArray(0)
     * will correspond to dataValues(x)(0),for example
-    * @param dataTypeName
-    * @param format
-    * @return
+    * @param dataTypeName - data type
+    * @param format - list of formats for this data type
+    * @return - (isValidated,message)
     */
   def filterQualifiers(dataTypeName:String, format:String):Array[String] = {
     val keywords:Array[String] = format.split(Configuration.DELIMITTER1)
@@ -66,7 +66,7 @@ trait Validator {
     * it makes no assumptions as to whether the path was correctly specified
     * for the particular operating system
     * @param filename = full path name to the file
-    * @return
+    * @return - true or false
     */
   def valdateFileExists(filename:String):Boolean = {
     var exists = false

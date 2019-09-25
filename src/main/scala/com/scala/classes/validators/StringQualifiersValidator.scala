@@ -8,20 +8,20 @@ import com.scala.classes.utilities.StringUtils
 
 import scala.collection.mutable.ArrayBuffer
 /**
-  *
+  * class for validating the formats specified for the
+  * string data type
   */
 object StringQualifiersValidator extends Validator {
 
   /**
     * main validation method - currently not used
     * TODO - maybe refactor to remove this reference
-    * @return
+    * @return - Boolean
     */
   override def validate(): Boolean = {true}
 
   /**
-    * this method checks to make sure that there is at least 1 value
-    * for the particular Enum data type
+    * method to validate that the qualifiers for the EnumString data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -38,7 +38,7 @@ object StringQualifiersValidator extends Validator {
   }
 
   /**
-    * Set("length","chars","upper","lower")
+    * method to validate that the qualifiers for the EnumString data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -75,7 +75,7 @@ object StringQualifiersValidator extends Validator {
   }
 
   /**
-    *
+    * method to validate that the qualifiers for the EnumString data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -98,7 +98,7 @@ object StringQualifiersValidator extends Validator {
   }
 
   /**
-    * Set("length","chars","upper","lower")
+    * method to validate that the qualifiers for the EnumString data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers

@@ -47,4 +47,12 @@ object Configuration {
   val MODE4_STRING_DATA_RULE = "mode4.fieldname.possiblecharacters"
   val MODE4_NUM_THREADS = "mode4.numthreads"
   val MODE4_OUTPUT_FILE_TYPE = "mode4.outputfile.type"
+
+  // defaults
+  val DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
+  val DEFAULT_DATE_TIME_FORMAT = "yy-MM-dd HH:mm:ss"
+  val DEFAULT_START_DATE = "1900-01-01"
+  val DEFAULT_START_DATE_TIME = "1900-01-01 00:00:00"
+  val DEFAULT_END_DATE = "2100-12-31"
+  val DEFAULT_END_DATE_TIME = "2100-12-31 00:00:00"
 }

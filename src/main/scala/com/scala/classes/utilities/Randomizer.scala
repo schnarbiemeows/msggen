@@ -5,7 +5,6 @@
 package com.scala.classes.utilities
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Properties
 import java.util.concurrent.TimeUnit
 
@@ -19,7 +18,7 @@ trait Randomizer {
 
   /**
     * initialize properties
-    * @param props
+    * @param props - program properties
     */
   def initialize(props: Properties)
 
@@ -39,7 +38,7 @@ trait Randomizer {
 
   /**
     * method to implement a time delay in milliseconds
-    * @param milliseconds
+    * @param milliseconds - length of delay that we want
     */
   def timeDelay(milliseconds: Int): Unit = {
     try {
@@ -103,7 +102,8 @@ trait Randomizer {
     */
   def randomDOBForSpouse(primaryDOB:String,range:Int):String = {
     val rand = new Random
-    val primDOB:LocalDate = DateUtils.getDateFromString(primaryDOB)
+    val format:String = "yyyy-MM-dd"
+    val primDOB:LocalDate = DateUtils.getDateFromString(primaryDOB,format)
     val meanRange:Int = range*365/2
     val daystosubtract:Long = rand.nextInt(range*365 + 1) - meanRange
     val dob:LocalDate = DateUtils.addPeriodToLocalDate(primDOB,daystosubtract)
@@ -113,7 +113,7 @@ trait Randomizer {
   }
 
   /**
-    *method to generate a date of birth for a dependent between 0 and maxage
+    * method to generate a date of birth for a dependent between 0 and maxage
     * @param maxage = maximum age of dependent
     * @return dobStr
     */

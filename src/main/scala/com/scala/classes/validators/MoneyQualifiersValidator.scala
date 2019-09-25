@@ -18,13 +18,12 @@ object MoneyQualifiersValidator extends Validator {
   /**
     * main validation method - currently not used
     * TODO - maybe refactor to remove this reference
-    * @return
+    * @return - Boolean
     */
   override def validate(): Boolean = {true}
 
   /**
-    * this method checks to make sure that there is at least 1 value
-    * for the particular Enum data type
+    * method to validate that the qualifiers for the EnumMoney data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -41,7 +40,7 @@ object MoneyQualifiersValidator extends Validator {
   }
 
   /**
-    * Set("length","min","max","roundup","rounddown","roundhalf")
+    * method to validate that the qualifiers for the RandomMoney data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -68,7 +67,7 @@ object MoneyQualifiersValidator extends Validator {
             }
           }
           case "min" => {
-            if (!StringUtils.isInteger(qualifiers(i))) {
+            if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
               message = s"qualifier specified for the min format is not an integer for the RandomMoney data type"
             } else {
@@ -77,7 +76,7 @@ object MoneyQualifiersValidator extends Validator {
             }
           }
           case "max" => {
-            if (!StringUtils.isInteger(qualifiers(i))) {
+            if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
               message = s"qualifier specified for the max format is not an integer for the RandomMoney data type"
             } else {
@@ -100,7 +99,7 @@ object MoneyQualifiersValidator extends Validator {
       } else {
         if(!(hasmin&&hasmax)) {
           isValidated = false
-          message = s"RandomMoney data type must have both a minimum and a maximum value specified"
+          message = s"RandomMoney data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
         } else {
           if(minval>maxval) {
             isValidated = false
@@ -113,7 +112,7 @@ object MoneyQualifiersValidator extends Validator {
   }
 
   /**
-    *
+    * method to validate that the qualifiers for the ExternalMoney data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -136,7 +135,7 @@ object MoneyQualifiersValidator extends Validator {
   }
 
   /**
-    * Set("length","min","max","roundup","rounddown","roundhalf")
+    * method to validate that the qualifiers for the RangedMoney data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
@@ -163,7 +162,7 @@ object MoneyQualifiersValidator extends Validator {
             }
           }
           case "min" => {
-            if (!StringUtils.isInteger(qualifiers(i))) {
+            if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
               message = s"qualifier specified for the min format is not an integer for the RangedMoney data type"
             } else {
@@ -172,7 +171,7 @@ object MoneyQualifiersValidator extends Validator {
             }
           }
           case "max" => {
-            if (!StringUtils.isInteger(qualifiers(i))) {
+            if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
               message = s"qualifier specified for the max format is not an integer for the RangedMoney data type"
             } else {
@@ -195,7 +194,7 @@ object MoneyQualifiersValidator extends Validator {
       } else {
         if(!(hasmin&&hasmax)) {
           isValidated = false
-          message = s"RangedMoney data type must have both a minimum and a maximum value specified"
+          message = s"RangedMoney data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
         } else {
           if(minval>maxval) {
             isValidated = false

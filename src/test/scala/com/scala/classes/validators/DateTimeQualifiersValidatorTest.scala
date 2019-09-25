@@ -23,7 +23,7 @@ class DateTimeQualifiersValidatorTest {
   var template:GenericRecordsTemplate = _
 
   /**
-    *
+    * initialization
     */
   @Before
   def initialize():Unit = {
@@ -34,7 +34,7 @@ class DateTimeQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the EnumDate data type
     */
   @Test
   def validateEnumDateQualifiersTest():Unit = {
@@ -47,19 +47,58 @@ class DateTimeQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RandomDate data type
     */
   @Test
   def validateRandomDateQualifiersTest():Unit = {
     template.dataTypes = Array("RandomDate")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying all valid formats with valid qualifiers
+    template.dataFormats = Array("format,end,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying an invalid end date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","XXXX-10-10","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying an invalid start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","YYYY-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying a end date that comes before the start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-10","2019-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with unequal formats/qualifiers lengths
+    template.dataFormats = Array("format")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test that start and end dates do not need to be specified
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test that start date only can be specified
+    template.dataFormats = Array("format,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test that end date only can be specified
+    template.dataFormats = Array("format,end")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the ExternalDate data type
     */
   @Test
   def validateExternalDateQualifiersTest():Unit = {
@@ -72,64 +111,165 @@ class DateTimeQualifiersValidatorTest {
   }
 
   /**
-    *
+    * Junit tests for the RangedDate data type
     */
   @Test
   def validateRangeDateQualifiersTest():Unit = {
+    // test without specifying any formats
     template.dataTypes = Array("RangedDate")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // test with specifying all valid formats with valid qualifiers
+    template.dataFormats = Array("format,end,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying an invalid end date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","XXXX-10-10","2018-10-10")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying an invalid start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","YYYY-10-10")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying a end date that comes before the start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-10","2019-10-10")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with unequal formats/qualifiers lengths
+    template.dataFormats = Array("format")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test forgetting to specify start and end dates
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd")
+    results = DateTimeQualifiersValidator.validateRangeDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
-    *
+    * Junit tests for the EnumDateTime data type
     */
   @Test
-  def validateEnumTimeQualifiersTest():Unit = {
-    template.dataTypes = Array("EnumTime")
+  def validateEnumDateTimeQualifiersTest():Unit = {
+    template.dataTypes = Array("EnumDateTime")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("something"))
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateEnumTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateEnumDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the RandomDateTime data type
     */
   @Test
-  def validateRandomTimeQualifiersTest():Unit = {
-    template.dataTypes = Array("RandomTime")
+  def validateRandomDateTimeQualifiersTest():Unit = {
+    template.dataTypes = Array("RandomDateTime")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRandomTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying all valid formats with valid qualifiers
+    template.dataFormats = Array("format,end,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2019-10-10 00:00:00","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying an invalid end date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","XXXX-10-10 00:00:00","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying an invalid start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2019-10-10 00:00:00","YYYY-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying a end date that comes before the start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2018-10-10 00:00:00","2019-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with unequal formats/qualifiers lengths
+    template.dataFormats = Array("format")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test that start and end dates do not need to be specified
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test that start date only can be specified
+    template.dataFormats = Array("format,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test that end date only can be specified
+    template.dataFormats = Array("format,end")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the ExternalDateTime data type
     */
   @Test
-  def validateExternalTimeQualifiersTest():Unit = {
-    template.dataTypes = Array("ExternalTime")
+  def validateExternalDateTimeQualifiersTest():Unit = {
+    template.dataTypes = Array("ExternalDateTime")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateExternalTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateExternalDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
   /**
-    *
+    * Junit tests for the RangedDateTime data type
     */
   @Test
-  def validateRangeTimeQualifiersTest():Unit = {
-    template.dataTypes = Array("RangedTime")
+  def validateRangeDateTimeQualifiersTest():Unit = {
+    // test without specifying any formats
+    template.dataTypes = Array("RangedDateTime")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    val results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRangeTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+    // test with specifying all valid formats with valid qualifiers
+    template.dataFormats = Array("format,end,start")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2019-10-10 00:00:00","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with specifying an invalid end date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","XXXX-10-10 00:00:00","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying an invalid start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2019-10-10 00:00:00","YYYY-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with specifying a end date that comes before the start date
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2018-10-10 00:00:00","2019-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test with unequal formats/qualifiers lengths
+    template.dataFormats = Array("format")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test forgetting to specify start and end dates
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss")
+    results = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 }

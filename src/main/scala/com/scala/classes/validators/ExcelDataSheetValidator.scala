@@ -5,19 +5,19 @@
 package com.scala.classes.validators
 
 import com.scala.classes.exception._
-import com.scala.classes.posos.{DataTypeFormats, DataTypes, GenericRecordsTemplate, RecordsTemplate}
+import com.scala.classes.posos.{DataTypes, GenericRecordsTemplate, RecordsTemplate}
 import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil}
 
 /**
   * this class is a validation class for validating that all of the data in an
   * input spreadsheet template is valid
-  * @param template
+  * @param template - Excel template that we are validating
   */
 class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
 
   /**
     * main method call for validating the spreadsheet template
-    * @return
+    * @return - isValidated(Boolean)
     */
   override def validate(): Boolean = {
     val runStart = DateUtils.nowTime()
@@ -47,9 +47,10 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
   }
 
   /**
-    *
+    * method that validates the length of all 3 header rows to make sure they
+    * are the same length
     * @throws com.scala.classes.exception.MismatchedColumnLengthException
-    * @return
+    * @return - true or false
     */
   @throws(classOf[MismatchedColumnLengthException])
   def validateLengthsOfThreeHeaderRows():Boolean = {
@@ -68,7 +69,7 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
     * the column length of the first 3(the meta-data header rows)
     * not currently being used
     * @throws com.scala.classes.exception.RowLengthsExceedsHeaderLengthException
-    * @return
+    * @return - true or false
     */
   @throws(classOf[RowLengthsExceedsHeaderLengthException])
   def validateNoRowLengthsExceedsHeaderLength():Boolean = {
@@ -81,7 +82,7 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
     * also, if a config property mode4.fieldname.possiblecharacters is specified
     * it will make sure that each field name only contains those characters
     * @throws com.scala.classes.exception.InvalidFieldNameException
-    * @return
+    * @return - true or false
     */
   @throws(classOf[InvalidFieldNameException])
   def validateFieldNames():Boolean = {
@@ -104,7 +105,7 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
   /**
     * method to check if each data type specified is valid
     * @throws com.scala.classes.exception.InvalidDataTypeException
-    * @return
+    * @return - true or false
     */
   @throws(classOf[InvalidDataTypeException])
   def validateTheDataTypes():Boolean = {
@@ -118,6 +119,11 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
     isValidated
   }
 
+  /**
+    * method that the data formats specified are valid for each data type
+    * @throws com.scala.classes.exception.InvalidDataFormatException
+    * @return - true or false
+    */
   @throws(classOf[InvalidDataFormatException])
   def validateDataFormats():Boolean = {
     var isValidated = true
@@ -138,9 +144,9 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
   }
 
   /**
-    *
+    * method that validates that the qualifiers for each data format are valid
     * @throws com.scala.classes.exception.InvalidDataFormatException
-    * @return
+    * @return - true or false
     */
   @throws(classOf[InvalidDataQualifierException])
   def validateDataQualifiers():Boolean = {
@@ -180,10 +186,10 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
         case "RandomDate" => resultOfValidator = DateTimeQualifiersValidator.validateRandomDateQualifiers(dataType,format,qualifiers)
         case "ExternalDate" => resultOfValidator = DateTimeQualifiersValidator.validateExternalDateQualifiers(dataType,format,qualifiers)
         case "RangedDate" => resultOfValidator = DateTimeQualifiersValidator.validateRangeDateQualifiers(dataType,format,qualifiers)
-        case "EnumTime" => resultOfValidator = DateTimeQualifiersValidator.validateEnumTimeQualifiers(dataType,format,qualifiers)
-        case "RandomTime" => resultOfValidator = DateTimeQualifiersValidator.validateRandomTimeQualifiers(dataType,format,qualifiers)
-        case "ExternalTime" => resultOfValidator = DateTimeQualifiersValidator.validateExternalTimeQualifiers(dataType,format,qualifiers)
-        case "RangedTime" => resultOfValidator = DateTimeQualifiersValidator.validateRangeTimeQualifiers(dataType,format,qualifiers)
+        case "EnumDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateEnumDateTimeQualifiers(dataType,format,qualifiers)
+        case "RandomDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(dataType,format,qualifiers)
+        case "ExternalDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateExternalDateTimeQualifiers(dataType,format,qualifiers)
+        case "RangedDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateRangeDateTimeQualifiers(dataType,format,qualifiers)
         case "EnumMoney" => resultOfValidator = MoneyQualifiersValidator.validateEnumMoneyQualifiers(dataType,format,qualifiers)
         case "RandomMoney" => resultOfValidator = MoneyQualifiersValidator.validateRandomMoneyQualifiers(dataType,format,qualifiers)
         case "ExternalMoney" => resultOfValidator = MoneyQualifiersValidator.validateExternalMoneyQualifiers(dataType,format,qualifiers)
@@ -197,46 +203,5 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
     }
     isValidated
   }
-
-
-
-  def validatePresenceOfExternalFiles():Boolean = {
-    var isValidated = true
-    // TODO - finish
-    isValidated
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

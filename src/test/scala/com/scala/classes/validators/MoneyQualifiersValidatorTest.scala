@@ -85,6 +85,18 @@ class MoneyQualifiersValidatorTest {
     results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
   }
 
   /**
@@ -136,6 +148,18 @@ class MoneyQualifiersValidatorTest {
     // testing that min value is greater than max value
     template.dataFormats = Array("length,min,max")
     template.dataQualifiers(0) = ArrayBuffer("10","123","88")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that min value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","abc","88")
+    results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // testing that max value is not numeric
+    template.dataFormats = Array("length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("10","88","abc")
     results = MoneyQualifiersValidator.validateRangeMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)

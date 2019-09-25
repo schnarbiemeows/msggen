@@ -4,6 +4,7 @@
 
 package com.scala.classes.business
 
+import com.scala.classes.generators.{IntTypeGenerator, LongTypeGenerator, StringTypeGenerator}
 import com.scala.classes.posos.{GenericRecord, Record, RecordsTemplate}
 import com.scala.classes.utilities.LogUtil
 
@@ -30,18 +31,18 @@ object MakeGenericRecord {
       val format = formats(i)
       val qualifiers = allQualifiers(i)
       dataType match {
-        case "EnumString" => fieldValues(i) = StringTypeMaker.makeEnumString(qualifiers)
-        case "RandomString" => fieldValues(i) = StringTypeMaker.makeRandomString(format, qualifiers)
-        case "ExternalString" => fieldValues(i) = StringTypeMaker.makeExternalString(qualifiers)
-        case "RangedString" => fieldValues(i) = StringTypeMaker.makeRangedString(format, qualifiers)
-        case "EnumInt" => fieldValues(i) = IntTypeMaker.makeEnumInt(qualifiers)
-        case "RandomInt" => fieldValues(i) = IntTypeMaker.makeRandomInt(format,qualifiers)
-        case "ExternalInt" => fieldValues(i) = IntTypeMaker.makeExternalInt(qualifiers)
-        case "RangedInt" => fieldValues(i) = IntTypeMaker.makeRangedInt(format,qualifiers)
-        case "EnumLong" => fieldValues(i) = LongTypeMaker.makeEnumLong(qualifiers)
-        case "RandomLong" => fieldValues(i) = LongTypeMaker.makeRandomLong(format,qualifiers)
-        case "ExternalLong" => fieldValues(i) = LongTypeMaker.makeExternalLong(qualifiers)
-        case "RangedLong" => fieldValues(i) = LongTypeMaker.makeRangedLong(format,qualifiers)
+        case "EnumString" => fieldValues(i) = StringTypeGenerator.makeEnumString(qualifiers)
+        case "RandomString" => fieldValues(i) = StringTypeGenerator.makeRandomString(format, qualifiers)
+        case "ExternalString" => fieldValues(i) = StringTypeGenerator.makeExternalString(qualifiers)
+        case "RangedString" => fieldValues(i) = StringTypeGenerator.makeRangedString(format, qualifiers)
+        case "EnumInt" => fieldValues(i) = IntTypeGenerator.makeEnumInt(qualifiers)
+        case "RandomInt" => fieldValues(i) = IntTypeGenerator.makeRandomInt(format,qualifiers)
+        case "ExternalInt" => fieldValues(i) = IntTypeGenerator.makeExternalInt(qualifiers)
+        case "RangedInt" => fieldValues(i) = IntTypeGenerator.makeRangedInt(format,qualifiers)
+        case "EnumLong" => fieldValues(i) = LongTypeGenerator.makeEnumLong(qualifiers)
+        case "RandomLong" => fieldValues(i) = LongTypeGenerator.makeRandomLong(format,qualifiers)
+        case "ExternalLong" => fieldValues(i) = LongTypeGenerator.makeExternalLong(qualifiers)
+        case "RangedLong" => fieldValues(i) = LongTypeGenerator.makeRangedLong(format,qualifiers)
         case _ => LogUtil.msggenMasterLoggerDEBUG("Data Type not found")
       }
     }

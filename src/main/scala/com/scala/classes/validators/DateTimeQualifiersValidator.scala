@@ -4,6 +4,10 @@
 
 package com.scala.classes.validators
 
+import java.time.{LocalDate, LocalDateTime}
+
+import com.scala.classes.utilities.DateUtils
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -45,7 +49,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateEnumDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -65,9 +69,74 @@ object DateTimeQualifiersValidator extends Validator {
   def validateRandomDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
+    var formatSpecifiedValid:Boolean = false
+    var formatSpecified:String = ""
+    var endWasSpecified:Boolean = false
+    var endSpecifiedValid:Boolean = false
+    var endSpecified:LocalDate = null
+    var startWasSpecified:Boolean = false
+    var startSpecifiedValid:Boolean = false
+    var startSpecified:LocalDate = null
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
-    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
-      // TODO - finish
+    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
+      isValidated = false
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomDate data type"
+    } else {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+        formatsThatNeedQualifierChecks(i) match {
+          case "format" => {
+            if (!DateUtils.isDateTimeFormatValid(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the Date Time format is not valid for the RandomDate data type"
+            } else {
+              formatSpecifiedValid = true
+              formatSpecified = qualifiers(i)
+            }
+          }
+          case "end" => { endWasSpecified = true }
+          case "start" => { startWasSpecified = true }
+          case default => {
+            isValidated = false
+            message = s"${default} is not a valid qualifier for the RandomDate data type"
+          }
+        }
+      }
+      if(formatSpecifiedValid&&(startWasSpecified||endWasSpecified)) {
+        for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+          formatsThatNeedQualifierChecks(i) match {
+            case "start" => {
+              if (!DateUtils.willStringParseToLocalDate(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "start DateTime specified is not valid for the RandomDate data type"
+              } else {
+                startSpecifiedValid = true
+                startSpecified = DateUtils.getDateFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case "end" => {
+              if (!DateUtils.willStringParseToLocalDate(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "end DateTime specified is not valid for the RandomDate data type"
+              } else {
+                endSpecifiedValid = true
+                endSpecified = DateUtils.getDateFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case default => {}
+          }
+        }
+        if(startWasSpecified&&endWasSpecified) {
+          if(!(startSpecifiedValid&&endSpecifiedValid)) {
+            isValidated = false
+            message = "start Date and/or end Date specified is not valid for the format specified for the RandomDate data type"
+          } else {
+            if(startSpecified.compareTo(endSpecified)>0) {
+              isValidated = false
+              message = "the specified start Date comes after the specified end Date for the RandomDate data type"
+            }
+          }
+        }
+      }
     }
     (isValidated,message)
   }
@@ -79,12 +148,77 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateRandomDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
+    var formatSpecifiedValid:Boolean = false
+    var formatSpecified:String = ""
+    var endWasSpecified:Boolean = false
+    var endSpecifiedValid:Boolean = false
+    var endSpecified:LocalDateTime = null
+    var startWasSpecified:Boolean = false
+    var startSpecifiedValid:Boolean = false
+    var startSpecified:LocalDateTime = null
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
-    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
-      // TODO - finish
+    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
+      isValidated = false
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomDateTime data type"
+    } else {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+        formatsThatNeedQualifierChecks(i) match {
+          case "format" => {
+            if (!DateUtils.isDateTimeFormatValid(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the Date Time format is not valid for the RandomDateTime data type"
+            } else {
+              formatSpecifiedValid = true
+              formatSpecified = qualifiers(i)
+            }
+          }
+          case "end" => { endWasSpecified = true }
+          case "start" => { startWasSpecified = true }
+          case default => {
+            isValidated = false
+            message = s"${default} is not a valid qualifier for the RandomDateTime data type"
+          }
+        }
+      }
+      if(formatSpecifiedValid&&(startWasSpecified||endWasSpecified)) {
+        for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+          formatsThatNeedQualifierChecks(i) match {
+            case "start" => {
+              if (!DateUtils.willStringParseToLocalDateTime(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "start DateTime specified is not valid for the RandomDateTime data type"
+              } else {
+                startSpecifiedValid = true
+                startSpecified = DateUtils.getDateTimeFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case "end" => {
+              if (!DateUtils.willStringParseToLocalDateTime(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "end DateTime specified is not valid for the RandomDateTime data type"
+              } else {
+                endSpecifiedValid = true
+                endSpecified = DateUtils.getDateTimeFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case default => {}
+          }
+        }
+        if(startWasSpecified&&endWasSpecified) {
+          if(!(startSpecifiedValid&&endSpecifiedValid)) {
+            isValidated = false
+            message = "start DateTime and/or end DateTime specified is not valid for the format specified for the RandomDateTime data type"
+          } else {
+            if(startSpecified.compareTo(endSpecified)>0) {
+              isValidated = false
+              message = "the specified start DateTime comes after the specified end DateTime for the RandomDateTime data type"
+            }
+          }
+        }
+      }
     }
     (isValidated,message)
   }
@@ -119,7 +253,7 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateExternalDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -145,9 +279,70 @@ object DateTimeQualifiersValidator extends Validator {
   def validateRangeDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
+    var formatSpecifiedValid:Boolean = false
+    var formatSpecified:String = ""
+    var endSpecifiedValid:Boolean = false
+    var endSpecified:LocalDate = null
+    var startSpecifiedValid:Boolean = false
+    var startSpecified:LocalDate = null
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
-    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
-      // TODO - finish
+    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
+      isValidated = false
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RangedDate data type"
+    } else {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+        formatsThatNeedQualifierChecks(i) match {
+          case "format" => {
+            if (!DateUtils.isDateTimeFormatValid(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the Date Time format is not valid for the RangedDate data type"
+            } else {
+              formatSpecifiedValid = true
+              formatSpecified = qualifiers(i)
+            }
+          }
+          case "end" => {}
+          case "start" => {}
+          case default => {
+            isValidated = false
+            message = s"${default} is not a valid qualifier for the RangedDate data type"
+          }
+        }
+      }
+      if(formatSpecifiedValid) {
+        for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+          formatsThatNeedQualifierChecks(i) match {
+            case "start" => {
+              if (!DateUtils.willStringParseToLocalDate(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "start Date specified is not valid for the RangedDate data type"
+              } else {
+                startSpecifiedValid = true
+                startSpecified = DateUtils.getDateFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case "end" => {
+              if (!DateUtils.willStringParseToLocalDate(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "end Date specified is not valid for the RangedDate data type"
+              } else {
+                endSpecifiedValid = true
+                endSpecified = DateUtils.getDateFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case default => {}
+          }
+        }
+        if(!(startSpecifiedValid&&endSpecifiedValid)) {
+          isValidated = false
+          message = "start Date and/or end Date specified is not valid for the format specified for the RangedDate data type"
+        } else {
+          if(startSpecified.compareTo(endSpecified)>0) {
+            isValidated = false
+            message = "the specified start Date comes after the specified end Date for the RangedDate data type"
+          }
+        }
+      }
     }
     (isValidated,message)
   }
@@ -159,12 +354,73 @@ object DateTimeQualifiersValidator extends Validator {
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRangeTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateRangeDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
+    var formatSpecifiedValid:Boolean = false
+    var formatSpecified:String = ""
+    var endSpecifiedValid:Boolean = false
+    var endSpecified:LocalDateTime = null
+    var startSpecifiedValid:Boolean = false
+    var startSpecified:LocalDateTime = null
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
-    for(i <- 0 until formatsThatNeedQualifierChecks.length) {
-      // TODO - finish
+    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
+      isValidated = false
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RangedDateTime data type"
+    } else {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+        formatsThatNeedQualifierChecks(i) match {
+          case "format" => {
+            if (!DateUtils.isDateTimeFormatValid(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the Date Time format is not valid for the RangedDateTime data type"
+            } else {
+              formatSpecifiedValid = true
+              formatSpecified = qualifiers(i)
+            }
+          }
+          case "end" => {}
+          case "start" => {}
+          case default => {
+            isValidated = false
+            message = s"${default} is not a valid qualifier for the RangedDateTime data type"
+          }
+        }
+      }
+      if(formatSpecifiedValid) {
+        for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+          formatsThatNeedQualifierChecks(i) match {
+            case "start" => {
+              if (!DateUtils.willStringParseToLocalDateTime(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "start DateTime specified is not valid for the RangedDateTime data type"
+              } else {
+                startSpecifiedValid = true
+                startSpecified = DateUtils.getDateTimeFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case "end" => {
+              if (!DateUtils.willStringParseToLocalDateTime(qualifiers(i),formatSpecified)) {
+                isValidated = false
+                message = "end DateTime specified is not valid for the RangedDateTime data type"
+              } else {
+                endSpecifiedValid = true
+                endSpecified = DateUtils.getDateTimeFromString(qualifiers(i),formatSpecified)
+              }
+            }
+            case default => {}
+          }
+        }
+        if(!(startSpecifiedValid&&endSpecifiedValid)) {
+          isValidated = false
+          message = "start DateTime and/or end DateTime specified is not valid for the format specified for the RangedDateTime data type"
+        } else {
+          if(startSpecified.compareTo(endSpecified)>0) {
+            isValidated = false
+            message = "the specified start DateTime comes after the specified end DateTime for the RangedDateTime data type"
+          }
+        }
+      }
     }
     (isValidated,message)
   }

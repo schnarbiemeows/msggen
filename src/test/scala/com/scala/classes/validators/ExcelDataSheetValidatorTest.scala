@@ -4,12 +4,13 @@
 
 package com.scala.classes.validators
 
+import java.util.Properties
+
 import com.scala.classes.exception.{InvalidDataTypeException, InvalidFieldNameException, MismatchedColumnLengthException}
 import com.scala.classes.posos.GenericRecordsTemplate
 import com.scala.classes.utilities.PropertyLoader
-import org.junit.{Before, Test}
 import org.junit.Assert._
-import java.util.Properties
+import org.junit.{Before, Test}
 
 /**
   * class for unit testing the ExcelDataSheetValidator class methods
@@ -238,28 +239,28 @@ class ExcelDataSheetValidatorTest {
     assertTrue(isValid)
 
     template = mocks.getBlankTemplate()
-    template.dataTypes = Array("EnumTime")
+    template.dataTypes = Array("EnumDateTime")
     template.dataFormats = Array("NONE")
     validator = new ExcelDataSheetValidator(template)
     isValid = validator.validateDataFormats()
     assertTrue(isValid)
 
     template = mocks.getBlankTemplate()
-    template.dataTypes = Array("RandomTime")
+    template.dataTypes = Array("RandomDateTime")
     template.dataFormats = Array("starttime","endtime","format")
     validator = new ExcelDataSheetValidator(template)
     isValid = validator.validateDataFormats()
     assertTrue(isValid)
 
     template = mocks.getBlankTemplate()
-    template.dataTypes = Array("ExternalTime")
+    template.dataTypes = Array("ExternalDateTime")
     template.dataFormats = Array("NONE")
     validator = new ExcelDataSheetValidator(template)
     isValid = validator.validateDataFormats()
     assertTrue(isValid)
 
     template = mocks.getBlankTemplate()
-    template.dataTypes = Array("RangedTime")
+    template.dataTypes = Array("RangedDateTime")
     template.dataFormats = Array("starttime","endtime","format")
     validator = new ExcelDataSheetValidator(template)
     isValid = validator.validateDataFormats()

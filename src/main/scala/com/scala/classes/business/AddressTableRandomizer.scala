@@ -119,9 +119,9 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForPrimary(accountId: String): SimpleAddressRecord = {
-    var record:SimpleAddressRecord = new SimpleAddressRecord
+    val record:SimpleAddressRecord = new SimpleAddressRecord
     record.accountId=(accountId)
-    var address:SimpleAddress = new SimpleAddress
+    val address:SimpleAddress = new SimpleAddress
     address.addressLine1=(generateRandomStreetAddress1())
     if(makeBinaryDecision(0.1)) {
       address.addressLine2=(generateRandomStreetAddress2())
@@ -140,7 +140,7 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForSpouse(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
-    var record = new SimpleAddressRecord
+    val record = new SimpleAddressRecord
     record.address=(primary.simpleAddressRecord.address)
     record.accountId=(accountId)
     record
@@ -172,10 +172,10 @@ object AddressTableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomStreetAddress1(): String = {
-    var addr1length = randomStreets1.length
-    var addr2length = randomStreets2.length
-    var index1 = this.randomInteger(0,addr1length)
-    var index2 = this.randomInteger(0,addr2length)
+    val addr1length = randomStreets1.length
+    val addr2length = randomStreets2.length
+    val index1 = this.randomInteger(0,addr1length)
+    val index2 = this.randomInteger(0,addr2length)
     randomStreets1(index1)+" "+randomStreets2(index2)
   }
 
@@ -184,8 +184,8 @@ object AddressTableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomStreetAddress2(): String = {
-    var addr2length = randomAddressLine2.length
-    var index2 = this.randomInteger(0,addr2length)
+    val addr2length = randomAddressLine2.length
+    val index2 = this.randomInteger(0,addr2length)
     randomAddressLine2(index2)
   }
 
@@ -194,9 +194,9 @@ object AddressTableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomState(): String = {
-    var stateCodes = usStates.keys.toList
-    var stateCodesLength = stateCodes.length
-    var index = this.randomInteger(0,stateCodesLength)
+    val stateCodes = usStates.keys.toList
+    val stateCodesLength = stateCodes.length
+    val index = this.randomInteger(0,stateCodesLength)
     stateCodes(index)
   }
 
@@ -206,9 +206,9 @@ object AddressTableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomCity(stateCode: String): String = {
-    var stateCitiesOption:Option[Array[String]] = usStates.get(stateCode)
+    val stateCitiesOption:Option[Array[String]] = usStates.get(stateCode)
     var stateCitieslength:Int = 0
-    var stateCities:Array[String] = stateCitiesOption.getOrElse(null)
+    val stateCities:Array[String] = stateCitiesOption.getOrElse(null)
     if(stateCities!=null) {
       stateCitieslength = stateCities.size
       var index = this.randomInteger(0,stateCitieslength)
@@ -232,7 +232,7 @@ object AddressTableRandomizer extends Randomizer {
     * @return String
     */
   def padZipCode(zip: Int): String = {
-    var length = zip.toString.length
+    val length = zip.toString.length
     if(length==5) {
       zip.toString
     }
