@@ -3,22 +3,21 @@
  */
 
 package com.scala.classes.business
-import java.io.{BufferedWriter, File, FileWriter}
 import java.util.Properties
 
-import com.scala.classes.processes._
-import com.scala.classes.posos.{SimpleAddressRecord, SimpleMemberAddressWrapper, SimpleMemberRecord}
-
-import scala.collection.JavaConversions._
-import com.scala.classes.utilities._
-import com.google.gson.Gson
 import com.scala.classes.locks._
+import com.scala.classes.posos.SimpleMemberAddressWrapper
+import com.scala.classes.processes._
+import com.scala.classes.utilities._
 
 import scala.collection.mutable
 
 /**
   * this class controls the workflow for creating Master Member and Member Address
   * data files
+  *
+  * @param mode - the mode of the program
+  * @param properties - singleton Properties object
   */
 class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
   var ssns:scala.collection.mutable.Set[Int] = null
@@ -41,10 +40,6 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
   override def run(): Unit = {
     var runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("inside SimpleMMMode");
-    for (key <- properties.keySet) {
-      val keyStr:String = key.asInstanceOf[String]
-      //LogUtil.msggenMasterLoggerDEBUG(keyStr + s"${keyStr} = ${properties.getProperty(keyStr)}")
-    }
     // determine the number of social security numbers to make
     val numToMake:Int = properties.get(Configuration.SSN_NUMBER_TO_MAKE).toString.toInt
     // make the social security numbers
@@ -56,10 +51,6 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     // make the subscriber IDs
     primarySubscriberIDs = makeRandomSubscriberIds(numSubsToMake,0,maxSubscriberIdValue)
     subscriberIDList = primarySubscriberIDs.toList
-    //LogUtil.msggenMasterLoggerDEBUG("");
-    //LogUtil.msggenMasterLoggerDEBUG("SSN and Subscriber ID Sets made");
-    //LogUtil.msggenMasterLoggerDEBUG("Also made a Map of (subscriberId,(marriedOrNot,dependentNumber)) for later spouse and child making");
-
     // make the primary members
     makePrimaries(ssnList,subscriberIDList,subscriberIDsForSpouses,subscriberIdToDependentNumberMap,finalMap,numSubsToMake)
     // determine the number of spouses to make
@@ -97,6 +88,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @return ssnSet:scala.collection.mutable.Set[Int]
     */
   def makeRandomSSNs(numberOfSsns: Int, lower: Int = 0, upper: Int = 999999999): scala.collection.mutable.Set[Int] = {
+    // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making random SSN")
     // locks
@@ -147,6 +139,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @return subscriberIDSet:scala.collection.mutable.Set[Int]
     */
   def makeRandomSubscriberIds(numberOfSubscriberIds: Int,lower: Int = 0, upper: Int = 999999999): scala.collection.mutable.Set[Int] = {
+    // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making random Subscriber IDs")
     // locks
@@ -204,7 +197,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
                     subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
                     finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
                     numSubsToMake: Int):Unit = {
-
+    // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making the Primary Members and Addresses")
     // object locks
@@ -265,6 +258,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
                     subscriberIDsForSpouses:scala.collection.mutable.Stack[Int],
                     finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
                     numSubsToMake: Int, counterStart:Int):Unit = {
+    // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making the Spouse Members and Addresses")
     // locks
@@ -324,7 +318,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
                      subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
                      finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
                      numSubsToMake: Int, offset:Int):Unit = {
-
+    // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making the Child Members and Addresses")
     // locks
@@ -389,9 +383,6 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     val people:Iterator[SimpleMemberAddressWrapper] = finalMap.valuesIterator
     while(people.hasNext) {
       val item:SimpleMemberAddressWrapper = people.next()
-      /*LogUtil.msggenMasterLoggerDEBUG(s"${item.simpleMember.accountId} : ${item.simpleMember.firstName}" +
-       s" ${item.simpleMember.lastName}, DOB = ${item.simpleMember.dob} , city = ${item.simpleAddressRecord.address.city}" +
-      s" , state = ${item.simpleAddressRecord.address.stateCode} , zip = ${item.simpleAddressRecord.address.zip5}")*/
       LogUtil.msggenMasterLoggerDEBUG(s"${item.simpleMember.accountId} : name = ${item.simpleMember.lastName}" +
         s", DOB = ${item.simpleMember.dob} , gender = ${item.simpleMember.gender}")
     }

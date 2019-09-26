@@ -5,7 +5,7 @@
 package com.scala.classes.posos
 
 /**
-  * Poso for a record in the Master Member Hive table
+  * class of a record in the Master Member Hive table
   */
 class MasterMemberRecord {
 

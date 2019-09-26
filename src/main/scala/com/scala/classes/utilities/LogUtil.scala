@@ -19,7 +19,7 @@ object LogUtil {
   val msggenTimerLogger:Logger = LogManager.getLogger("msgGenTimingLog");
   val msggenValidatorLog:Logger = LogManager.getLogger("msgGenValidatorLog")
   /**
-    *
+    * method for message logging
     * @param message - the message to log
     */
   def msggenMasterLoggerDEBUG(message: String): Unit = {
@@ -28,119 +28,119 @@ object LogUtil {
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenMasterLoggerWARN(message: String): Unit = {
     this.msgenmasterLogger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenMasterLoggerERROR(message: String): Unit = {
     this.msgenmasterLogger.error(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread1LoggerDEBUG(message: String): Unit = {
     this.msggenThread1Logger.debug(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread1LoggerWARN(message: String): Unit = {
     this.msggenThread1Logger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread1LoggerERROR(message: String): Unit = {
     this.msggenThread1Logger.error(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread2LoggerDEBUG(message: String): Unit = {
     this.msggenThread2Logger.debug(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread2LoggerWARN(message: String): Unit = {
     this.msggenThread2Logger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread2LoggerERROR(message: String): Unit = {
     this.msggenThread2Logger.error(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread3LoggerDEBUG(message: String): Unit = {
     this.msggenThread1Logger.debug(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread3LoggerWARN(message: String): Unit = {
     this.msggenThread1Logger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread3LoggerERROR(message: String): Unit = {
     this.msggenThread1Logger.error(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread4LoggerDEBUG(message: String): Unit = {
     this.msggenThread2Logger.debug(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread4LoggerWARN(message: String): Unit = {
     this.msggenThread2Logger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def msggenThread4LoggerERROR(message: String): Unit = {
     this.msggenThread2Logger.error(message)
   }
 
   /**
-    *
+    * method for message logging
     * @param message - the message to log
     */
   def logTime(message: String): Unit = {
@@ -149,16 +149,16 @@ object LogUtil {
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def logTimeWARN(message: String): Unit = {
     this.msggenTimerLogger.warn(message)
   }
 
   /**
-    *
-    * @param message
+    * method for message logging
+    * @param message - the message to log
     */
   def logTimeERROR(message: String): Unit = {
     this.msggenTimerLogger.error(message)
@@ -174,7 +174,7 @@ object LogUtil {
 
   /**
     * logger for validations
-    * @param message
+    * @param message - the message to log
     */
   def logValidationWARN(message: String): Unit = {
     this.msggenValidatorLog.warn(message)
@@ -182,7 +182,7 @@ object LogUtil {
 
   /**
     * logger for validations
-    * @param message
+    * @param message - the message to log
     */
   def logValidationERROR(message: String): Unit = {
     this.msggenValidatorLog.error(message)

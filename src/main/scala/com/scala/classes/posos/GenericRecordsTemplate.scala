@@ -19,7 +19,7 @@ import scala.collection.mutable.ArrayBuffer
   * 2. assorted meta-data like how many files we want to make, how many records in
   * each file, etc..
   * 3. A list of all of the records that are generated
-  * @param properties
+  * @param properties - singleton Properties object
   */
 class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate {
   /**
@@ -72,8 +72,5 @@ class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate 
     }
     name
   }
-  /**
-    * filename prepender for the final name of each file
-    */
-  override val fileNamePrepender: String = properties.get(Configuration.MODE4_FILE_PREPENDER).toString
+
 }

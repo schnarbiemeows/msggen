@@ -75,9 +75,5 @@ trait RecordsTemplate {
     */
   val outputFileFolder:String
 
-  /**
-    * filename prepender for the final name of each file
-    */
-  val fileNamePrepender:String
 
 }

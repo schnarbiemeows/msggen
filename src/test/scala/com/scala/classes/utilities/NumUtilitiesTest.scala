@@ -4,18 +4,25 @@
 
 package com.scala.classes.utilities
 
-import org.junit.{Before, Test}
 import org.junit.Assert._
+import org.junit.{Before, Test}
 
+/**
+  *
+  */
 @Test
 class NumUtilitiesTest {
 
   val properties = PropertyLoader.getProperties(Configuration.PROPERTY_FILE_LOCATION)
 
+  /**
+    *
+    */
   @Before
   def initialize():Unit = {
     NumUtility.initialize(properties)
   }
+
   /**
     * method to convert a Long or Int to a String and pad it with leading zeroes, if needed
     * this is used to pad subscriber and account IDs
@@ -27,7 +34,6 @@ class NumUtilitiesTest {
     * param length = length to pad to
     * return subId.toString
     */
-
   @Test
   def padIntToStringTest():Unit = {
     var subId:Long = 0L

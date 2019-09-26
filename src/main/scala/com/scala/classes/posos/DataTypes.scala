@@ -4,6 +4,10 @@
 
 package com.scala.classes.posos
 
+/**
+  * object that contains lists of all of the different valid data types the
+  * can be specified in row #2 of the input template
+  */
 object DataTypes {
 
   /**
@@ -34,6 +38,11 @@ object DataTypes {
     */
   val validRanges:Set[String] = Set("RangedString", "RangedInt", "RangedLong" , "RangedFloat", "RangedDouble", "RangedDate", "RangedDateTime", "RangedMoney")
 
+  /**
+    * method to determine if a data type in the teplate is a valid one
+    * @param dataType - data type specified in the template
+    * @return - true or false
+    */
   def isValidDataType(dataType: String):Boolean = {
     validEnums.contains(dataType)||validRandoms.contains(dataType)||
       validExternals.contains(dataType)||validRanges.contains(dataType)

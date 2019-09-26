@@ -11,8 +11,8 @@ import com.scala.classes.posos.GenericRecordsTemplate
 import scala.collection.mutable.ArrayBuffer
 
 /**
-  * class used for createing mock objects to be used in tests
-  * @param properties
+  * class used for creating mock objects to be used in tests
+  * @param properties - singleton Properties object
   */
 class ExcelSheetValidatorTestMocks(val properties: Properties) {
 

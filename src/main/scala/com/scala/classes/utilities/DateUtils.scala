@@ -142,7 +142,7 @@ object DateUtils {
   /**
     * method to get the difference between two times in microseconds
     * @param input = start time
-    * @return
+    * @return - (output,nowTime())
     */
   def getDifferenceInMicroseconds(input: LocalTime): Tuple2[Long, LocalTime] = {
     val current = nowTime()
@@ -153,7 +153,7 @@ object DateUtils {
   /**
     * method to get the difference between two times in milliseconds
     * @param input = start time
-    * @return
+    * @return - (output,nowTime())
     */
   def getDifferenceInMilliseconds(input: LocalTime): Tuple2[Long, LocalTime] = {
     val current = nowTime()
@@ -164,7 +164,7 @@ object DateUtils {
   /**
     * method to get the difference between two times in seconds
     * @param input
-    * @return
+    * @return - (output,nowTime())
     */
   def getDifferenceInSeconds(input: LocalTime): Tuple2[Long, LocalTime] = {
     val current = nowTime()
@@ -174,7 +174,7 @@ object DateUtils {
 
   /**
     * method to get the total program run time in seconds
-    * @return
+    * @return - Long
     */
   def getFinalProgramRunTime(): Long = {
     val current = nowTime()

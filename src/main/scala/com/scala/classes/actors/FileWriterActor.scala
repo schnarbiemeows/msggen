@@ -16,7 +16,7 @@ import com.scala.classes.utilities.{FileIO, LogUtil}
   * double array of records, and then call a FileIO method for writing these records
   * out to either a CSV or a JSON file
   * @param recordArray2 - the double array that stores the records
-  * @param properties - program's singleton Properties object
+  * @param properties - singleton Properties object
   */
 class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) extends Actor{
   /**

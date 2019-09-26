@@ -11,6 +11,9 @@ import com.scala.classes.utilities.Configuration
 import scala.math.BigDecimal
 import scala.util.Random
 
+/**
+  * package object for methods shared amongst classes in the business folder
+  */
 package object business {
 
   /**

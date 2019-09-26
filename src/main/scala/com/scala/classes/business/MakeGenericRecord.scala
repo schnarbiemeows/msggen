@@ -4,7 +4,7 @@
 
 package com.scala.classes.business
 
-import com.scala.classes.generators.{IntTypeGenerator, LongTypeGenerator, StringTypeGenerator}
+import com.scala.classes.generators._
 import com.scala.classes.posos.{GenericRecord, Record, RecordsTemplate}
 import com.scala.classes.utilities.LogUtil
 
@@ -43,6 +43,26 @@ object MakeGenericRecord {
         case "RandomLong" => fieldValues(i) = LongTypeGenerator.makeRandomLong(format,qualifiers)
         case "ExternalLong" => fieldValues(i) = LongTypeGenerator.makeExternalLong(qualifiers)
         case "RangedLong" => fieldValues(i) = LongTypeGenerator.makeRangedLong(format,qualifiers)
+        case "EnumFloat" => fieldValues(i) = FloatTypeGenerator.makeEnumFloat(qualifiers)
+        case "RandomFloat" => fieldValues(i) = FloatTypeGenerator.makeRandomFloat(format,qualifiers)
+        case "ExternalFloat" => fieldValues(i) = FloatTypeGenerator.makeExternalFloat(qualifiers)
+        case "RangedFloat" => fieldValues(i) = FloatTypeGenerator.makeRangedFloat(format,qualifiers)
+        case "EnumDouble" => fieldValues(i) = DoubleTypeGenerator.makeEnumDouble(qualifiers)
+        case "RandomDouble" => fieldValues(i) = DoubleTypeGenerator.makeRandomDouble(format,qualifiers)
+        case "ExternalDouble" => fieldValues(i) = DoubleTypeGenerator.makeExternalDouble(qualifiers)
+        case "RangedDouble" => fieldValues(i) = DoubleTypeGenerator.makeRangedDouble(format,qualifiers)
+        case "EnumDate" => fieldValues(i) = DateTypeGenerator.makeEnumDate(qualifiers)
+        case "RandomDate" => fieldValues(i) = DateTypeGenerator.makeRandomDate(format,qualifiers)
+        case "ExternalDate" => fieldValues(i) = DateTypeGenerator.makeExternalDate(qualifiers)
+        case "RangedDate" => fieldValues(i) = DateTypeGenerator.makeRangedDate(format,qualifiers)
+        case "EnumDateTime" => fieldValues(i) = DateTimeTypeGenerator.makeEnumDateTime(qualifiers)
+        case "RandomDateTime" => fieldValues(i) = DateTimeTypeGenerator.makeRandomDateTime(format,qualifiers)
+        case "ExternalDateTime" => fieldValues(i) = DateTimeTypeGenerator.makeExternalDateTime(qualifiers)
+        case "RangedDateTime" => fieldValues(i) = DateTimeTypeGenerator.makeRangedDateTime(format,qualifiers)
+        case "EnumMoney" => fieldValues(i) = MoneyTypeGenerator.makeEnumMoney(qualifiers)
+        case "RandomMoney" => fieldValues(i) = MoneyTypeGenerator.makeRandomMoney(format,qualifiers)
+        case "ExternalMoney" => fieldValues(i) = MoneyTypeGenerator.makeExternalMoney(qualifiers)
+        case "RangedMoney" => fieldValues(i) = MoneyTypeGenerator.makeRangedMoney(format,qualifiers)
         case _ => LogUtil.msggenMasterLoggerDEBUG("Data Type not found")
       }
     }

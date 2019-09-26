@@ -7,7 +7,7 @@ package com.scala.classes.exception
 /**
   * exception thrown if the data formatting rules specified for a field do not conform
   * to the valid ones for that given data type
-  * @param s
+  * @param s - error message to display
   */
 class InvalidDataFormatException(s:String) extends Exception(s) {
 

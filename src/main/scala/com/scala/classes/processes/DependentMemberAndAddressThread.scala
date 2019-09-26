@@ -99,7 +99,7 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
 
   /**
     * critical section to retrieve AND increment the dependent # value in the subscriberIdToDependentNumberMap
-    * @param primarySubId
+    * @param primarySubId - subscriber ID number of the primary member
     * @return num
     */
   def getDependentNumValue(primarySubId:Int):Int = {
@@ -112,8 +112,8 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
   }
   /**
     * method to make a SimpleMemberRecord for a Dependent, based off the Primary's record
-    * @param ssn
-    * @param primary
+    * @param ssn - social security number of the primary member
+    * @param primary - primary member Object
     * @return memberRecord
     */
   def makeMemberRecord(ssn:String, primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberRecord = {
@@ -124,7 +124,7 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
 
   /**
     * method to make a SimpleAddressRecord for a Dependent, based off the Primary's record
-    * @param primary
+    * @param primary - primary member Object
     * @return addressRecord
     */
   def makeAddressRecord(accountId:String,primary:SimpleMemberAddressWrapper):SimpleAddressRecord = {
@@ -136,8 +136,8 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
   /**
     * method to make a SimpleMemberAddressWrapper record for a Primary Member, based off the Primary's record
     * which contains a SimpleMemberRecord and a SimpleAddressRecord
-    * @param ssn
-    * @param primary
+    * @param ssn - social security number of the primary member
+    * @param primary - primary member Object
     * @return smaw
     */
   def makeWrapperRecord(ssn:Int, primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberAddressWrapper = {

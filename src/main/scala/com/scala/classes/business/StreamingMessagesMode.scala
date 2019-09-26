@@ -14,6 +14,9 @@ import com.scala.classes.validators.ExcelDataSheetValidator
 /**
   * mode for the generation of records of any kind of random data, as described by an excel
   * spreadsheet whose location is specified by the mode4.sourcefile property
+  *
+  * @param mode - mode of the program
+  * @param properties - singleton Properties object
   */
 class StreamingMessagesMode(val mode: Int, val properties: Properties) extends Mode {
 

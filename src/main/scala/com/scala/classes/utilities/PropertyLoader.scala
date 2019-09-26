@@ -6,17 +6,10 @@ package com.scala.classes.utilities
 
 import java.io.{FileInputStream, IOException}
 import java.util.Properties
-
-import com.scala.classes.utilities.LogUtil
 /**
   * object for loading the contents of the config file located at /home/ubuntu/config/
   */
 object PropertyLoader {
-
-  /**
-    * TODO: need to change this to deduce from the OS type
-    */
-  val folderPath:String = "C:\\home\\schnarbies\\config\\"
 
   /**
     * method for reading in the properties from a text file
@@ -27,7 +20,7 @@ object PropertyLoader {
     var fullpath: String = null
     try {
       val prop = new Properties()
-      fullpath = folderPath + configFileName
+      fullpath = adjustConfigFilePath(configFileName)
       LogUtil.msggenMasterLoggerDEBUG(s"loading properties from file: ${fullpath}")
       prop.load(new FileInputStream(fullpath))
       println("properties loaded")
@@ -38,5 +31,22 @@ object PropertyLoader {
         e.printStackTrace()
         sys.exit(1)
     }
+  }
+
+  /**
+    * method to detect if the operating system is windows, and, if so, to
+    * replace any "\" in the file path with "\\"
+    * @param configFileName - full path to the config file
+    * @return - adjusted config file path
+    */
+  def adjustConfigFilePath(configFileName:String):String = {
+    val osName = System.getProperty("os.name")
+    var configFileNameadjusted:String = configFileName
+    if(osName.toLowerCase.contains("windows")) {
+      println("windows file was found")
+      val configFileNameadjusted = configFileName.replace("\\\\","\\").replace("\\","\\\\")
+    }
+    println(s"file name = $configFileNameadjusted")
+    configFileNameadjusted
   }
 }

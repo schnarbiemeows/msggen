@@ -5,7 +5,7 @@
 package com.scala.classes.posos
 
 /**
-  * class for Address
+  * class of Address
   */
 class Address {
 

@@ -12,7 +12,7 @@ object NumUtility extends Randomizer {
 
   /**
     * method to initialize configuration Properties
-    * @param props
+    * @param props - singleton Properties object
     */
   override def initialize(props: Properties): Unit = {}
 

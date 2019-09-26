@@ -3,18 +3,19 @@
  */
 
 package com.scala.classes.business
-import java.io.{BufferedWriter, File, FileWriter}
 import java.util.Properties
 
-import com.scala.classes.processes.SSNMakerThread
 import com.scala.classes.locks.SSNlock
+import com.scala.classes.processes.SSNMakerThread
+import com.scala.classes.utilities.{Configuration, FileIO, LogUtil}
 
 import scala.collection.JavaConversions._
-import com.scala.classes.utilities.{Configuration, FileIO, LogUtil, PropertyLoader}
 
 
 /**
   * Class for making a file of Social Security Numbers
+  * @param mode - run mode of the program
+  * @param properties - singleton Properties object
   */
 class SSNMakerMode(val mode: Int, val properties: Properties) extends Mode {
 
@@ -37,7 +38,7 @@ class SSNMakerMode(val mode: Int, val properties: Properties) extends Mode {
   /**
     * method to make a bunch of random Social Security Numbers
     * @param numberOfSsns = number of SS #'s to make
-    * @return ssnSet
+    * @return - ssnSet
     */
   def makeRandomSSNs(numberOfSsns: Int): scala.collection.mutable.Set[Int] = {
     LogUtil.msggenThread2LoggerDEBUG("making random SSN")

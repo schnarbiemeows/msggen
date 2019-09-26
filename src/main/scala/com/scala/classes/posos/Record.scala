@@ -4,6 +4,9 @@
 
 package com.scala.classes.posos
 
+/**
+  * trait that represents a record(or Row) in a data file(or table)
+  */
 trait Record {
 
   val fields:Array[String]
@@ -13,31 +16,31 @@ trait Record {
   val quotes = "\""
 
   /**
-    * this method will convert records that do NOT include complex fields(arrays, structures)
-    * @throws java.lang.NullPointerException
-    * @throws java.lang.Exception
-    * @return json
+    * method that will return the rows values as a comma separated String
+    * @return - String
     */
-  @throws(classOf[NullPointerException])
-  @throws(classOf[Exception])
-  def toJsonSimple() :String = {
-    var json:StringBuilder = new StringBuilder().append(open)
-    if(fields==null||fieldValues==null) {
-      throw new NullPointerException("fields or fieldValues array is null!")
-    }
-    if(fields.length!=fieldValues.length) {
-      throw new Exception("field and field values arrays have different lengths!")
-    }
-    val fieldArrayLength = fields.length
-    for(i <- 0 until fieldArrayLength-1) {
-      json.append(quotes).append(fields(i)).append(quotes).append(":").
-        append(quotes).append(fieldValues(i)).append(quotes).append(",")
-    }
-    json.append(quotes).append(fields(fieldArrayLength-1)).append(quotes).append(":").
-      append(quotes).append(fieldValues(fieldArrayLength-1)).append(quotes).append(closed)
-    json.toString()
+  def toCSV():String = {
+    var builder:StringBuilder = new StringBuilder()
+    for(item <- fieldValues ) {builder.append(item).append(",")}
+    var output:String = builder.toString()
+    output.substring(0,output.length-1)
   }
 
-  def toCSV():String
-  def toJSON():String
+  /**
+    * method that will retrun the fields and values as a JSON string
+    * @return - String
+    */
+  def toJSON():String = {
+    var builder:StringBuilder = new StringBuilder().append("{ ")
+    var count:Int = 0
+    while(count<fields.length) {
+      if(count==0) {
+        builder.append("\"").append(fields(count)).append("\" : \"").append(fieldValues(count)).append("\" ")
+      } else {
+        builder.append(", \"").append(fields(count)).append("\" : \"").append(fieldValues(count)).append("\" ")
+      }
+      count+=1
+    }
+    builder.append("}").toString
+  }
 }

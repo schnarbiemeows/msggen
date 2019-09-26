@@ -5,8 +5,8 @@
 package com.scala.classes.exception
 
 /**
-  * field names
-  * @param s
+  * exception thrown if field name is invalid
+  * @param s - error message to display
   */
 class InvalidFieldNameException(s:String) extends Exception(s) {
 

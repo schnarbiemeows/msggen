@@ -88,7 +88,7 @@ class PrimaryMemberAndAddressMakerThread(val subIdSpLock:SubscriberIDsForSpouses
 
   /**
     * critical section method to add a subscriber ID to the subscriberIDsForSpouses Stack
-    * @param subId
+    * @param subId - subscriber ID of the primary member
     */
   def addToSpouseList(subId:Int):Unit ={
     // critical section
@@ -100,7 +100,7 @@ class PrimaryMemberAndAddressMakerThread(val subIdSpLock:SubscriberIDsForSpouses
 
   /**
     * method to map the (Primary's subscriber ID, 2) to the subscriberIdToDependentNumberMap
-    * @param subId
+    * @param subId - subscriber ID of the primary member
     */
   def addToDependentList(subId:Int):Unit = {
     subscriberIdToDependentNumberMap.put(subId,2)

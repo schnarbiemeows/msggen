@@ -6,7 +6,7 @@ package com.scala.classes.exception
 
 /**
   * exception thrown if a data type specified is not a valid data type
-  * @param s
+  * @param s - error message to display
   */
 class InvalidDataTypeException(s:String) extends Exception(s) {
 

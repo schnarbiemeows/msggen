@@ -13,8 +13,17 @@ import com.scala.classes.actors.messages.StartMessage
 import com.scala.classes.posos.RecordsTemplate
 import com.scala.classes.utilities.{DateUtils, LogUtil}
 
+/**
+  * this class is used as a primary to initiate the actor system that will generate records
+  * @param template - Record template
+  * @param properties - singleton Properties object
+  */
 class RecordMakerController(val template: RecordsTemplate, val properties: Properties) {
 
+  /**
+    * main method to invoke the actors
+    * @return - success indicator
+    */
   def generateRecords(): Boolean = {
     var runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("inside RecordMakerController.generateRecords main method");

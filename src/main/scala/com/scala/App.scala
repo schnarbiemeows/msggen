@@ -4,10 +4,10 @@
 
 package com.scala
 
-import classes.utilities.{DateUtils, LogUtil, PropertyLoader, StringUtils}
-import classes.business._
+import com.scala.classes.business._
+import com.scala.classes.utilities.{DateUtils, LogUtil, PropertyLoader, StringUtils}
 /**
-  * @author ${user.name}
+  * @author Dylan Kessler
   */
 object App {
 
@@ -15,7 +15,7 @@ object App {
     * main method
     *
     * @param args - argv[0] = Int: = the mode
-    *             args[1] = String: = the config file name(located in /home/schnarbies/config folder)
+    *             args[1] = String: = the full path to the main config file
     *
     */
   def main(args: Array[String]) {
@@ -40,8 +40,6 @@ object App {
     val properties = PropertyLoader.getProperties(config)
     mode match {
       case 0 => new SSNMakerMode(0,properties).run()
-      case 1 => new MasterMainMode(1,properties).run()
-      case 2 => new AddressMakerMode(2,properties).run()
       case 3 => new SimpleMMMode(3,properties).run()
       case 4 => new StreamingMessagesMode(4,properties).run()
     }

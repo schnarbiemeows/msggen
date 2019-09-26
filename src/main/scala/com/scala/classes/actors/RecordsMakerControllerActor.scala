@@ -21,7 +21,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   extends Actor {
 
   /**
-    * N = numThreads to use for making/coopying Record data
+    * N = numThreads to use for making/copying Record data
     */
   val numThreads:Int = properties.get(Configuration.MODE4_NUM_THREADS).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG("")
@@ -89,7 +89,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
 
   /**
     * main actor method
-    * @return
+    * @return - Nothing
     */
   override def receive: Receive = {
     case StartMessage => initiateRecordMaking()
@@ -163,8 +163,6 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   /**
     * method that gets invoked each time a FinishedMakingRecordMessage message comes back
     * from a RecordMakerAndCopierActor
-    * rules:
-    *
     * @param number - the actor number of the sender
     */
   def incrementCheckAndCount(number:Int):Unit = {

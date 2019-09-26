@@ -10,7 +10,7 @@ package com.scala.classes.utilities
 object Configuration {
 
   val PROPERTY_FILE_LOCATION = "config.properties"
-  val SYSTEM:String = "system"
+  val SYSTEM = "system"
   val DELIMITTER1 = ","
   val EQUALS = "="
   val CSV = "csv"

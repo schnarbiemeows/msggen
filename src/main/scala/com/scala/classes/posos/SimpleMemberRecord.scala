@@ -4,11 +4,13 @@
 
 package com.scala.classes.posos
 
+
 /**
   * class of SimpleMemberRecord
   */
 class SimpleMemberRecord {
 
+  // TODO - remove null references
   var accountId: String = null
   var socialSecurityNumber: String = null
   var subscriberId: String = null
@@ -20,9 +22,12 @@ class SimpleMemberRecord {
   var middleName: String = null
   var lastName: String = null
 
+  /**
+    * this method will return the record as a csv string
+    * @return - csv string
+    */
   def toCSV():String = {
     s"${accountId},${subscriberId},${alphaPrefix},${dependentNumber},${socialSecurityNumber},${firstName},${middleName},${lastName},${gender},${dob}"
   }
-
 
 }

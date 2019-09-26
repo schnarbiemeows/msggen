@@ -25,8 +25,8 @@ object FileIO {
   val ssnLength = 9
   /**
     * method to write social security output to a file
-    * @param ssns
-    * @param filepath
+    * @param ssns - list of social security numbers
+    * @param filepath - full path to the file to write to
     */
   def outputToFile(ssns: List[Int], filepath: String): Unit = {
     LogUtil.msggenThread2LoggerDEBUG("writing SSNs to a file")
@@ -74,12 +74,6 @@ object FileIO {
         if(Configuration.CSV.equals(fileType)) {
           outfile.write(record.toCSV() + "\n")
         } else if(Configuration.JSON.equals(fileType)) {
-          /*if(record==null) {
-            LogUtil.msggenMasterLoggerDEBUG("record is NULL !! ")
-          } else {
-            LogUtil.msggenMasterLoggerDEBUG("record is not null")
-            LogUtil.msggenMasterLoggerDEBUG(s"${record.toJSON()}")
-          }*/
           outfile.write(record.toJSON() + "\n")
         }
         else {
@@ -342,7 +336,7 @@ object FileIO {
 
   /**
     * test method for checking records
-    * @param records
+    * @param records - records to check
     */
   def check(records:RecordsTemplate):Unit = {
     val fields = records.fields
@@ -365,7 +359,7 @@ object FileIO {
 
   /**
     * test method for checking record values
-    * @param records
+    * @param records - records to check
     */
   def checkValues(records:RecordsTemplate):Unit = {
     val dataValuesLength:Int = records.dataQualifiers.length
@@ -385,9 +379,9 @@ object FileIO {
     * download the file's contents(or a subsection of its contents)
     * into that data type's qualifiers array. Then we can handle this data type
     * the same as an Enum type
-    * @param record
-    * @param properties
-    * @return
+    * @param record - template that contains table information about our data
+    * @param properties - singleton Properties object
+    * @return - successful indicator
     */
   def readInExternalFiles(record: RecordsTemplate, properties: Properties):Boolean = {
     val runStart = DateUtils.nowTime()
