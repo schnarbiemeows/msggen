@@ -5,11 +5,12 @@
 package com.scala.classes
 
 import java.time.format.DateTimeFormatter
-import java.time.{Duration, LocalDate, LocalDateTime, Period}
+import java.time.temporal.ChronoUnit
+import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.concurrent.ThreadLocalRandom
 
 import com.scala.classes.posos.DataTypeFormats
-import com.scala.classes.utilities.Configuration
+import com.scala.classes.utilities.{Configuration, DateUtils}
 
 import scala.math.BigDecimal
 import scala.math.BigDecimal.RoundingMode.Value
@@ -64,7 +65,7 @@ package object generators {
     * @param chars = list of characters that can be in the string
     * @return - string
     */
-  def randomAlphaNumeric(size: Int, chars:String = Configuration.ALPHA_NUMERIC_STRING): String = {
+  def randomAlphaNumeric(size: Int=10, chars:String = Configuration.ALPHA_NUMERIC_STRING): String = {
     val builder = new StringBuilder
     var count = size
     while(count>0) {
@@ -130,9 +131,9 @@ package object generators {
     val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
     val startDate:LocalDate = LocalDate.parse(start,dateFormatter)
     val endDate:LocalDate = LocalDate.parse(end,dateFormatter)
-    val diffInDays:Int = Period.between(startDate,endDate).getDays
+    val diffInDays:Long = ChronoUnit.DAYS.between(startDate,endDate)
     val rand = new Random
-    val generatedDays:Int = BigDecimal(rand.nextFloat()*diffInDays).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
+    val generatedDays:Long = BigDecimal(rand.nextFloat()*diffInDays).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
     val returnDate:LocalDate = startDate.plusDays(generatedDays)
     returnDate.format(dateFormatter)
   }
@@ -149,7 +150,7 @@ package object generators {
     val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
     val startDate:LocalDate = LocalDate.parse(start,defaultDateFormatter)
     val endDate:LocalDate = LocalDate.parse(end,defaultDateFormatter)
-    val diffInDays:Int = Period.between(startDate,endDate).getDays
+    val diffInDays:Long = ChronoUnit.DAYS.between(startDate,endDate)
     val rand = new Random
     val generatedDays:Int = BigDecimal(rand.nextFloat()*diffInDays).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
     val returnDate:LocalDate = startDate.plusDays(generatedDays)
@@ -168,7 +169,7 @@ package object generators {
     val startDate:LocalDate = LocalDate.parse(start,defaultDateFormatter)
     val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
     val endDate:LocalDate = LocalDate.parse(end,dateFormatter)
-    val diffInDays:Int = Period.between(startDate,endDate).getDays
+    val diffInDays:Long = ChronoUnit.DAYS.between(startDate,endDate)
     val rand = new Random
     val generatedDays:Int = BigDecimal(rand.nextFloat()*diffInDays).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
     val returnDate:LocalDate = startDate.plusDays(generatedDays)
@@ -187,7 +188,7 @@ package object generators {
     val endDate:LocalDate = LocalDate.parse(end,defaultDateFormatter)
     val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
     val startDate:LocalDate = LocalDate.parse(start,dateFormatter)
-    val diffInDays:Int = Period.between(startDate,endDate).getDays
+    val diffInDays:Long = ChronoUnit.DAYS.between(startDate,endDate)
     val rand = new Random
     val generatedDays:Int = BigDecimal(rand.nextFloat()*diffInDays).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
     val returnDate:LocalDate = startDate.plusDays(generatedDays)
@@ -207,7 +208,7 @@ package object generators {
     val endDateTime:LocalDateTime = LocalDateTime.parse(end,dateFormatter)
     val diffInSeconds:Long = Duration.between(startDateTime,endDateTime).getSeconds
     val rand = new Random
-    val generatedSeconds:Int = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
+    val generatedSeconds:Long = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).longValue()
     val returnDate:LocalDateTime = startDateTime.plusSeconds(generatedSeconds)
     returnDate.format(dateFormatter)
   }
@@ -226,7 +227,7 @@ package object generators {
     val endDateTime:LocalDateTime = LocalDateTime.parse(end,defaultDateFormatter)
     val diffInSeconds:Long = Duration.between(startDateTime,endDateTime).getSeconds
     val rand = new Random
-    val generatedSeconds:Int = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
+    val generatedSeconds:Long = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).longValue()
     val returnDate:LocalDateTime = startDateTime.plusSeconds(generatedSeconds)
     returnDate.format(dateFormatter)
   }
@@ -245,7 +246,7 @@ package object generators {
     val endDateTime:LocalDateTime = LocalDateTime.parse(end,dateFormatter)
     val diffInSeconds:Long = Duration.between(startDateTime,endDateTime).getSeconds
     val rand = new Random
-    val generatedSeconds:Int = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
+    val generatedSeconds:Long = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).longValue()
     val returnDate:LocalDateTime = startDateTime.plusSeconds(generatedSeconds)
     returnDate.format(dateFormatter)
   }
@@ -264,11 +265,34 @@ package object generators {
     val endDateTime:LocalDateTime = LocalDateTime.parse(end,defaultDateFormatter)
     val diffInSeconds:Long = Duration.between(startDateTime,endDateTime).getSeconds
     val rand = new Random
-    val generatedSeconds:Int = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).toBigInt().intValue()
+    val generatedSeconds:Long = BigDecimal(rand.nextFloat()*diffInSeconds).setScale(0,BigDecimal.RoundingMode.HALF_UP).longValue()
     val returnDate:LocalDateTime = startDateTime.plusSeconds(generatedSeconds)
     returnDate.format(dateFormatter)
   }
 
+  /**
+    * method that will simply return the current date in whatever format is specified
+    * by the user
+    * @param format - pattern to format the date by
+    * @return - string
+    */
+  def generateNowDate(format:String = Configuration.DEFAULT_DATE_FORMAT):String = {
+    val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
+    val currentDateTime:LocalDate = DateUtils.now()
+    currentDateTime.format(dateFormatter)
+  }
+
+  /**
+    * method that will return the current date and time in whatever format is specified
+    * by the user
+    * @param format - pattern to format the date by
+    * @return - string
+    */
+  def generateNowDateTime(format:String = Configuration.DEFAULT_NOW_DATE_TIME_FORMAT):String = {
+    val dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(format)
+    val currentDateTime:LocalDateTime = DateUtils.nowDateTime()
+    currentDateTime.format(dateFormatter)
+  }
   /**
     * method to pad any number that has already been converted to a string
     * with zeros
@@ -328,5 +352,26 @@ package object generators {
       }
     }
     builder.toString
+  }
+
+  /**
+    * method that pads a money value with zeros to 2 decimal places
+    * @param input - input string to pad
+    * @return - padded string
+    */
+  def padMoneyWithZeros(input:String):String = {
+    var result:String = input
+    val totalLength:Int = input.length
+    val decimalLocation:Int = input.indexOf(".")
+    if(decimalLocation == -1) {
+      result = result.concat(".00")
+    }
+    else if(decimalLocation == totalLength-1) {
+      result = result.concat("00")
+    }
+    else if(decimalLocation == totalLength-2) {
+      result = result.concat("0")
+    }
+    result
   }
 }

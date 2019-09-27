@@ -12,10 +12,10 @@ import org.junit.runners.Suite
   */
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(Array(classOf[DateUtilsTest],classOf[NumUtilitiesTest],classOf[StringQualifiersValidatorTest],
-classOf[IntLongQualifiersValidatorTest],classOf[DateTimeQualifiersValidatorTest],classOf[FloatDoubleQualifiersValidatorTest],
+classOf[WholeNumberQualifiersValidatorTest],classOf[DateTimeQualifiersValidatorTest],classOf[DecimalNumberQualifiersValidatorTest],
 classOf[MoneyQualifiersValidatorTest],classOf[DateTimeTypeGeneratorTest],classOf[DateTypeGeneratorTest],
-classOf[DoubleTypeGeneratorTest],classOf[FloatTypeGeneratorTest],classOf[MoneyTypeGeneratorTest],
-classOf[LongTypeGeneratorTest],classOf[IntTypeGeneratorTest],classOf[StringTypeGeneratorTest]))
+classOf[DecimalNumberTypeGeneratorTest],classOf[MoneyTypeGeneratorTest],
+classOf[WholeNumberTypeGeneratorTest],classOf[StringTypeGeneratorTest]))
 class MsgGenTestSuite {
 
 }

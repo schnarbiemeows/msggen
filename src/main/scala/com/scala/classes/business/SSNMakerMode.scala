@@ -28,9 +28,9 @@ class SSNMakerMode(val mode: Int, val properties: Properties) extends Mode {
       val keyStr:String = key.asInstanceOf[String]
       LogUtil.msggenThread1LoggerDEBUG(keyStr + " = " + properties.getProperty(keyStr))
     }
-    var numToMake: Int = properties.get(Configuration.SSN_NUMBER_TO_MAKE).toString.toInt
+    var numToMake: Int = properties.get(Configuration.MODE0_SSN_NUMBER_TO_MAKE).toString.toInt
     var ssns:scala.collection.mutable.Set[Int] = makeRandomSSNs(numToMake)
-    val filepath:String = properties.get(Configuration.SSN_OUTPUT_FILE).toString
+    val filepath:String = properties.get(Configuration.MODE0_SSN_OUTPUT_FILE).toString
     val ssnList:List[Int] = ssns.toList
     FileIO.outputToFile(ssnList,filepath)
   }

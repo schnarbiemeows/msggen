@@ -90,6 +90,7 @@ class DateUtilsTest {
     assertNotNull(ageInDays)
     assert(ageInDays>0)
     assertEquals(newborn,0)
+    println(s"age in days = ${ageInDays}")
   }
 
   /**

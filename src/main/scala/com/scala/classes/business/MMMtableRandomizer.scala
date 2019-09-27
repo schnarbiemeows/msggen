@@ -63,7 +63,7 @@ object MMMtableRandomizer extends Randomizer {
     */
   def generateRandomSpouse(ssn:String,primary:SimpleMemberAddressWrapper):SimpleMemberRecord = {
     val person:SimpleMemberRecord = new SimpleMemberRecord
-    val ageRange:Int = this.props.getProperty(Configuration.SPOUSE_AGERANGE).toInt
+    val ageRange:Int = this.props.getProperty(Configuration.MODE3_SPOUSE_AGERANGE).toInt
     val accountIdStr = primary.simpleMember.accountId.substring(0,9)+"01"
     person.accountId=(accountIdStr)
     person.subscriberId=(accountIdStr.substring(0,9))
@@ -120,9 +120,13 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomMiddleNameForPrimary():String = {
-    val middleNamesLength = middleNames.length
-    val index = this.randomInteger(0,middleNamesLength)
-    middleNames(index)
+    if(makeBinaryDecision(Configuration.MODE3_MIDDLENAME_PERCENT.toDouble)) {
+      val middleNamesLength = middleNames.length
+      val index = this.randomInteger(0,middleNamesLength)
+      middleNames(index)
+    } else {
+      ""
+    }
   }
 
   /**
@@ -159,7 +163,7 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateDateOfBirth():String = {
-    this.randomDOB(props.get(Configuration.PRIMARY_MINAGE).toString.toInt,props.get(Configuration.PRIMARY_MAXAGE).toString.toInt)
+    this.randomDOB(props.get(Configuration.MODE3_PRIMARY_MINAGE).toString.toInt,props.get(Configuration.MODE3_PRIMARY_MAXAGE).toString.toInt)
   }
 
   /**
@@ -167,11 +171,11 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateDateOfBirthForDependent():String = {
-    this.randomDOB(0,props.get(Configuration.CHILD_MAXAGE).toString.toInt)
+    this.randomDOB(0,props.get(Configuration.MODE3_CHILD_MAXAGE).toString.toInt)
   }
 
   /**
-    * pad the dependet number(Int) to a String representation
+    * pad the dependent number(Int) to a String representation
     * @return String
     */
   def deptNumToString = (deptNum:Int) => {if(deptNum>9) deptNum.toString else "0"+deptNum.toString}

@@ -34,7 +34,6 @@ object MoneyTypeGenerator {
     */
   def makeRandomMoney(format: String,qualifiers:ArrayBuffer[String]):String = {
     var signDigits:Int = 2
-    var length:Int = 0
     var min:Float = 0
     var max:Float = 0
     var roundingType:String = null
@@ -43,7 +42,6 @@ object MoneyTypeGenerator {
     val formatsNotNeedingQualifiers = splitLists._2
     for (i <- 0 until formatsThatNeedQualifierChecks.length) {
       formatsThatNeedQualifierChecks(i) match {
-        case "length" => length = qualifiers(i).toInt
         case "min" => min = qualifiers(i).toFloat
         case "max" => max = qualifiers(i).toFloat
       }
@@ -53,9 +51,10 @@ object MoneyTypeGenerator {
         case "roundup" => roundingType = "roundup"
         case "rounddown" => roundingType = "rounddown"
         case "roundhalf" => roundingType = "roundhalf"
+        case _ => None
       }
     }
-    randomFloat(min,max,signDigits,roundingType).toString
+    padMoneyWithZeros(randomFloat(min,max,signDigits,roundingType).toString)
   }
 
   /**
@@ -67,37 +66,5 @@ object MoneyTypeGenerator {
     var arrayLength = qualifiers.length
     var index = randomInteger(0,arrayLength)
     qualifiers(index)
-  }
-
-  /**
-    * this method generates a random RangedMoney
-    * @param format - formatting specifications for the field
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeRangedMoney(format: String,qualifiers:ArrayBuffer[String]):String = {
-    var signDigits:Int = 2
-    var length:Int = 0
-    var min:Float = 0
-    var max:Float = 0
-    var roundingType:String = null
-    val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RangedMoney", format)
-    val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
-    val formatsNotNeedingQualifiers = splitLists._2
-    for (i <- 0 until formatsThatNeedQualifierChecks.length) {
-      formatsThatNeedQualifierChecks(i) match {
-        case "length" => length = qualifiers(i).toInt
-        case "min" => min = qualifiers(i).toFloat
-        case "max" => max = qualifiers(i).toFloat
-      }
-    }
-    for (i <- 0 until formatsNotNeedingQualifiers.length) {
-      formatsNotNeedingQualifiers(i) match {
-        case "roundup" => roundingType = "roundup"
-        case "rounddown" => roundingType = "rounddown"
-        case "roundhalf" => roundingType = "roundhalf"
-      }
-    }
-    randomFloat(min,max,signDigits,roundingType).toString
   }
 }

@@ -27,7 +27,7 @@ class StringQualifiersValidatorTest {
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("config.properties")
+    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
     var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
     template = mocks.getBlankTemplate()
 
@@ -59,23 +59,23 @@ class StringQualifiersValidatorTest {
     // testing a valid value for the length format
     template.dataFormats = Array("length")
     template.dataQualifiers(0) = ArrayBuffer("10")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = StringQualifiersValidator.validateRandomStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
     println(results._2)
     // testing an invalid value for the length format
     template.dataQualifiers(0) = ArrayBuffer("abc")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = StringQualifiersValidator.validateRandomStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
     // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
     template.dataQualifiers(0) = ArrayBuffer("abc","123")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = StringQualifiersValidator.validateRandomStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
     // testing that the indexing works when iterating through qualifiers
     template.dataFormats = Array("length,chars")
     template.dataQualifiers(0) = ArrayBuffer("abc","123")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = StringQualifiersValidator.validateRandomStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
     println(results._2)
   }
@@ -94,38 +94,4 @@ class StringQualifiersValidatorTest {
     assertTrue(results._1)
   }
 
-  /**
-    * Junit tests for the RangedString data type
-    */
-  @Test
-  def validateRangeStringQualifiersTest():Unit = {
-    template.dataTypes = Array("RangedString")
-    template.fields = Array("field1")
-    template.dataFormats = Array("NONE")
-    var results:Tuple2[Boolean,String] = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
-    assertTrue(results._1)
-    // testing a valid value for the length format
-    template.dataFormats = Array("length")
-    template.dataQualifiers(0) = ArrayBuffer("10")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
-    assertTrue(results._1)
-    println(results._2)
-    // testing an invalid value for the length format
-    template.dataQualifiers(0) = ArrayBuffer("abc")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
-    assertFalse(results._1)
-    println(results._2)
-    // testing a mismatch in the number of formats that need qualifiers and the number of qualifiers
-    template.dataQualifiers(0) = ArrayBuffer("abc","123")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
-    assertFalse(results._1)
-    println(results._2)
-    // testing that the indexing works when iterating through qualifiers
-    template.dataFormats = Array("length,chars")
-    template.dataQualifiers(0) = ArrayBuffer("abc","123")
-    results = StringQualifiersValidator.validateRangeStringQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
-    assertTrue(results._1)
-    println(results._2)
-
-  }
 }

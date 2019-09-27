@@ -96,42 +96,4 @@ object StringQualifiersValidator extends Validator {
     }
     (isValidated,message)
   }
-
-  /**
-    * method to validate that the qualifiers for the EnumString data type are valid
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateRangeStringQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
-    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
-      isValidated = false
-      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the Ranged data type"
-    } else {
-      for(i <- 0 until formatsThatNeedQualifierChecks.length) {
-        formatsThatNeedQualifierChecks(i) match {
-          case "length" => {
-            if (!StringUtils.isInteger(qualifiers(i))) {
-              isValidated = false
-              message = s"qualifier specified for the length format is not an integer for the RangedString data type"
-            }
-          }
-          case "chars" => {
-            isValidated = true
-            message = "not sure what we need to check for here"
-          }
-          case default => {
-            isValidated = false
-            message = s"${default} is not a valid qualifier for the RangedString data type"
-          }
-        }
-      }
-    }
-    (isValidated,message)
-  }
-
 }

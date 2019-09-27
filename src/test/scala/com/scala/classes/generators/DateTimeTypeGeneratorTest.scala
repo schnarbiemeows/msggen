@@ -28,7 +28,7 @@ class DateTimeTypeGeneratorTest {
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("config.properties")
+    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
     var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
     template = mocks.getBlankTemplate()
 
@@ -56,33 +56,59 @@ class DateTimeTypeGeneratorTest {
   def makeRandomDateTimeTest():Unit = {
     // simple normal test
     template.dataFormats = Array("format,end,start")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","2018-10-10")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2019-10-10 00:00:00","2018-10-10 00:00:00")
     var results:String = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
-    for(i <- 0 until 10) {
+    for(i <- 0 until 1) {
       println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
     }
     // test with short range to see if the edge cases are beng handled
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-15","2018-10-10")
-    for(i <- 0 until 20) {
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH","2018-10-15 12","1900-10-10 02")
+    for(i <- 0 until 1) {
       println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
     }
     // test with specifying no start date
     template.dataFormats = Array("format,end")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm","2019-10-10 00:00")
     results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
+    for(i <- 0 until 1) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
     // test with specifying no end date
     template.dataFormats = Array("format,start")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2000-10-10")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2000-01-01 00:00:00")
     results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
+    for(i <- 0 until 1) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
     // test with specifying no start date or end date
     template.dataFormats = Array("format")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss")
+    results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
+    assertNotNull(results)
+    println(results)
+    for(i <- 0 until 1) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    template.dataFormats = Array("NONE")
+    template.dataQualifiers(0) = ArrayBuffer()
+    results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
+    assertNotNull(results)
+    println(results)
+    // test with specifying now with a format, but no start date or end date
+    template.dataFormats = Array("format,now")
+    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss")
+    results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
+    assertNotNull(results)
+    println(results)
+    // test with specifying now with no format or start/end date
+    template.dataFormats = Array("now")
+    template.dataQualifiers(0) = ArrayBuffer()
     results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
@@ -101,39 +127,5 @@ class DateTimeTypeGeneratorTest {
     for(i <- 0 until 10) {
       println(DateTimeTypeGenerator.makeExternalDateTime(template.dataQualifiers(0)))
     }
-  }
-
-  /**
-    * Junit tests for the RangedDateTime data type
-    */
-  @Test
-  def makeRangeDateTimeTest():Unit = {
-    // simple normal test
-    template.dataFormats = Array("format,end,start")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10","2018-10-10")
-    var results:String = DateTimeTypeGenerator.makeRangedDateTime(template.dataFormats(0),template.dataQualifiers(0))
-    assertNotNull(results)
-    println(results)
-    for(i <- 0 until 100) {
-      println(DateTimeTypeGenerator.makeRangedDateTime(template.dataFormats(0),template.dataQualifiers(0)))
-    }
-    // test with specifying no start date
-    template.dataFormats = Array("format,end")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2019-10-10")
-    results = DateTimeTypeGenerator.makeRangedDateTime(template.dataFormats(0),template.dataQualifiers(0))
-    assertNotNull(results)
-    println(results)
-    // test with specifying no end date
-    template.dataFormats = Array("format,start")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2000-10-10")
-    results = DateTimeTypeGenerator.makeRangedDateTime(template.dataFormats(0),template.dataQualifiers(0))
-    assertNotNull(results)
-    println(results)
-    // test with specifying no start date or end date
-    template.dataFormats = Array("format")
-    template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd")
-    results = DateTimeTypeGenerator.makeRangedDateTime(template.dataFormats(0),template.dataQualifiers(0))
-    assertNotNull(results)
-    println(results)
   }
 }

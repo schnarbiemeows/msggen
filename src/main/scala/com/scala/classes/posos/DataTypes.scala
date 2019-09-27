@@ -33,10 +33,6 @@ object DataTypes {
     * for the values, user will specify the absolute path to the file, keeping in mind the operating system
     */
   val validExternals:Set[String] = Set("ExternalString", "ExternalInt", "ExternalLong" , "ExternalFloat", "ExternalDouble", "ExternalDate", "ExternalDateTime", "ExternalMoney")
-  /**
-    * not currently being used
-    */
-  val validRanges:Set[String] = Set("RangedString", "RangedInt", "RangedLong" , "RangedFloat", "RangedDouble", "RangedDate", "RangedDateTime", "RangedMoney")
 
   /**
     * method to determine if a data type in the teplate is a valid one
@@ -45,6 +41,6 @@ object DataTypes {
     */
   def isValidDataType(dataType: String):Boolean = {
     validEnums.contains(dataType)||validRandoms.contains(dataType)||
-      validExternals.contains(dataType)||validRanges.contains(dataType)
+      validExternals.contains(dataType)
   }
 }

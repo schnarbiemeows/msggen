@@ -123,7 +123,7 @@ object AddressTableRandomizer extends Randomizer {
     record.accountId=(accountId)
     val address:SimpleAddress = new SimpleAddress
     address.addressLine1=(generateRandomStreetAddress1())
-    if(makeBinaryDecision(0.1)) {
+    if(makeBinaryDecision(Configuration.MODE3_LINE2_ADDR_PERCENT.toDouble)) {
       address.addressLine2=(generateRandomStreetAddress2())
     }
     address.stateCode=(generateRandomState())
@@ -155,7 +155,7 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForDependent(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
-    val chance:Double = this.props.getProperty(Configuration.CHILD_PERCENT).toDouble
+    val chance:Double = this.props.getProperty(Configuration.MODE3_CHILD_PERCENT).toDouble
     var record = new SimpleAddressRecord
     if(makeBinaryDecision(chance)) {
       LogUtil.msggenMasterLoggerDEBUG(s"generating a different address for a dependent ${accountId}");

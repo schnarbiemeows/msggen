@@ -8,12 +8,11 @@ import com.scala.classes.utilities.StringUtils
 
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
-  * class for validating the formats specified for the
-  * money data type
+  * class used for validating the formats sepcified for the Float
+  * and Double data types
   */
-object MoneyQualifiersValidator extends Validator {
+object DecimalNumberQualifiersValidator extends Validator {
 
   /**
     * main validation method - currently not used
@@ -23,13 +22,13 @@ object MoneyQualifiersValidator extends Validator {
   override def validate(): Boolean = {true}
 
   /**
-    * method to validate that the qualifiers for the EnumMoney data type are valid
+    * method to validate that the qualifiers for the EnumDouble data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateEnumMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateEnumDecimalNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {
@@ -40,13 +39,13 @@ object MoneyQualifiersValidator extends Validator {
   }
 
   /**
-    * method to validate that the qualifiers for the RandomMoney data type are valid
+    * method to validate that the qualifiers for the RandomDouble data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateRandomMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateRandomDecimalNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     var hasmin:Boolean = false
@@ -56,14 +55,26 @@ object MoneyQualifiersValidator extends Validator {
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
-      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomMoney data type"
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomDouble data type"
     } else {
       for(i <- 0 until formatsThatNeedQualifierChecks.length) {
         formatsThatNeedQualifierChecks(i) match {
+          case "length" => {
+            if (!StringUtils.isInteger(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the length format is not an integer for the ${dataType} data type"
+            }
+          }
+          case "signDigits" => {
+            if (!StringUtils.isInteger(qualifiers(i))) {
+              isValidated = false
+              message = s"the significant digit qualifier specified is not an integer for the ${dataType} data type"
+            }
+          }
           case "min" => {
             if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the min format is not an integer for the RandomMoney data type"
+              message = s"qualifier specified for the min format is not an integer for the ${dataType} data type"
             } else {
               hasmin = true
               minval = qualifiers(i).toDouble
@@ -72,7 +83,7 @@ object MoneyQualifiersValidator extends Validator {
           case "max" => {
             if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the max format is not an integer for the RandomMoney data type"
+              message = s"qualifier specified for the max format is not an integer for the ${dataType} data type"
             } else {
               hasmax = true
               maxval = qualifiers(i).toDouble
@@ -80,7 +91,7 @@ object MoneyQualifiersValidator extends Validator {
           }
           case default => {
             isValidated = false
-            message = s"${default} is not a valid qualifier for the RandomMoney data type"
+            message = s"${default} is not a valid qualifier for the ${dataType} data type"
           }
         }
       }
@@ -89,15 +100,15 @@ object MoneyQualifiersValidator extends Validator {
       val hasRound = format.contains("roundhalf")
       if(hasRoundUp&&hasRoundDown||hasRoundDown&&hasRound||hasRound&&hasRoundUp) {
         isValidated = false
-        message = s"RandomMoney data type can only specify one of the following: roundup, rounddown, or roundhalf"
+        message = s"${dataType} data type can only specify one of the following: roundup, rounddown, or roundhalf"
       } else {
         if(!(hasmin&&hasmax)) {
           isValidated = false
-          message = s"RandomMoney data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
+          message = s"${dataType} data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
         } else {
           if(minval>maxval) {
             isValidated = false
-            message = s"min value = ${minval} is greater than max value = ${maxval} for the RandomMoney data type"
+            message = s"min value = ${minval} is greater than max value = ${maxval} for the ${dataType} data type"
           }
         }
       }
@@ -106,13 +117,13 @@ object MoneyQualifiersValidator extends Validator {
   }
 
   /**
-    * method to validate that the qualifiers for the ExternalMoney data type are valid
+    * method to validate that the qualifiers for the ExternalDouble data type are valid
     * @param dataType = data type name
     * @param format = data format(string of comma separated keywords)
     * @param qualifiers = array of qualifiers
     * @return (isValidated:Boolean,message:String)
     */
-  def validateExternalMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+  def validateExternalDecimalNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
     var message:String = "NONE"
     if(qualifiers.length==0) {

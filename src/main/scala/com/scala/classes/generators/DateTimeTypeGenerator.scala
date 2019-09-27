@@ -8,6 +8,8 @@
 
 package com.scala.classes.generators
 
+import com.scala.classes.utilities.Configuration
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -33,13 +35,22 @@ object DateTimeTypeGenerator {
     * @return - string
     */
   def makeRandomDateTime(formatString: String, qualifiers:ArrayBuffer[String]):String = {
-    var endWasSpecified:Boolean = false
-    var startWasSpecified:Boolean = false
-    var format:String = null
-    var start:String = null
-    var end:String = null
-    var result:String = null
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers("RandomDateTime", formatString)._1
+    var endWasSpecified: Boolean = false
+    var startWasSpecified: Boolean = false
+    var nowSpecified: Boolean = false
+    var format: String = null
+    var start: String = null
+    var end: String = null
+    var result: String = null
+    val splitLists: Tuple2[Array[String], Array[String]] = filterQualifiers("RandomDateTime", formatString)
+    val formatsThatNeedQualifierChecks: Array[String] = splitLists._1
+    val formatsNotNeedingQualifiers: Array[String] = splitLists._2
+    for (i <- 0 until formatsNotNeedingQualifiers.length) {
+      formatsNotNeedingQualifiers(i) match {
+        case "now" => nowSpecified = true
+        case _ => None
+      }
+    }
     for (i <- 0 until formatsThatNeedQualifierChecks.length) {
       formatsThatNeedQualifierChecks(i) match {
         case "format" => {
@@ -54,19 +65,30 @@ object DateTimeTypeGenerator {
           end = qualifiers(i)
         }
       }
-      if(startWasSpecified&&endWasSpecified) {
-        result = randomDateTime(start,end,format)
+    }
+    if(nowSpecified) {
+      if(format!=null) {
+        generateNowDateTime(format)
       } else {
-        if(startWasSpecified) {
-          result = randomDateTimeNoEnd(start,format)
-        } else if(endWasSpecified) {
-          result = randomDateTimeNoStart(end,format)
+        generateNowDateTime()
+      }
+    }
+    else
+    {
+      if(format==null) { format = Configuration.DEFAULT_DATE_TIME_FORMAT }
+      if (startWasSpecified && endWasSpecified) {
+        result = randomDateTime(start, end, format)
+      } else {
+        if (startWasSpecified) {
+          result = randomDateTimeNoEnd(start, format)
+        } else if (endWasSpecified) {
+          result = randomDateTimeNoStart(end, format)
         } else {
           result = randomDateTime(format)
         }
       }
+      result
     }
-    result
   }
 
   /**
@@ -78,36 +100,5 @@ object DateTimeTypeGenerator {
     var arrayLength = qualifiers.length
     var index = randomInteger(0,arrayLength)
     qualifiers(index)
-  }
-
-  /**
-    * this method generates a random RangedDateTime
-    * @param formatString - formatting specifications for the field
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeRangedDateTime(formatString: String,qualifiers:ArrayBuffer[String]):String = {
-    var endWasSpecified:Boolean = false
-    var startWasSpecified:Boolean = false
-    var format:String = null
-    var start:String = null
-    var end:String = null
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers("RangedDateTime", formatString)._1
-    for (i <- 0 until formatsThatNeedQualifierChecks.length) {
-      formatsThatNeedQualifierChecks(i) match {
-        case "format" => {
-          format = qualifiers(i)
-        }
-        case "start" => {
-          startWasSpecified = true
-          start = qualifiers(i)
-        }
-        case "end" => {
-          endWasSpecified = true
-          end = qualifiers(i)
-        }
-      }
-    }
-    randomDateTime(start,end,format)
   }
 }

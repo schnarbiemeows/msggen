@@ -111,7 +111,7 @@ object DateUtils {
     */
   def getAgeInDays(input: LocalDate): Long = {
     val currentDate:LocalDate = now()
-    var daysOfAge:Long = Period.between(input,currentDate).getDays
+    var daysOfAge:Long = ChronoUnit.DAYS.between(input,currentDate)
     daysOfAge
   }
 
@@ -222,7 +222,12 @@ object DateUtils {
     */
   def willStringParseToLocalDate(s: String, df:String): Boolean = {
     var isFormatValid:Boolean = true
-
+    var dateFormatter:DateTimeFormatter = DateTimeFormatter.ofPattern(df)
+    try {
+      var initialDate:LocalDate = LocalDate.parse(s,dateFormatter)
+    } catch {
+      case e: DateTimeParseException => { isFormatValid = false }
+    }
     isFormatValid
   }
 

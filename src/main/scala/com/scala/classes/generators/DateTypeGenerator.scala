@@ -35,11 +35,20 @@ object DateTypeGenerator {
   def makeRandomDate(formatString: String, qualifiers:ArrayBuffer[String]):String = {
     var endWasSpecified:Boolean = false
     var startWasSpecified:Boolean = false
+    var nowSpecified:Boolean = false
     var format:String = null
     var start:String = null
     var end:String = null
     var result:String = null
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers("RandomDate", formatString)._1
+    val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomDate", formatString)
+    val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
+    val formatsNotNeedingQualifiers:Array[String] = splitLists._2
+    for (i <- 0 until formatsNotNeedingQualifiers.length) {
+      formatsNotNeedingQualifiers(i) match {
+        case "now" => nowSpecified = true
+        case _ => None
+      }
+    }
     for (i <- 0 until formatsThatNeedQualifierChecks.length) {
       formatsThatNeedQualifierChecks(i) match {
         case "format" => {
@@ -54,6 +63,15 @@ object DateTypeGenerator {
           end = qualifiers(i)
         }
       }
+    }
+    if(nowSpecified) {
+      if(format!=null) {
+        generateNowDate(format)
+      } else {
+        generateNowDate()
+      }
+    }
+    else {
       if(startWasSpecified&&endWasSpecified) {
         result = randomDate(start,end,format)
       } else {
@@ -65,8 +83,8 @@ object DateTypeGenerator {
           result = randomDate(format)
         }
       }
+      result
     }
-    result
   }
 
   /**
@@ -78,36 +96,5 @@ object DateTypeGenerator {
     var arrayLength = qualifiers.length
     var index = randomInteger(0,arrayLength)
     qualifiers(index)
-  }
-
-  /**
-    * this method generates a random RangedDate
-    * @param formatString - formatting specifications for the field
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeRangedDate(formatString: String, qualifiers:ArrayBuffer[String]):String = {
-    var endWasSpecified:Boolean = false
-    var startWasSpecified:Boolean = false
-    var format:String = null
-    var start:String = null
-    var end:String = null
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers("RangedDate", formatString)._1
-    for (i <- 0 until formatsThatNeedQualifierChecks.length) {
-      formatsThatNeedQualifierChecks(i) match {
-        case "format" => {
-          format = qualifiers(i)
-        }
-        case "start" => {
-          startWasSpecified = true
-          start = qualifiers(i)
-        }
-        case "end" => {
-          endWasSpecified = true
-          end = qualifiers(i)
-        }
-      }
-    }
-    randomDate(start,end,format)
   }
 }

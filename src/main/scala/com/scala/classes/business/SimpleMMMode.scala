@@ -41,12 +41,12 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     var runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("inside SimpleMMMode");
     // determine the number of social security numbers to make
-    val numToMake:Int = properties.get(Configuration.SSN_NUMBER_TO_MAKE).toString.toInt
+    val numToMake:Int = properties.get(Configuration.MODE3_NUM_RECORDS).toString.toInt
     // make the social security numbers
     ssns = makeRandomSSNs(numToMake,0,maxSsnValue)
     ssnList = ssns.toList
     // determine the number of subscriber ID numbers to make
-    val numSubsToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.PRIMARY_PERCENT).toString.toDouble)
+    val numSubsToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.MODE3_PRIMARY_PERCENT).toString.toDouble)
     LogUtil.msggenMasterLoggerDEBUG(s"### of Primaries to make = ${numSubsToMake}");
     // make the subscriber IDs
     primarySubscriberIDs = makeRandomSubscriberIds(numSubsToMake,0,maxSubscriberIdValue)
@@ -54,7 +54,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     // make the primary members
     makePrimaries(ssnList,subscriberIDList,subscriberIDsForSpouses,subscriberIdToDependentNumberMap,finalMap,numSubsToMake)
     // determine the number of spouses to make
-    val numSpousesToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.SPOUCE_PERCENT).toString.toDouble)
+    val numSpousesToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.MODE3_SPOUCE_PERCENT).toString.toDouble)
     LogUtil.msggenMasterLoggerDEBUG(s"### of Spouses to make = ${numSpousesToMake}");
     var counter:Int = numSubsToMake-1
     LogUtil.msggenMasterLoggerDEBUG(s"### counter offset for the ssn List = ${counter} of ${ssnList.size}");
@@ -63,18 +63,18 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     makeSpouses(ssnList, subscriberIDsForSpouses, finalMap, numSpousesToMake,counter)
     counter += numSpousesToMake
     // determine the number of dependents to make
-    val numDependentsToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.CHILD_PERCENT).toString.toDouble)
+    val numDependentsToMake:Int = NumUtility.convertPercentageToInt(numToMake,properties.get(Configuration.MODE3_CHILD_PERCENT).toString.toDouble)
     // make the dependents
     makeDependents(ssnList, subscriberIDList, subscriberIdToDependentNumberMap, finalMap, numDependentsToMake,counter)
     // display to the logs the members made
     showMeFinalMap(finalMap)
     LogUtil.msggenMasterLoggerDEBUG("Writing Account IDs to a file")
     // write the account ID #s to a file for the Streaming Messages Mode(StreamingMessagesMode)
-    FileIO.outputAccountIdsToFile(finalMap,properties.get(Configuration.SSN_OUTPUT_FILE).toString)
+    FileIO.outputAccountIdsToFile(finalMap,properties.get(Configuration.MODE0_SSN_OUTPUT_FILE).toString)
     LogUtil.msggenMasterLoggerDEBUG("DONE - writing Account IDs to a file")
     LogUtil.msggenMasterLoggerDEBUG("Writing Memeber and Address information to files")
     // write the Member and Address information to files
-    FileIO.writeMemberAndAddressFiles(finalMap,"JSON",properties.get(Configuration.MM_FILE_LOC).toString,properties.get(Configuration.ADDR_FILE_LOC).toString)
+    FileIO.writeMemberAndAddressFiles(finalMap,"JSON",properties.get(Configuration.MODE3_MASTER_MEMBER_FILE_LOC).toString,properties.get(Configuration.MODE3_MEMBER_ADDRESS_FILE_LOC).toString)
     LogUtil.msggenMasterLoggerDEBUG("DONE - writing Member and Address information to files")
     val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
     LogUtil.logTime(s"SimpleMMMode run() method time = ${runEnd._1} milliseconds")
