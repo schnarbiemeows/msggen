@@ -16,7 +16,7 @@ import com.scala.classes.utilities.LogUtil
   * @param numberOfSsns = number of social security #s to make
   */
 class SSNMakerThread(val lock: SSNlock,
-                     var ssnset: scala.collection.mutable.Set[Int],
+                     val ssnset: scala.collection.mutable.Set[Int],
                      val threadNum:Int,
                      val numberOfSsns: Int) extends Runnable {
 
@@ -44,7 +44,7 @@ class SSNMakerThread(val lock: SSNlock,
 
   /**
     * critical section method for checking if our set already contains the generated Social Security Number
-    * @param num = number to check
+    * @param num - number to check
     * @return good
     */
   def checkThenAddToSet(num:Int):Boolean = {

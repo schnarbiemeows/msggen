@@ -35,6 +35,18 @@ object DataTypes {
   val validExternals:Set[String] = Set("ExternalString", "ExternalInt", "ExternalLong" , "ExternalFloat", "ExternalDouble", "ExternalDate", "ExternalDateTime", "ExternalMoney")
 
   /**
+    * Map of our template data types to the equivalent Hive table data type
+    */
+  val hiveMappings = Map( "EnumString" -> "String", "RandomString" -> "String", "ExternalString" -> "String",
+   "EnumInt" -> "Int", "RandomInt" -> "Int", "ExternalInt" -> "Int",
+   "EnumLong" -> "BigInt", "RandomLong" -> "BigInt", "ExternalLong" -> "BigInt",
+   "EnumFloat" -> "Float", "RandomFloat" -> "Float", "ExternalFloat" -> "Float",
+   "EnumDouble" -> "Double", "RandomDouble" -> "Double", "ExternalDouble" -> "Double",
+   "EnumDate" -> "Date", "RandomDate" -> "Date", "ExternalDate" -> "Date",
+   "EnumDateTime" -> "Timestamp", "RandomDateTime" -> "Timestamp", "ExternalDateTime" -> "Timestamp",
+   "EnumMoney" -> "Float", "RandomMoney" -> "Float", "ExternalMoney" -> "Float")
+
+  /**
     * method to determine if a data type in the teplate is a valid one
     * @param dataType - data type specified in the template
     * @return - true or false

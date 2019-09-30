@@ -63,14 +63,23 @@ class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate 
     * output folder to locate the generated files
     */
   override val outputFileFolder:String = {
-    var name:String = properties.get(Configuration.MODE4_OUTPUT_FILE).toString
-    var os:String = properties.get(Configuration.SYSTEM).toString
-    if(os.toUpperCase == "WINDOWS") {
-      if(!name.endsWith("\\")) { name +="\\" }
-    } else {
-      if(!name.endsWith("/")) { name +="/" }
-    }
-    name
+    val name:String = properties.get(Configuration.MODE4_OUTPUT_FILE).toString
+    val os:String = properties.get(Configuration.SYSTEM).toString
+    val output:String = result(os,name)
+    output
   }
 
+  def result(os:String,name:String):(String) = {
+    if (os.toUpperCase == "WINDOWS") {
+      if (!name.endsWith("\\")) {
+        name + "\\"
+      }
+      else name
+    }
+    else {
+      if (!name.endsWith("/")) {
+        name + "/"
+      } else name
+    }
+  }
 }

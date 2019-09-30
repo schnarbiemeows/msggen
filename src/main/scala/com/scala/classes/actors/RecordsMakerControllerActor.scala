@@ -20,6 +20,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
                                   val finishedQueue:ArrayBlockingQueue[String])
   extends Actor {
 
+  // TODO - do we want more timing logs in here?
   /**
     * N = numThreads to use for making/copying Record data
     */

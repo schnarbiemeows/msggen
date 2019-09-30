@@ -8,6 +8,7 @@ import akka.actor.Actor
 import com.scala.classes.actors.messages.{CopyRecordMessage, FinishedCopyingRecordMessage, FinishedMakingRecordMessage, MakeRecordMessage}
 import com.scala.classes.business.MakeGenericRecord
 import com.scala.classes.posos.{Record, RecordsTemplate}
+import com.scala.classes.utilities.{DateUtils, LogUtil}
 
 /**
   * this is an actor class. It's purpose is to:
@@ -31,11 +32,17 @@ class RecordMakerAndCopierActor(val records: RecordsTemplate,
     */
   override def receive: Receive = {
     case MakeRecordMessage(message)  => {
+      var runStartLocal = DateUtils.nowTime()
       firstRecordSet(message) = MakeGenericRecord.makeRecord(records)
+      var runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"making a record for thread ${threadNum} took => ${runEndLocal._1} milliseconds")
       sender ! FinishedMakingRecordMessage(threadNum)
     }
     case CopyRecordMessage(message,i)  => {
+      var runStartLocal = DateUtils.nowTime()
       secondRecordSet(i)(message) = firstRecordSet(message)
+      var runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"copying a record for thread ${threadNum} took => ${runEndLocal._1} milliseconds")
       sender ! FinishedCopyingRecordMessage(threadNum)
     }
   }

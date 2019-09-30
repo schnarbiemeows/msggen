@@ -46,7 +46,13 @@ object Configuration {
   val MODE4_STRING_DATA_RULE = "mode4.fieldname.possiblecharacters"
   val MODE4_NUM_THREADS = "mode4.numthreads"
   val MODE4_OUTPUT_FILE_TYPE = "mode4.outputfile.type"
-
+  // mode 5 configs
+  val MODE5_HIVE_OUTPUTFILE = "mode5.hive.outputfile"
+  val MODE5_HIVE_DATABASE_NAME = "mode5.hive.database.name"
+  val MODE5_HIVE_TABLE_NAME = "mode5.hive.table.name"
+  val MODE5_HIVE_RAWDATA = "mode5.hive.rawdata"
+  val MODE5_HIVE_EXTERNAL_TABLE = "mode5.hive.externaltable"
+  val MODE5_HIVE_HDFS_LOCATION = "mode5.hive.hdfs.location"
   // defaults
   val DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
   val DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"

@@ -112,6 +112,11 @@ class DateTimeTypeGeneratorTest {
     results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
+    template.dataFormats = Array("format,start,end")
+    template.dataQualifiers(0) = ArrayBuffer("dd/MM/yyyy HH:mm","01/01/1900 00:00","31/12/2000 00:00")
+    results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
+    assertNotNull(results)
+    println(results)
   }
 
   /**

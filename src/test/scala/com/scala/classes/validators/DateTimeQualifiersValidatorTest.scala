@@ -100,6 +100,21 @@ class DateTimeQualifiersValidatorTest {
     template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd","2018-10-10")
     results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
+
+    template.dataFormats = Array("now")
+    template.dataQualifiers(0) = ArrayBuffer()
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+
+    template.dataFormats = Array("now,format")
+    template.dataQualifiers(0) = ArrayBuffer("yyyyMMdd")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+
+    template.dataFormats = Array("format,now")
+    template.dataQualifiers(0) = ArrayBuffer("MM/dd/yyyy")
+    results = DateTimeQualifiersValidator.validateRandomDateQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -180,6 +195,11 @@ class DateTimeQualifiersValidatorTest {
     // test that the now format won't mess anything up
     template.dataFormats = Array("format,end,now")
     template.dataQualifiers(0) = ArrayBuffer("yyyy-MM-dd HH:mm:ss","2018-10-10 00:00:00")
+    results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+
+    template.dataFormats = Array("format,start,end")
+    template.dataQualifiers(0) = ArrayBuffer("dd/MM/yyyy mm:ss","01/01/1900 00:00","31/12/2000 00:00")
     results = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }

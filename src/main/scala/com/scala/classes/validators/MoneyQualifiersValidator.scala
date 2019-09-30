@@ -48,22 +48,22 @@ object MoneyQualifiersValidator extends Validator {
     */
   def validateRandomMoneyQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
     var isValidated = true
-    var message:String = "NONE"
-    var hasmin:Boolean = false
-    var hasmax:Boolean = false
-    var minval:Double = 0
-    var maxval:Double = 0
-    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
+    var message: String = "NONE"
+    var hasmin: Boolean = false
+    var hasmax: Boolean = false
+    var minval: Double = 0
+    var maxval: Double = 0
+    val formatsThatNeedQualifierChecks: Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
-      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomMoney data type"
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the ${dataType} data type"
     } else {
-      for(i <- 0 until formatsThatNeedQualifierChecks.length) {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
         formatsThatNeedQualifierChecks(i) match {
           case "min" => {
             if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the min format is not an integer for the RandomMoney data type"
+              message = s"qualifier specified for the min format is not an integer for the ${dataType} data type"
             } else {
               hasmin = true
               minval = qualifiers(i).toDouble
@@ -72,7 +72,7 @@ object MoneyQualifiersValidator extends Validator {
           case "max" => {
             if (!StringUtils.isDouble(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the max format is not an integer for the RandomMoney data type"
+              message = s"qualifier specified for the max format is not an integer for the ${dataType} data type"
             } else {
               hasmax = true
               maxval = qualifiers(i).toDouble
@@ -80,24 +80,24 @@ object MoneyQualifiersValidator extends Validator {
           }
           case default => {
             isValidated = false
-            message = s"${default} is not a valid qualifier for the RandomMoney data type"
+            message = s"${default} is not a valid qualifier for the ${dataType} data type"
           }
         }
       }
       val hasRoundUp = format.contains("roundup")
       val hasRoundDown = format.contains("rounddown")
       val hasRound = format.contains("roundhalf")
-      if(hasRoundUp&&hasRoundDown||hasRoundDown&&hasRound||hasRound&&hasRoundUp) {
+      if (hasRoundUp && hasRoundDown || hasRoundDown && hasRound || hasRound && hasRoundUp) {
         isValidated = false
-        message = s"RandomMoney data type can only specify one of the following: roundup, rounddown, or roundhalf"
+        message = s"${dataType} data type can only specify one of the following: roundup, rounddown, or roundhalf"
       } else {
-        if(!(hasmin&&hasmax)) {
+        if (!(hasmin && hasmax)) {
           isValidated = false
-          message = s"RandomMoney data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
+          message = s"${dataType} data type must have both a valid(numeric) minimum and a valid(numeric) maximum value specified"
         } else {
-          if(minval>maxval) {
+          if (minval > maxval) {
             isValidated = false
-            message = s"min value = ${minval} is greater than max value = ${maxval} for the RandomMoney data type"
+            message = s"min value = ${minval} is greater than max value = ${maxval} for the ${dataType} data type"
           }
         }
       }

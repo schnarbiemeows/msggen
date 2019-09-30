@@ -14,8 +14,8 @@ import com.scala.classes.utilities.Randomizer
 object SSNRandomizer extends Randomizer {
 
   /**
-    *
-    * @param props
+    * initialize
+    * @param props - singleton Properties object
     */
   override def initialize(props: Properties): Unit = {
 

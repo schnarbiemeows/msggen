@@ -50,14 +50,14 @@ object StringQualifiersValidator extends Validator {
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
-      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomString data type"
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the ${dataType} data type"
     } else {
       for(i <- 0 until formatsThatNeedQualifierChecks.length) {
         formatsThatNeedQualifierChecks(i) match {
           case "length" => {
             if (!StringUtils.isInteger(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the length format is not an integer for the RandomString data type"
+              message = s"qualifier specified for the length format is not an integer for the ${dataType} data type"
             }
           }
           case "chars" => {
@@ -66,7 +66,7 @@ object StringQualifiersValidator extends Validator {
           }
           case default => {
             isValidated = false
-            message = s"${default} is not a valid qualifier for the RandomString data type"
+            message = s"${default} is not a valid qualifier for the ${dataType} data type"
           }
         }
       }

@@ -5,6 +5,7 @@
 package com.scala.classes.utilities
 
 import java.io.{BufferedWriter, File, FileWriter}
+import java.time.LocalTime
 import java.util.{Iterator, Properties}
 
 import com.google.gson.Gson
@@ -23,30 +24,89 @@ object FileIO {
 
   val accountIdLength:Int = 11
   val ssnLength = 9
+  // TODO - get this method merged with the method below it
   /**
     * method to write social security output to a file
     * @param ssns - list of social security numbers
     * @param filepath - full path to the file to write to
     */
   def outputToFile(ssns: List[Int], filepath: String): Unit = {
-    LogUtil.msggenThread2LoggerDEBUG("writing SSNs to a file")
-    LogUtil.msggenThread1LoggerDEBUG("file path : " + filepath)
+    val runStart = DateUtils.nowTime()
+    var runStartLocal = DateUtils.nowTime()
+    var runEndLocal:Tuple2[Long, LocalTime] = (0,runStartLocal)
+    LogUtil.msggenMasterLoggerDEBUG("writing SSNs to a file")
+    LogUtil.msggenMasterLoggerDEBUG("file path : " + filepath)
     var outfile:BufferedWriter = null
     try {
       outfile = new BufferedWriter(new FileWriter(new File(filepath),true))
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
       for(num <- ssns) {
         outfile.write(NumUtility.padIntToString(num,ssnLength) + "\n")
       }
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"writing to the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
     }
     catch {
       case e: Exception => {
-        LogUtil.msggenThread1LoggerDEBUG("there was an issue writing SSNs to a file")
+        LogUtil.msggenMasterLoggerDEBUG("there was an issue writing SSNs to a file")
         e.printStackTrace()
       }
     }
     finally {
-      LogUtil.msggenThread1LoggerDEBUG("closing our SSN file")
+      LogUtil.msggenMasterLoggerDEBUG("closing our SSN file")
       outfile.close()
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"closing the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
+      val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
+      LogUtil.logTime(s"outputToFile() method time = ${runEnd._1} milliseconds")
+    }
+  }
+
+  /**
+    * method to write any list of items to a file
+    * @param input - list of items
+    * @param filepath - path
+    * @return - success indicator
+    */
+  def outputAnyListToFile(input: List[Any], filepath: String): Boolean = {
+    val runStart = DateUtils.nowTime()
+    var runStartLocal = DateUtils.nowTime()
+    var runEndLocal:Tuple2[Long, LocalTime] = (0,runStartLocal)
+    LogUtil.msggenMasterLoggerDEBUG("writing List to a file")
+    LogUtil.msggenMasterLoggerDEBUG("file path : " + filepath)
+    var outfile:BufferedWriter = null
+    try {
+      outfile = new BufferedWriter(new FileWriter(new File(filepath),true))
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
+      for(item <- input) {
+        outfile.write(s"${item.toString} \n")
+      }
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"writing to the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
+      true
+    }
+    catch {
+      case e: Exception => {
+        LogUtil.msggenMasterLoggerDEBUG("there was an issue writing the List to a file")
+        e.printStackTrace()
+        false
+      }
+    }
+    finally {
+      LogUtil.msggenMasterLoggerDEBUG("closing our output file")
+      outfile.close()
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"closing the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
+      val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
+      LogUtil.logTime(s"outputAnyListToFile() method time = ${runEnd._1} milliseconds")
     }
   }
 
@@ -57,6 +117,9 @@ object FileIO {
     * @param properties - singleton Properties object
     */
   def writeGenericRecordToFile(records: Array[Record], filepath: String,properties:Properties): Unit = {
+    val runStart = DateUtils.nowTime()
+    var runStartLocal = DateUtils.nowTime()
+    var runEndLocal:Tuple2[Long, LocalTime] = (0,runStartLocal)
     LogUtil.msggenMasterLoggerDEBUG("writing generic records to a file")
     LogUtil.msggenMasterLoggerDEBUG(s"file path : ${filepath}")
     val fileType = properties.get(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
@@ -65,6 +128,9 @@ object FileIO {
     try {
       LogUtil.msggenMasterLoggerDEBUG("opening BufferedWriter")
       outfile = new BufferedWriter(new FileWriter(new File(filepath+"."+fileType),true))
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
       LogUtil.msggenMasterLoggerDEBUG("BufferedWriter open")
       if(records==null) {
         LogUtil.msggenMasterLoggerDEBUG("there are no records to process !! ")
@@ -80,6 +146,9 @@ object FileIO {
           outfile.write(record.toString + "\n")
         }
       }
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"writing to the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
     }
     catch {
       case e: Exception => {
@@ -90,6 +159,11 @@ object FileIO {
     finally {
       LogUtil.msggenMasterLoggerDEBUG("closing our generic records file")
       outfile.close()
+      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+      LogUtil.logTime(s"closing the output file took => ${runEndLocal._1} milliseconds")
+      runStartLocal = runEndLocal._2
+      val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
+      LogUtil.logTime(s"writeGenericRecordToFile() method time = ${runEnd._1} milliseconds")
     }
   }
   /**
@@ -204,7 +278,7 @@ object FileIO {
         * field names
         */
       val headerIterator = sheet1.getRow(0).cellIterator()
-      val fieldsAndCounter:Tuple2[Int,Array[String]] = getFieldsTypesOrFormats(headerIterator,formatter)
+      val fieldsAndCounter:Tuple2[Int,Array[String]] = getFieldsTypesOrFormats(headerIterator,formatter,",")
       var runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Column names took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
@@ -215,7 +289,7 @@ object FileIO {
         * field data types
         */
       val dataTypeIterator = sheet1.getRow(1).cellIterator()
-      records.dataTypes = getFieldsTypesOrFormats(dataTypeIterator,formatter)._2
+      records.dataTypes = getFieldsTypesOrFormats(dataTypeIterator,formatter,",")._2
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Types of each Column took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
@@ -224,7 +298,7 @@ object FileIO {
         * field formats
         */
       val formatIterator = sheet1.getRow(2).cellIterator()
-      records.dataFormats = getFieldsTypesOrFormats(formatIterator,formatter)._2
+      records.dataFormats = getFieldsTypesOrFormats(formatIterator,formatter,":")._2
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"reading in the Data Formatting Information took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
@@ -270,9 +344,10 @@ object FileIO {
     * Row(2) = FieldFormats
     * @param cellIterator = Row iterator for all of the cells in a Row
     * @param formatter = DataFormatter needed by the spreadsheet object
+    * @param delimiter - temporary delimiter for creating an array from a list of cell values
     * @return (Int,Array(String))
     */
-  def getFieldsTypesOrFormats(cellIterator: Iterator[Cell], formatter:DataFormatter):Tuple2[Int,Array[String]] = {
+  def getFieldsTypesOrFormats(cellIterator: Iterator[Cell], formatter:DataFormatter, delimiter:String):Tuple2[Int,Array[String]] = {
     var firstItem:Boolean = true
     var listOfFieldsStr:String = ""
     var counter:Int = 0
@@ -282,15 +357,15 @@ object FileIO {
         listOfFieldsStr += formatter.formatCellValue(item)
         firstItem=false
       } else {
-        listOfFieldsStr += ","+formatter.formatCellValue(item)
+        listOfFieldsStr += delimiter+formatter.formatCellValue(item)
       }
       counter += 1
     }
-    (counter,listOfFieldsStr.split(","))
+    (counter,listOfFieldsStr.split(delimiter))
   }
 
   /**
-    * method to populate the dtaValues double array of the RecordTemplate
+    * method to populate the dataValues double array of the RecordTemplate
     * this Double Array holds all of the possible values that each field could have
     * how it works:
     * create a String Array of length numberOfColumns
@@ -329,7 +404,11 @@ object FileIO {
       }
     }
     for(j <- 0 until arrayOfString.length) {
-      dataValues(j) = arrayOfString(j).split("~").to[ArrayBuffer]
+      if(arrayOfString(j).length>0) {
+        dataValues(j) = arrayOfString(j).split("~").to[ArrayBuffer]
+      } else {
+        dataValues(j) = ArrayBuffer.empty
+      }
     }
     dataValues
   }

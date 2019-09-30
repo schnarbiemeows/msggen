@@ -8,7 +8,7 @@ import java.util.Properties
 
 import com.scala.classes.actors.controllers.RecordMakerController
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.{DateUtils, FileIO, LogUtil}
+import com.scala.classes.utilities.{Configuration, DateUtils, FileIO, LogUtil}
 import com.scala.classes.validators.ExcelDataSheetValidator
 
 /**
@@ -36,7 +36,7 @@ class StreamingMessagesMode(val mode: Int, val properties: Properties) extends M
     // 1. read in excel spreadsheet data
     FileIO.readInSpreadsheet(records)
     // 2. validate the data
-    val templateValidated:Boolean = new ExcelDataSheetValidator(records).validate()
+    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate()
     if(templateValidated) {
       LogUtil.msggenMasterLoggerDEBUG("template validated")
       // 3. read in any external files for external fields
@@ -44,6 +44,13 @@ class StreamingMessagesMode(val mode: Int, val properties: Properties) extends M
         // commence the file creation
         val recordMaker:RecordMakerController= new RecordMakerController(records,properties)
         val success:Boolean = recordMaker.generateRecords()
+        if(success&&mode==5) {
+          LogUtil.msggenMasterLoggerDEBUG("creating Hive table script")
+          val hiveList:List[String] = HiveTableCreator.makeTableArray(records,properties)
+          val filepath = properties.getProperty(Configuration.MODE5_HIVE_OUTPUTFILE)
+          FileIO.outputAnyListToFile(hiveList,filepath)
+          LogUtil.msggenMasterLoggerDEBUG("finished creating Hive table script")
+        }
       }
     } else {
       LogUtil.msggenMasterLoggerDEBUG("template not validated")

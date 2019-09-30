@@ -13,7 +13,7 @@ import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil}
   * input spreadsheet template is valid
   * @param template - Excel template that we are validating
   */
-class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
+class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends Validator {
 
   /**
     * main method call for validating the spreadsheet template
@@ -31,16 +31,16 @@ class ExcelDataSheetValidator(template: RecordsTemplate) extends Validator {
       LogUtil.msggenMasterLoggerDEBUG("no value rows exceed header lengths")
       validateTheDataTypes()
       LogUtil.msggenMasterLoggerDEBUG("data types validated")
-      validateDataFormats()
-      LogUtil.msggenMasterLoggerDEBUG("data formats validated")
-      validateDataQualifiers()
-      LogUtil.msggenMasterLoggerDEBUG("data values validated")
-
+      if(mode==4 || mode==5) {
+        validateDataFormats()
+        LogUtil.msggenMasterLoggerDEBUG("data formats validated")
+        validateDataQualifiers()
+        LogUtil.msggenMasterLoggerDEBUG("data values validated")
+      }
     } catch {
       case e:Exception => {LogUtil.msggenMasterLoggerERROR("Exception occurred : "+e+" , exiting program")}
         isValidated = false
     }
-
     val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
     LogUtil.logTime(s"ExcelDataSheetValidator validate() method time = ${runEnd._1} milliseconds")
     isValidated
