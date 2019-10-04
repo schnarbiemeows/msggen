@@ -5,7 +5,7 @@
 package com.scala.classes.locks
 
 /**
-  * lock to oversee the ssnset: scala.collection.mutable.Set[Int]
+  * lock oject for the ssnset: scala.collection.mutable.Set[Int]
   */
 class SSNlock {
 

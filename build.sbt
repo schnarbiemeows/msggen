@@ -1,0 +1,13 @@
+name := "msggen"
+version := "1.0"
+scalaVersion := "2.12.6"
+
+libraryDependencies += "com.google.code.gson" % "gson" % "2.8.5"
+libraryDependencies += "org.apache.poi" % "poi" % "3.15-beta2"
+libraryDependencies += "org.apache.poi" % "poi-ooxml" % "3.15-beta2"
+libraryDependencies += "org.apache.poi" % "poi-ooxml-schemas" % "3.15-beta2"
+libraryDependencies += "com.typesafe.akka" % "akka-actor_2.12" % "[2.5.16,)"
+libraryDependencies += "org.scala-lang" % "scala-library" % "2.12.6"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-api-scala_2.12" % "11.0"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.11.0"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.11.0"

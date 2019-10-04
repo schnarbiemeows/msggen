@@ -155,7 +155,7 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForDependent(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
-    val chance:Double = this.props.getProperty(Configuration.MODE3_CHILD_PERCENT).toDouble
+    val chance:Double = this.props.getProperty(Configuration.MODE3_NUMBER_OF_DEPENDENTS).toDouble
     var record = new SimpleAddressRecord
     if(makeBinaryDecision(chance)) {
       LogUtil.msggenMasterLoggerDEBUG(s"generating a different address for a dependent ${accountId}");

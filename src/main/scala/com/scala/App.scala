@@ -29,6 +29,7 @@ object App {
     LogUtil.msggenMasterLoggerDEBUG(s"Mode = ${mode}");
     mode match {
       case 0 => new SSNMakerMode(0,properties).run()
+      case 1 => new PrimaryKeyMakerMode(1,properties).run()
       case 3 => new SimpleMMMode(3,properties).run()
       case 4 => new StreamingMessagesMode(4,properties).run()
       case 5 => new StreamingMessagesMode(5,properties).run()

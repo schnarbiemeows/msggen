@@ -23,48 +23,6 @@ import scala.io.Source
 object FileIO {
 
   val accountIdLength:Int = 11
-  val ssnLength = 9
-  // TODO - get this method merged with the method below it
-  /**
-    * method to write social security output to a file
-    * @param ssns - list of social security numbers
-    * @param filepath - full path to the file to write to
-    */
-  def outputToFile(ssns: List[Int], filepath: String): Unit = {
-    val runStart = DateUtils.nowTime()
-    var runStartLocal = DateUtils.nowTime()
-    var runEndLocal:Tuple2[Long, LocalTime] = (0,runStartLocal)
-    LogUtil.msggenMasterLoggerDEBUG("writing SSNs to a file")
-    LogUtil.msggenMasterLoggerDEBUG("file path : " + filepath)
-    var outfile:BufferedWriter = null
-    try {
-      outfile = new BufferedWriter(new FileWriter(new File(filepath),true))
-      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
-      LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
-      runStartLocal = runEndLocal._2
-      for(num <- ssns) {
-        outfile.write(NumUtility.padIntToString(num,ssnLength) + "\n")
-      }
-      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
-      LogUtil.logTime(s"writing to the output file took => ${runEndLocal._1} milliseconds")
-      runStartLocal = runEndLocal._2
-    }
-    catch {
-      case e: Exception => {
-        LogUtil.msggenMasterLoggerDEBUG("there was an issue writing SSNs to a file")
-        e.printStackTrace()
-      }
-    }
-    finally {
-      LogUtil.msggenMasterLoggerDEBUG("closing our SSN file")
-      outfile.close()
-      runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
-      LogUtil.logTime(s"closing the output file took => ${runEndLocal._1} milliseconds")
-      runStartLocal = runEndLocal._2
-      val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
-      LogUtil.logTime(s"outputToFile() method time = ${runEnd._1} milliseconds")
-    }
-  }
 
   /**
     * method to write any list of items to a file
@@ -80,7 +38,7 @@ object FileIO {
     LogUtil.msggenMasterLoggerDEBUG("file path : " + filepath)
     var outfile:BufferedWriter = null
     try {
-      outfile = new BufferedWriter(new FileWriter(new File(filepath),true))
+      outfile = new BufferedWriter(new FileWriter(new File(filepath),false))
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2

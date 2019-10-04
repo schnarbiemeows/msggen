@@ -29,13 +29,32 @@ trait Randomizer {
     */
   def randomAlphaNumeric(size: Int): String = {
     val builder = new StringBuilder
-    while(size>0) {
+    var count:Int = 0
+    while(count<size) {
       val character = (Math.random * Configuration.ALPHA_NUMERIC_STRING.length).asInstanceOf[Int]
       builder.append(Configuration.ALPHA_NUMERIC_STRING.charAt(character))
+      count+=1
     }
     builder.toString
   }
 
+  /**
+    * method to generate a random primary key of length size
+    * @param chars - array of characters that could be in the key
+    * @param size - the length of the key
+    * @return - string
+    */
+  def randomPrimaryKey(chars: String, size:Int):String = {
+    val builder = new StringBuilder
+    var charslength = chars.length
+    var count:Int = 0
+    while(count<size) {
+      val character = chars(randomInteger(0, charslength))
+      builder.append(character)
+      count+=1
+    }
+    builder.toString()
+  }
   /**
     * method to implement a time delay in milliseconds
     * @param milliseconds - length of delay that we want

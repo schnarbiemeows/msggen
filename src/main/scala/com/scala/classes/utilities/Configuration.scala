@@ -23,13 +23,18 @@ object Configuration {
   // mode 0 configs
   val MODE0_SSN_OUTPUT_FILE:String = "mode0.ssn.file"
   val MODE0_SSN_NUMBER_TO_MAKE = "mode0.ssn.num"
+  // mode 1 configs
+  val MODE1_OUTPUT_FILE = "mode1.outputfile"
+  val MODE1_NUM_PRIMARY_KEYS_TO_MAKE = "mode1.numberofprimariestomake"
+  val MODE1_CHARACTERS = "mode1.chars"
+  val MODE1_PRIMARY_LENGTH = "mode1.length"
   // mode 3 configs
   val MODE3_MASTER_MEMBER_FILE_LOC:String = "mode3.mm.file"
   val MODE3_MEMBER_ADDRESS_FILE_LOC:String = "mode3.address.file"
   val MODE3_NUM_RECORDS:String = "mode3.numberofrecords"
-  val MODE3_PRIMARY_PERCENT = "mode3.primary.percent"
-  val MODE3_SPOUCE_PERCENT = "mode3.spouse.percent"
-  val MODE3_CHILD_PERCENT = "mode3.child.percent"
+  val MODE3_NUMBER_OF_PRIMARIES = "mode3.numberofprimaries"
+  val MODE3_NUMBER_OF_SPOUSES = "mode3.numberofspouses"
+  val MODE3_NUMBER_OF_DEPENDENTS = "mode3.numberofdependents"
   val MODE3_MIDDLENAME_PERCENT = "mode3.middlename.percent"
   val MODE3_LINE2_ADDR_PERCENT = "mode3.addressline2.percent"
   val MODE3_PRIMARY_MINAGE = "mode3.primary.minage"
