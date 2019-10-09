@@ -58,6 +58,9 @@ object Configuration {
   val MODE5_HIVE_RAWDATA = "mode5.hive.rawdata"
   val MODE5_HIVE_EXTERNAL_TABLE = "mode5.hive.externaltable"
   val MODE5_HIVE_HDFS_LOCATION = "mode5.hive.hdfs.location"
+  // mode 8 configs
+  val MODE8_BOOTSTRAP_SERVER = "mode8.bootstrap.server"
+  val MODE8_TOPIC_NAME = "mode8.topic.name"
   // defaults
   val DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
   val DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"

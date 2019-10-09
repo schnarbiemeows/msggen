@@ -34,6 +34,8 @@ object App {
       case 4 => new StreamingMessagesMode(4,properties).run()
       case 5 => new StreamingMessagesMode(5,properties).run()
       case 6 => new HqlMakerMode(6,properties).run()
+      case 7 => new StreamingMessagesMode(7,properties).run()
+      case 8 => new StreamingMessagesMode(8,properties).run()
       case default => println(s"mode ${default} is not a valid mode, so nothing to do here")
     }
     LogUtil.msggenMasterLoggerDEBUG("END - mssgen program");

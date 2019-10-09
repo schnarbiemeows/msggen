@@ -61,7 +61,10 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     * actor that will be used to pull records from recordArray2 and write them out to a file
     */
   var fileWriter: ActorRef = context.actorOf(Props(new FileWriterActor(recordArray2,properties)))
-
+  /**
+    * actor that will be used to push records to a kafka topic
+    */
+  val kafkActor:ActorRef = context.actorOf(Props(new KafkaProducerActor(properties)))
   /**
     * indexes and toggles used to keep track of how many records have been requested to
     * be made or copied, how many records have successfully been made or copied, how many
@@ -96,9 +99,12 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     case StartMessage => initiateRecordMaking()
     case FinishedMakingRecordMessage(threadNum) => incrementCheckAndCount(threadNum)
     case FinishedCopyingRecordMessage(threadNum) => incrementCopyAndCount(threadNum)
-    case FinishedWritingFileMessage => {
+    case FinishedWritingFileMessage(filename) => {
       filesFinishedCount+=1
       LogUtil.msggenMasterLoggerDEBUG(s"files Finished Count = ${filesFinishedCount} , numFiles = ${numFiles}")
+      kafkActor ! KafkaProducerMessage(filename)
+    }
+    case KafkaProducerFinishedMessage => {
       if(filesFinishedCount==numFiles) {
         LogUtil.msggenMasterLoggerDEBUG("pushing DONE into queue")
         finishedQueue.put("DONE")

@@ -69,6 +69,13 @@ class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate 
     output
   }
 
+  /**
+    * method that will add either "\\" or "/" to the end of a
+    * filepath depending on the operating system
+    * @param os - operating system
+    * @param name - file path
+    * @return - String
+    */
   def result(os:String,name:String):(String) = {
     if (os.toUpperCase == "WINDOWS") {
       if (!name.endsWith("\\")) {

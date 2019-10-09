@@ -5,6 +5,7 @@
 package com.scala.classes.validators
 
 import java.time.{LocalDate, LocalDateTime}
+import java.util.Properties
 
 import com.scala.classes.utilities.DateUtils
 
@@ -17,11 +18,11 @@ import scala.collection.mutable.ArrayBuffer
 object DateTimeQualifiersValidator extends Validator {
 
   /**
-    * main validation method - currently not used
-    * TODO - maybe refactor to remove this reference
-    * @return
+    * main validation method
+    * @param properties - singleton Properties object
+    * @return - Boolean
     */
-  override def validate(): Boolean = {true}
+  override def validate(properties: Properties): Boolean = {true}
 
   /**
     * this method checks to make sure that there is at least 1 value

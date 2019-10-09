@@ -36,7 +36,7 @@ class StreamingMessagesMode(val mode: Int, val properties: Properties) extends M
     // 1. read in excel spreadsheet data
     FileIO.readInSpreadsheet(records)
     // 2. validate the data
-    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate()
+    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate(properties)
     if(templateValidated) {
       LogUtil.msggenMasterLoggerDEBUG("template validated")
       // 3. read in any external files for external fields
@@ -44,7 +44,7 @@ class StreamingMessagesMode(val mode: Int, val properties: Properties) extends M
         // commence the file creation
         val recordMaker:RecordMakerController= new RecordMakerController(records,properties)
         val success:Boolean = recordMaker.generateRecords()
-        if(success&&mode==5) {
+        if(success&&(mode==5||mode==7)) {
           LogUtil.msggenMasterLoggerDEBUG("creating Hive table script")
           val hiveList:List[String] = HiveTableCreator.makeTableArray(records,properties)
           val filepath = properties.getProperty(Configuration.MODE5_HIVE_OUTPUTFILE)

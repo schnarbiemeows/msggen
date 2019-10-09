@@ -49,4 +49,21 @@ object PropertyLoader {
     println(s"file name = $configFileNameadjusted")
     configFileNameadjusted
   }
+
+  /**
+    * method to detect if the operating system is windows, and, if so, to
+    * replace any "\" in the file path with "\\"
+    * @param configFileName - full path to the config file
+    * @return - adjusted config file path
+    */
+  def revAdjustConfigFilePath(configFileName:String):String = {
+    val osName = System.getProperty("os.name")
+    var configFileNameadjusted:String = configFileName
+    if(osName.toLowerCase.contains("windows")) {
+      println("windows file was found")
+      configFileNameadjusted = configFileName.replaceAll("\\\\","\\\\\\\\")
+    }
+    println(s"file name = $configFileNameadjusted")
+    configFileNameadjusted
+  }
 }

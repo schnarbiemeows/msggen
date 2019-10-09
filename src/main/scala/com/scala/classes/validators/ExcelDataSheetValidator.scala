@@ -4,6 +4,8 @@
 
 package com.scala.classes.validators
 
+import java.util.Properties
+
 import com.scala.classes.exception._
 import com.scala.classes.posos.{DataTypes, GenericRecordsTemplate, RecordsTemplate}
 import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil}
@@ -16,10 +18,11 @@ import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil}
 class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends Validator {
 
   /**
-    * main method call for validating the spreadsheet template
-    * @return - isValidated(Boolean)
+    * main validation method for validating the spreadsheet object
+    * @param properties - singleton Properties object
+    * @return - Boolean
     */
-  override def validate(): Boolean = {
+  override def validate(properties: Properties): Boolean = {
     val runStart = DateUtils.nowTime()
     var runStartLocal = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("entering ExcelDataSheetValidator.validate() method, validating the input template")
@@ -27,15 +30,17 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     try {
       validateLengthsOfThreeHeaderRows()
       LogUtil.msggenMasterLoggerDEBUG("header rows validated")
-      validateNoRowLengthsExceedsHeaderLength()
-      LogUtil.msggenMasterLoggerDEBUG("no value rows exceed header lengths")
       validateTheDataTypes()
       LogUtil.msggenMasterLoggerDEBUG("data types validated")
-      if(mode==4 || mode==5) {
+      if(mode==4 || mode==5 || mode==7 || mode==8) {
         validateDataFormats()
         LogUtil.msggenMasterLoggerDEBUG("data formats validated")
         validateDataQualifiers()
         LogUtil.msggenMasterLoggerDEBUG("data values validated")
+        if(mode == 7) {
+          validatePrimaryKeyFile(properties)
+          LogUtil.msggenMasterLoggerDEBUG("primary key file validated")
+        }
       }
     } catch {
       case e:Exception => {LogUtil.msggenMasterLoggerERROR("Exception occurred : "+e+" , exiting program")}
@@ -65,15 +70,26 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
   }
 
   /**
-    * method that checks if any of the rows after the first 3 have columns past
-    * the column length of the first 3(the meta-data header rows)
-    * not currently being used
-    * @throws com.scala.classes.exception.RowLengthsExceedsHeaderLengthException
+    * method that checks if the primary key file(made using mode 1)
+    * is present in the file system
+    * @throws com.scala.classes.exception.FileNotFoundException
     * @return - true or false
     */
-  @throws(classOf[RowLengthsExceedsHeaderLengthException])
-  def validateNoRowLengthsExceedsHeaderLength():Boolean = {
-    var isValidated = true
+  @throws(classOf[FileNotFoundException])
+  def validatePrimaryKeyFile(properties: Properties):Boolean = {
+    var isValidated = valdateFileExists(properties.getProperty(Configuration.MODE1_OUTPUT_FILE))
+    if(!isValidated) {
+      throw new FileNotFoundException(s"primary Key File is not present")
+    }
+    val numberOfOutputFiles:Int = properties.getProperty(Configuration.MODE4_NUM_FILES).toString.toInt
+    if(numberOfOutputFiles!=1) {
+      throw new FileNotFoundException(s"you have to specify only 1 file for the mode4.numfiles configuration in order to use the primary key feature")
+    }
+    val numberOfOutputRecords:Int = properties.getProperty(Configuration.MODE4_NUM_RECORDS).toString.toInt
+    val numberOfPrimaryValues:Int = properties.getProperty(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
+    if(numberOfOutputRecords!=numberOfPrimaryValues) {
+      throw new FileNotFoundException(s"you have to specify the same value for both the mode1.numberofprimariestomake and mode4.numberofrecordsperfile configurations in order to use the primary key feature")
+    }
     isValidated
   }
 

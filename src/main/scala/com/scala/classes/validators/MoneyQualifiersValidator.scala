@@ -4,6 +4,8 @@
 
 package com.scala.classes.validators
 
+import java.util.Properties
+
 import com.scala.classes.utilities.StringUtils
 
 import scala.collection.mutable.ArrayBuffer
@@ -16,11 +18,11 @@ import scala.collection.mutable.ArrayBuffer
 object MoneyQualifiersValidator extends Validator {
 
   /**
-    * main validation method - currently not used
-    * TODO - maybe refactor to remove this reference
+    * main validation method
+    * @param properties - singleton Properties object
     * @return - Boolean
     */
-  override def validate(): Boolean = {true}
+  override def validate(properties:Properties): Boolean = {true}
 
   /**
     * method to validate that the qualifiers for the EnumMoney data type are valid

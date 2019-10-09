@@ -39,7 +39,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     */
   override def run(): Unit = {
     var runStart = DateUtils.nowTime()
-    LogUtil.msggenMasterLoggerDEBUG("inside SimpleMMMode");
+    LogUtil.msggenMasterLoggerDEBUG("inside SimpleMMMode main method");
     // determine the number of social security numbers to make
     // determine the number of subscriber ID numbers to make
     val numSubsToMake:Int = properties.get(Configuration.MODE3_NUMBER_OF_PRIMARIES).toString.toInt

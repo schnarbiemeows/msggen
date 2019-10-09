@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel._
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.io.Source
 
 /**
@@ -471,5 +471,25 @@ object FileIO {
     val runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
     LogUtil.logTime(s"readInExternalFiles took => ${runEndLocal._1} milliseconds")
     true
+  }
+
+  /**
+    * this method will read in the primary key file that was made using mode1
+    * the file location is specified by the config value mode1.outputfile
+    * @param filepath - location of the file(mode1.outputfile)
+    * @return - Array of the records in the file
+    */
+  def simpleReadInFile(filepath:String):Array[String] = {
+    var runStartLocal = DateUtils.nowTime()
+    LogUtil.msggenMasterLoggerDEBUG("entering readInPrimaryKeyFile() method")
+    val primaryList:ListBuffer[String] = new ListBuffer[String]()
+    val bufferedSource = Source.fromFile(filepath)
+    for (line <- bufferedSource.getLines) {
+      primaryList.add(line)
+    }
+    bufferedSource.close
+    val runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
+    LogUtil.logTime(s"readInPrimaryKeyFile took => ${runEndLocal._1} milliseconds")
+    primaryList.toArray
   }
 }

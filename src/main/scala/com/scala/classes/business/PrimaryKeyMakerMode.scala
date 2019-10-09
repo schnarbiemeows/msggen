@@ -8,7 +8,8 @@ import java.util.Properties
 
 import com.scala.classes.locks.PrimaryKeyLock
 import com.scala.classes.processes.PrimaryKeyMakerThread
-import com.scala.classes.utilities.{Configuration, FileIO, LogUtil}
+import com.scala.classes.utilities.{Configuration, DateUtils, FileIO, LogUtil}
+import com.scala.classes.validators.PrimaryKeyMakerValidator
 
 /**
   * class that is used to make a primary key
@@ -20,13 +21,26 @@ class PrimaryKeyMakerMode(val mode: Int, val properties: Properties) extends Mod
     * main run method
     */
   override def run(): Unit = {
-    val numberOfPrimaryKeys:Int = properties.get(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
-    val characters:String = properties.get(Configuration.MODE1_CHARACTERS).toString
-    val pkLength:Int = properties.get(Configuration.MODE1_PRIMARY_LENGTH).toString.toInt
-    val outputfile:String = properties.get(Configuration.MODE1_OUTPUT_FILE).toString
-    val primaryKeys:scala.collection.mutable.Set[String] = makeRandomPrimaryKeys(numberOfPrimaryKeys,characters,pkLength)
-    val primaryKeyList:List[String] = primaryKeys.toList
-    FileIO.outputAnyListToFile(primaryKeyList,outputfile)
+    var runStart = DateUtils.nowTime()
+    LogUtil.msggenMasterLoggerDEBUG("inside PrimaryKeyMakerMode main method");
+    if(PrimaryKeyMakerValidator.validate(properties)) {
+      LogUtil.msggenMasterLoggerDEBUG("configuration for the primary key maker mode validated");
+      val numberOfPrimaryKeys:Int = properties.get(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
+      LogUtil.msggenMasterLoggerDEBUG(s"number of unique primary keys to make = ${numberOfPrimaryKeys}");
+      val characters:String = properties.get(Configuration.MODE1_CHARACTERS).toString
+      val pkLength:Int = properties.get(Configuration.MODE1_PRIMARY_LENGTH).toString.toInt
+      val outputfile:String = properties.get(Configuration.MODE1_OUTPUT_FILE).toString
+      LogUtil.msggenMasterLoggerDEBUG(s"output file location for the primary keys = ${outputfile}");
+      val primaryKeys:scala.collection.mutable.Set[String] = makeRandomPrimaryKeys(numberOfPrimaryKeys,characters,pkLength)
+      val primaryKeyList:List[String] = primaryKeys.toList
+      LogUtil.msggenMasterLoggerDEBUG("primary keys made");
+      FileIO.outputAnyListToFile(primaryKeyList,outputfile)
+      LogUtil.msggenMasterLoggerDEBUG("primary key making process complete");
+    } else {
+      LogUtil.msggenMasterLoggerDEBUG("configuration for the primary key maker mode was not validated!");
+    }
+    val runEnd = DateUtils.getDifferenceInMilliseconds(runStart)
+    LogUtil.logTime(s"PrimaryKeyMakerMode run() method time = ${runEnd._1} milliseconds")
   }
 
   def makeRandomPrimaryKeys(numberOfPrimaryKeys: Int, characters:String, pkLength:Int): scala.collection.mutable.Set[String] = {

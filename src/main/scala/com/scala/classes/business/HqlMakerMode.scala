@@ -28,7 +28,7 @@ class HqlMakerMode(val mode: Int, val properties: Properties) extends Mode {
     // 1. read in excel spreadsheet data
     FileIO.readInSpreadsheet(records)
     // 2. validate the data
-    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate()
+    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate(properties)
     if(templateValidated) {
       LogUtil.msggenMasterLoggerDEBUG("template validated")
       LogUtil.msggenMasterLoggerDEBUG("creating Hive table script")
