@@ -13,18 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * this object generates each of the different Long types
   */
-object WholeNumberTypeGenerator {
-
-  /**
-    * this method generates a random EnumLong
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeEnumWholeNumber(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
-  }
+object WholeNumberTypeGenerator extends Generator {
 
   /**
     * this method generates a random Long number for both RandomLong and RandomInt
@@ -37,6 +26,7 @@ object WholeNumberTypeGenerator {
     var length:Int = 10
     var min:Long = 0
     var max:Long = 0
+    var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomLong", format)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
     //val formatsNotNeedingQualifiers = splitLists._2
@@ -45,19 +35,11 @@ object WholeNumberTypeGenerator {
         case "length" => length = qualifiers(i).toInt
         case "min" => min = qualifiers(i).toLong
         case "max" => max = qualifiers(i).toLong
+        case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
-    padNumberWithZeros(randomLong(min,max).toString,length)
-  }
-
-  /**
-    * this method generates a random ExternalLong
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeExternalWholeNumber(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
+    val result = padNumberWithZeros(randomLong(min,max).toString,length)
+    val randomNum = randomDouble(0,1,2,"rounddown")
+    if(randomNum<nullPercentage) "" else result
   }
 }

@@ -40,13 +40,32 @@ class DateTimeTypeGeneratorTest {
   @Test
   def makeEnumDateTimeTest():Unit = {
     // simple test
+    val dataType:String = "EnumDateTime"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("date1","date2","date3"))
-    var results:String = DateTimeTypeGenerator.makeEnumDateTime(template.dataQualifiers(0))
+    var results:String = DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
     for(i <- 0 until 10) {
-      println(DateTimeTypeGenerator.makeEnumDateTime(template.dataQualifiers(0)))
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","string1","string2","string3"))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -117,6 +136,24 @@ class DateTimeTypeGeneratorTest {
     results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
+    template.dataFormats = Array("nullable,format,start,end")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","dd/MM/yyyy HH:mm","01/01/1900 00:00","31/12/2000 00:00"))
+    results = DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","dd/MM/yyyy HH:mm","01/01/1900 00:00","31/12/2000 00:00"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","dd/MM/yyyy HH:mm","01/01/1900 00:00","31/12/2000 00:00"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandomDateTime(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -125,12 +162,31 @@ class DateTimeTypeGeneratorTest {
   @Test
   def makeExternalDateTimeTest():Unit = {
     // simple test
+    val dataType:String = "ExternalDateTime"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("date1","date2","date3"))
-    var results:String = DateTimeTypeGenerator.makeExternalDateTime(template.dataQualifiers(0))
+    var results:String = DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
     for(i <- 0 until 10) {
-      println(DateTimeTypeGenerator.makeExternalDateTime(template.dataQualifiers(0)))
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","string1","string2","string3"))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(DateTimeTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 }

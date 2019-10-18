@@ -9,23 +9,12 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * this object generates each of the different String types
   */
-object StringTypeGenerator{
-
-  /**
-    * this method generates a random EnumString
-    * @param qualifiers
-    * @return - string
-    */
-  def makeEnumString(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
-  }
+object StringTypeGenerator extends Generator{
 
   /**
     * this method generates a random RandomString
     * @param format - formatting specifications for the field
-    * @param qualifiers - array of possible values
+    * @param qualifiers - array of format qualifiers
     * @return - string
     */
   def makeRandomString(format: String,qualifiers:ArrayBuffer[String]):String = {
@@ -33,6 +22,7 @@ object StringTypeGenerator{
     var chars:String = null
     var toUpper:Boolean = false
     var toLower:Boolean = false
+    var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomString", format)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
     val formatsNotNeedingQualifiers = splitLists._2
@@ -40,6 +30,7 @@ object StringTypeGenerator{
       formatsThatNeedQualifierChecks(i) match {
         case "length" => length = qualifiers(i).toInt
         case "chars" => chars = qualifiers(i).toString
+        case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
     for (i <- 0 until formatsNotNeedingQualifiers.length) {
@@ -51,17 +42,7 @@ object StringTypeGenerator{
     }
     var result = if(chars==null) randomAlphaNumeric(length) else randomAlphaNumeric(length,chars)
     result = if(toUpper) result.toUpperCase else if(toLower) result.toLowerCase else result
-    result
-  }
-
-  /**
-    * this method generates a random ExternalString
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeExternalString(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
+    val randomNum = randomDouble(0,1,2,"rounddown")
+    if(randomNum<nullPercentage) "" else result
   }
 }

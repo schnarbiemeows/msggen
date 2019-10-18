@@ -13,18 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * class for generating random LocalDate strings
   */
-object DateTypeGenerator {
-
-  /**
-    * this method generates a random EnumDate
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeEnumDate(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
-  }
+object DateTypeGenerator extends Generator {
 
   /**
     * this method generates a random RandomDate
@@ -40,6 +29,7 @@ object DateTypeGenerator {
     var start:String = null
     var end:String = null
     var result:String = null
+    var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomDate", formatString)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
     val formatsNotNeedingQualifiers:Array[String] = splitLists._2
@@ -62,13 +52,14 @@ object DateTypeGenerator {
           endWasSpecified = true
           end = qualifiers(i)
         }
+        case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
     if(nowSpecified) {
       if(format!=null) {
-        generateNowDate(format)
+        result = generateNowDate(format)
       } else {
-        generateNowDate()
+        result = generateNowDate()
       }
     }
     else {
@@ -83,18 +74,8 @@ object DateTypeGenerator {
           result = randomDate(format)
         }
       }
-      result
     }
-  }
-
-  /**
-    * this method generates a random ExternalDate
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeExternalDate(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
+    val randomNum = randomDouble(0,1,2,"rounddown")
+    if(randomNum<nullPercentage) "" else result
   }
 }

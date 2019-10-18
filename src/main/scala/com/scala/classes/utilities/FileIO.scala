@@ -10,6 +10,7 @@ import java.util.{Iterator, Properties}
 
 import com.google.gson.Gson
 import com.scala.classes.posos._
+import com.scala.classes.validators.StringQualifiersValidator.filterQualifiers
 import org.apache.poi.ss.usermodel._
 
 import scala.collection.JavaConversions._
@@ -426,16 +427,17 @@ object FileIO {
     LogUtil.msggenMasterLoggerDEBUG("entering readInSpreadsheet() method")
     val fields = record.fields
     val dataTypes = record.dataTypes
-    val formats = record.dataFormats
+    val allFormats = record.dataFormats
     val allQualifiers = record.dataQualifiers
     var resultOfValidator:Tuple2[Boolean,String] = null
     for(i <- 0 until dataTypes.length) {
       val field = fields(i)
       val dataType = dataTypes(i)
-      val format = formats(i)
+      val format = allFormats(i)
+      val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
       var qualifiers = allQualifiers(i)
       if (dataType.toLowerCase.contains("external")) {
-        val filename = qualifiers(0)
+        val filename = qualifiers(qualifiers.length-1)
         val bufferedSource = Source.fromFile(filename)
         if(filename.toLowerCase.endsWith(".csv")) {
           LogUtil.msggenMasterLoggerDEBUG("reading in .csv file")
@@ -449,7 +451,7 @@ object FileIO {
             * if its a text file, we assume that there is only a single item on each line
             */
           LogUtil.msggenMasterLoggerDEBUG("reading in .txt file")
-          var counter:Int = 0
+          var counter:Int = formatsThatNeedQualifierChecks.length
           var qualifiersSize:Int = qualifiers.length
           for (line <- bufferedSource.getLines) {
             if(counter<qualifiersSize) {

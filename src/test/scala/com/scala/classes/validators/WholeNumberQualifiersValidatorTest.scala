@@ -42,7 +42,43 @@ class WholeNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("something"))
-    val results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateEnumWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -103,6 +139,42 @@ class WholeNumberQualifiersValidatorTest {
     results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // simple nullable test
+    template.dataFormats = Array("nullable,min,max")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -114,7 +186,48 @@ class WholeNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateExternalWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with nullable that file path does not exist
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\nofile.txt")
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -127,7 +240,43 @@ class WholeNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("something"))
-    val results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateEnumWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1"))
+    results = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -135,7 +284,7 @@ class WholeNumberQualifiersValidatorTest {
     * method to test that the qualifiers for the RandomLong data type are valid
     */
   @Test
-  def validateRandomWholeNumberQualifiersTest():Unit = {
+  def validateRandomLongQualifiersTest():Unit = {
     // testing a fail when min and max are not specified
     template.dataTypes = Array("RandomLong")
     template.fields = Array("field1")
@@ -188,6 +337,42 @@ class WholeNumberQualifiersValidatorTest {
     results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // simple nullable test
+    template.dataFormats = Array("nullable,min,max")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1","10"))
+    results = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -199,7 +384,48 @@ class WholeNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateExternalWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test with nullable that file path does not exist
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\nofile.txt")
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","C:\\home\\schnarbies\\output\\ssns.txt"))
+    results = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 }

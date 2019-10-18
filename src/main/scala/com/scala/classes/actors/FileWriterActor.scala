@@ -60,7 +60,7 @@ class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) e
     */
   def mode7insertPrimaryKey():Unit = {
     val mode:Int = properties.getProperty(Configuration.MODE).toString.toInt
-    if(7==mode) {
+    if(mode == 7) {
       val primaryKeys:Array[String] = FileIO.simpleReadInFile(properties.getProperty(Configuration.MODE1_OUTPUT_FILE))
       for((row,i) <- primaryKeys.zipWithIndex) {
         recordArray2(0)(i).fieldValues(0) = row

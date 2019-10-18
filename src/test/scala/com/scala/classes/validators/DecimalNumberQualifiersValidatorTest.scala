@@ -41,11 +41,47 @@ class DecimalNumberQualifiersValidatorTest {
     template.dataTypes = Array("EnumFloat")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateEnumDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
     template.dataQualifiers(0) = ArrayBuffer("10.00")
-    results = DecimalNumberQualifiersValidator.validateEnumDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -106,6 +142,42 @@ class DecimalNumberQualifiersValidatorTest {
     results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // simple nullable test
+    template.dataFormats = Array("nullable,min,max")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -117,7 +189,49 @@ class DecimalNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateExternalDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test simple nullable
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    println(results._2)
+    // test with nullable that file path does not exist
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\nofile.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable not a number
+    template.dataQualifiers(0) = ArrayBuffer("abc","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0011","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers(0) = ArrayBuffer("-1.0001","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -129,11 +243,47 @@ class DecimalNumberQualifiersValidatorTest {
     template.dataTypes = Array("EnumDouble")
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
-    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateEnumDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
     template.dataQualifiers(0) = ArrayBuffer("10.00")
-    results = DecimalNumberQualifiersValidator.validateEnumDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","value"))
+    results = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -194,6 +344,42 @@ class DecimalNumberQualifiersValidatorTest {
     results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // simple nullable test
+    template.dataFormats = Array("nullable,min,max")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1","10"))
+    results = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -205,7 +391,49 @@ class DecimalNumberQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateExternalDecimalNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test simple nullable
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    println(results._2)
+    // test with nullable that file path does not exist
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\nofile.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable not a number
+    template.dataQualifiers(0) = ArrayBuffer("abc","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0011","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers(0) = ArrayBuffer("-1.0001","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 }

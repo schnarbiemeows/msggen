@@ -42,7 +42,43 @@ class MoneyQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("something"))
-    val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateEnumMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // simple nullable test
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","value"))
+    results = MoneyQualifiersValidator.validateEnumTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 
@@ -91,6 +127,42 @@ class MoneyQualifiersValidatorTest {
     results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertFalse(results._1)
     println(results._2)
+    // simple nullable test
+    template.dataFormats = Array("nullable,min,max")
+    template.dataQualifiers = Array(ArrayBuffer("0.1","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable not a number
+    template.dataQualifiers = Array(ArrayBuffer("abc","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00001","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers = Array(ArrayBuffer("-1.00001","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1.00000","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 1
+    template.dataQualifiers = Array(ArrayBuffer("1","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0.00000","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable equal to 0
+    template.dataQualifiers = Array(ArrayBuffer("0","1","10"))
+    results = MoneyQualifiersValidator.validateRandomMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
   }
 
   /**
@@ -102,7 +174,49 @@ class MoneyQualifiersValidatorTest {
     template.fields = Array("field1")
     template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("C:\\home\\schnarbies\\output\\ssns.txt"))
-    val results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateExternalMoneyQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    var results:Tuple2[Boolean,String] = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test simple nullable
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    println(results._2)
+    // test with nullable that file path does not exist
+    template.dataQualifiers(0) = ArrayBuffer("0.1","C:\\home\\schnarbies\\output\\nofile.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable not a number
+    template.dataQualifiers(0) = ArrayBuffer("abc","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable greater than 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0011","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for negative nullable
+    template.dataQualifiers(0) = ArrayBuffer("-1.0001","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 1
+    template.dataQualifiers(0) = ArrayBuffer("1","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0.0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    // test for nullable = 0
+    template.dataQualifiers(0) = ArrayBuffer("0","C:\\home\\schnarbies\\output\\ssns.txt")
+    results = MoneyQualifiersValidator.validateExternalTypeQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
     assertTrue(results._1)
   }
 }

@@ -40,13 +40,33 @@ class WholeNumberTypeGeneratorTest {
   @Test
   def makeEnumWholeNumberTest():Unit = {
     // simple test
+    val dataType:String = "EnumLong"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("1","2","3"))
-    var results:String = WholeNumberTypeGenerator.makeEnumWholeNumber(template.dataQualifiers(0))
+    var results:String = WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
     for(i <- 0 until 10) {
-      println(WholeNumberTypeGenerator.makeEnumWholeNumber(template.dataQualifiers(0)))
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","1","2","3"))
+    results = WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -76,6 +96,23 @@ class WholeNumberTypeGeneratorTest {
     for(i <- 0 until 10) {
       println(WholeNumberTypeGenerator.makeRandomWholeNumber(template.dataFormats(0),template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable,length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("0.5","10","1","100")
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandomWholeNumber(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","10","1","100"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandomWholeNumber(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","10","1","100"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandomWholeNumber(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -84,12 +121,29 @@ class WholeNumberTypeGeneratorTest {
   @Test
   def makeExternalWholeNumberTest():Unit = {
     // simple test
+    val dataType:String = "ExternalLong"
+    template.dataFormats = Array("None")
     template.dataQualifiers = Array(ArrayBuffer("1","2","3"))
-    var results:String = WholeNumberTypeGenerator.makeExternalWholeNumber(template.dataQualifiers(0))
+    var results:String = WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
-    for(i <- 0 until 10) {
-      println(WholeNumberTypeGenerator.makeExternalWholeNumber(template.dataQualifiers(0)))
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","1","2","3"))
+    results = WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
     }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 }

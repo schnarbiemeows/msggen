@@ -40,13 +40,33 @@ class MoneyTypeGeneratorTest {
   @Test
   def makeEnumMoneyTest():Unit = {
     // simple test
+    val dataType:String = "EnumMoney"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("1","2","3"))
-    var results:String = MoneyTypeGenerator.makeEnumMoney(template.dataQualifiers(0))
+    var results:String = MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
     for(i <- 0 until 10) {
-      println(MoneyTypeGenerator.makeEnumMoney(template.dataQualifiers(0)))
+      println(MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","1","2","3"))
+    results = MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -104,6 +124,23 @@ class MoneyTypeGeneratorTest {
     for(i <- 0 until 10) {
       println(MoneyTypeGenerator.makeRandomMoney(template.dataFormats(0),template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable,length,min,max")
+    template.dataQualifiers(0) = ArrayBuffer("0.5","10","1","100")
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandomMoney(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","10","1","100"))
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandomMoney(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","10","1","100"))
+    for(i <- 0 until 20) {
+      println(MoneyTypeGenerator.makeRandomMoney(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -112,12 +149,32 @@ class MoneyTypeGeneratorTest {
   @Test
   def makeExternalMoneyTest():Unit = {
     // simple test
+    val dataType:String = "ExternalMoney"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("1","2","3"))
-    var results:String = MoneyTypeGenerator.makeExternalMoney(template.dataQualifiers(0))
+    var results:String = MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
     for(i <- 0 until 10) {
-      println(MoneyTypeGenerator.makeExternalMoney(template.dataQualifiers(0)))
+      println(MoneyTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","1","2","3"))
+    results = WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","1","2","3"))
+    for(i <- 0 until 20) {
+      println(WholeNumberTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType,template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 }

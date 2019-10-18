@@ -7,7 +7,7 @@ package com.scala.classes.validators
 import java.time.{LocalDate, LocalDateTime}
 import java.util.Properties
 
-import com.scala.classes.utilities.DateUtils
+import com.scala.classes.utilities.{DateUtils, NumUtility, StringUtils}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -23,42 +23,6 @@ object DateTimeQualifiersValidator extends Validator {
     * @return - Boolean
     */
   override def validate(properties: Properties): Boolean = {true}
-
-  /**
-    * this method checks to make sure that there is at least 1 value
-    * for the particular Enum data type
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateEnumDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "no values specified"
-    }
-    (isValidated,message)
-  }
-
-  /**
-    * this method checks to make sure that there is at least 1 value
-    * for the particular Enum data type
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateEnumDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "no values specified"
-    }
-    (isValidated,message)
-  }
 
   /**
     *
@@ -99,6 +63,18 @@ object DateTimeQualifiersValidator extends Validator {
           }
           case "start" => {
             startWasSpecified = true
+          }
+          case "nullable" => {
+            if (!StringUtils.isFloat(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the nullable format is not a percentage for the ${dataType} data type"
+            } else if(qualifiers(i).toFloat>NumUtility.ONE) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be less than 1.0"
+            } else if(qualifiers(i).toFloat<NumUtility.ZERO) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be greater than 0.0"
+            }
           }
           case default => {
             isValidated = false
@@ -186,6 +162,18 @@ object DateTimeQualifiersValidator extends Validator {
           case "start" => {
             startWasSpecified = true
           }
+          case "nullable" => {
+            if (!StringUtils.isFloat(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the nullable format is not a percentage for the ${dataType} data type"
+            } else if(qualifiers(i).toFloat>NumUtility.ONE) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be less than 1.0"
+            } else if(qualifiers(i).toFloat<NumUtility.ZERO) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be greater than 0.0"
+            }
+          }
           case default => {
             isValidated = false
             message = s"${default} is not a valid qualifier for the ${dataType} data type"
@@ -227,52 +215,6 @@ object DateTimeQualifiersValidator extends Validator {
             }
           }
         }
-      }
-    }
-    (isValidated,message)
-  }
-
-  /**
-    *
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateExternalDateQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "has no file path specified"
-    } else {
-      val filepath = qualifiers(0)
-      if(!valdateFileExists(filepath)) {
-        isValidated = false
-        message = "file path specified is incorrect, or the file does not exist"
-      }
-    }
-    (isValidated,message)
-  }
-
-  /**
-    *
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateExternalDateTimeQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "has no file path specified"
-    } else {
-      val filepath = qualifiers(0)
-      if(!valdateFileExists(filepath)) {
-        isValidated = false
-        message = "file path specified is incorrect, or the file does not exist"
       }
     }
     (isValidated,message)

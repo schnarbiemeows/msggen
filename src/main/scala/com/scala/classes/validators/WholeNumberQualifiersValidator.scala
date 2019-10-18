@@ -6,7 +6,7 @@ package com.scala.classes.validators
 
 import java.util.Properties
 
-import com.scala.classes.utilities.StringUtils
+import com.scala.classes.utilities.{NumUtility, StringUtils}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -23,23 +23,6 @@ object WholeNumberQualifiersValidator extends Validator {
     * @return - Boolean
     */
   override def validate(properties:Properties): Boolean = {true}
-
-  /**
-    * method to validate that the qualifiers for the EnumLong data type are valid
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateEnumWholeNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "no values specified"
-    }
-    (isValidated,message)
-  }
 
   /**
     * method to validate that the qualifiers for the RandomInt and RandomLong data types are valid
@@ -86,6 +69,18 @@ object WholeNumberQualifiersValidator extends Validator {
               maxval = qualifiers(i).toLong
             }
           }
+          case "nullable" => {
+            if (!StringUtils.isFloat(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the nullable format is not a percentage for the ${dataType} data type"
+            } else if(qualifiers(i).toFloat>NumUtility.ONE) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be less than 1.0"
+            } else if(qualifiers(i).toFloat<NumUtility.ZERO) {
+              isValidated = false
+              message = s"nullable qualifier specified must for the ${dataType} data type must be greater than 0.0"
+            }
+          }
           case default => {
             isValidated = false
             message = s"${default} is not a valid qualifier for the ${dataType} data type"
@@ -105,26 +100,4 @@ object WholeNumberQualifiersValidator extends Validator {
     (isValidated,message)
   }
 
-  /**
-    * method to validate that the qualifiers for the ExternalLong data type are valid
-    * @param dataType = data type name
-    * @param format = data format(string of comma separated keywords)
-    * @param qualifiers = array of qualifiers
-    * @return (isValidated:Boolean,message:String)
-    */
-  def validateExternalWholeNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
-    var isValidated = true
-    var message:String = "NONE"
-    if(qualifiers.length==0) {
-      isValidated = false
-      message = "has no file path specified"
-    } else {
-      val filepath = qualifiers(0)
-      if(!valdateFileExists(filepath)) {
-        isValidated = false
-        message = "file path specified is incorrect, or the file does not exist"
-      }
-    }
-    (isValidated,message)
-  }
 }

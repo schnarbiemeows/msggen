@@ -40,13 +40,30 @@ class StringTypeGeneratorTest {
   @Test
   def makeEnumStringTest():Unit = {
     // simple test
+    val dataType:String = "EnumString"
+    template.dataFormats = Array("NONE")
     template.dataQualifiers = Array(ArrayBuffer("string1","string2","string3"))
-    var results:String = StringTypeGenerator.makeEnumString(template.dataQualifiers(0))
+    var results:String = StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
-    for(i <- 0 until 10) {
-      println(StringTypeGenerator.makeEnumString(template.dataQualifiers(0)))
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","string1","string2","string3"))
+    results = StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
     }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -104,6 +121,24 @@ class StringTypeGeneratorTest {
     for(i <- 0 until 10) {
       println(StringTypeGenerator.makeRandomString(template.dataFormats(0),template.dataQualifiers(0)))
     }
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5"))
+    results = StringTypeGenerator.makeRandomString(template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandomString(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandomString(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandomString(template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 
   /**
@@ -112,12 +147,29 @@ class StringTypeGeneratorTest {
   @Test
   def makeExternalStringTest():Unit = {
     // simple test
+    val dataType:String = "ExternalString"
+    template.dataFormats = Array("None")
     template.dataQualifiers = Array(ArrayBuffer("string1","string2","string3"))
-    var results:String = StringTypeGenerator.makeExternalString(template.dataQualifiers(0))
+    var results:String = StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0))
     assertNotNull(results)
     println(results)
-    for(i <- 0 until 10) {
-      println(StringTypeGenerator.makeExternalString(template.dataQualifiers(0)))
+    template.dataFormats = Array("nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.5","string1","string2","string3"))
+    results = StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0), template.dataQualifiers(0))
+    println("50% nullable")
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
     }
+    println("0% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("0.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("100% nullable")
+    template.dataQualifiers = Array(ArrayBuffer("1.0","string1","string2","string3"))
+    for(i <- 0 until 20) {
+      println(StringTypeGenerator.makeRandonizedExternalOrEnumDataType(dataType, template.dataFormats(0),template.dataQualifiers(0)))
+    }
+    println("DONE")
   }
 }

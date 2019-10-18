@@ -10,6 +10,8 @@ import java.util.Properties
   */
 object NumUtility extends Randomizer {
 
+  val ONE:Double = 1.0
+  val ZERO:Double = 0.0
   /**
     * method to initialize configuration Properties
     * @param props - singleton Properties object

@@ -15,18 +15,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * class for generating random LocalDateTime strings
   */
-object DateTimeTypeGenerator {
-
-  /**
-    * this method generates a random EnumDateTime
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeEnumDateTime(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
-  }
+object DateTimeTypeGenerator extends Generator {
 
   /**
     * this method generates a random RandomDateTime
@@ -42,6 +31,7 @@ object DateTimeTypeGenerator {
     var start: String = null
     var end: String = null
     var result: String = null
+    var nullPercentage:Double = 0.0
     val splitLists: Tuple2[Array[String], Array[String]] = filterQualifiers("RandomDateTime", formatString)
     val formatsThatNeedQualifierChecks: Array[String] = splitLists._1
     val formatsNotNeedingQualifiers: Array[String] = splitLists._2
@@ -64,13 +54,14 @@ object DateTimeTypeGenerator {
           endWasSpecified = true
           end = qualifiers(i)
         }
+        case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
     if(nowSpecified) {
       if(format!=null) {
-        generateNowDateTime(format)
+        result = generateNowDateTime(format)
       } else {
-        generateNowDateTime()
+        result = generateNowDateTime()
       }
     }
     else
@@ -87,18 +78,8 @@ object DateTimeTypeGenerator {
           result = randomDateTime(format)
         }
       }
-      result
     }
-  }
-
-  /**
-    * this method generates a random ExternalDateTime
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeExternalDateTime(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
+    val randomNum = randomDouble(0,1,2,"rounddown")
+    if(randomNum<nullPercentage) "" else result
   }
 }

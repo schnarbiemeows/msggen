@@ -102,7 +102,15 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     case FinishedWritingFileMessage(filename) => {
       filesFinishedCount+=1
       LogUtil.msggenMasterLoggerDEBUG(s"files Finished Count = ${filesFinishedCount} , numFiles = ${numFiles}")
-      kafkActor ! KafkaProducerMessage(filename)
+      val mode = properties.getProperty(Configuration.MODE).toString.toInt
+      if(mode == 8) {
+        kafkActor ! KafkaProducerMessage(filename)
+      } else {
+        if(filesFinishedCount==numFiles) {
+          LogUtil.msggenMasterLoggerDEBUG("pushing DONE into queue")
+          finishedQueue.put("DONE")
+        }
+      }
     }
     case KafkaProducerFinishedMessage => {
       if(filesFinishedCount==numFiles) {

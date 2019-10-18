@@ -6,18 +6,7 @@ package com.scala.classes.generators
 
 import scala.collection.mutable.ArrayBuffer
 
-object DecimalNumberTypeGenerator {
-
-  /**
-    * this method generates a random EnumDouble
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeEnumDecimalNumber(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
-  }
+object DecimalNumberTypeGenerator extends Generator {
 
   /**
     * this method generates a random RandomDouble
@@ -31,6 +20,7 @@ object DecimalNumberTypeGenerator {
     var min:Double = 0
     var max:Double = 0
     var roundingType:String = null
+    var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomDouble", format)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
     val formatsNotNeedingQualifiers = splitLists._2
@@ -40,6 +30,7 @@ object DecimalNumberTypeGenerator {
         case "signDigits" => signDigits = qualifiers(i).toInt
         case "min" => min = qualifiers(i).toDouble
         case "max" => max = qualifiers(i).toDouble
+        case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
     for (i <- 0 until formatsNotNeedingQualifiers.length) {
@@ -49,17 +40,8 @@ object DecimalNumberTypeGenerator {
         case "roundhalf" => roundingType = "roundhalf"
       }
     }
-    padNumberWithZeros(randomDouble(min,max,signDigits,roundingType).toString,length)
-  }
-
-  /**
-    * this method generates a random ExternalDouble
-    * @param qualifiers - array of possible values
-    * @return - string
-    */
-  def makeExternalDecimalNumber(qualifiers:ArrayBuffer[String]):String = {
-    var arrayLength = qualifiers.length
-    var index = randomInteger(0,arrayLength)
-    qualifiers(index)
+    val result = padNumberWithZeros(randomDouble(min,max,signDigits,roundingType).toString,length)
+    val randomNum = randomDouble(0,1,2,"rounddown")
+    if(randomNum<nullPercentage) "" else result
   }
 }
