@@ -30,6 +30,7 @@ object MakeGenericRecord {
       val dataType = dataTypes(i)
       val format = formats(i)
       val qualifiers = allQualifiers(i)
+      // TODO - make this smaller by using case in List(<types>)
       dataType match {
         case "EnumString" => fieldValues(i) = StringTypeGenerator.makeRandonizedExternalOrEnumDataType("EnumString", format, qualifiers)
         case "RandomString" => fieldValues(i) = StringTypeGenerator.makeRandomString(format, qualifiers)
