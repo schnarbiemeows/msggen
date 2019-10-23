@@ -76,7 +76,7 @@ object HiveTableCreator {
   val makefirstline:(String,String,String) => (String) = (external,databasename,tablename) => { "create "+external+" table if not exists "+ databasename+"."+tablename+" (" }
   val makeserde:(String) => (String) = (input) => { if(input=="CSV") "ROW FORMAT SERDE \'org.apache.hadoop.hive.serde2.OpenCSVSerde\'" else "" }
   val makeserdeproperties:(String) => (String) = (input) => { if(input=="CSV") "WITH SERDEPROPERTIES ('separatorChar' = ',')" else "" }
-  val makestoredAs:(String) => (String) = (input) => { if(input=="CSV") "stored as textfile" else "stored as JSONFILE" }
+  val makestoredAs:(String) => (String) = (input) => { if(input=="CSV") "stored as textfile" else "ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe' STORED AS TEXTFILE" }
   val makeloadline:(String,String,String,String) => (String) = (external,databasename,tablename,location) => {
     if(external.length==0) "load data inpath \'"+location+"\' into table "+databasename+"."+tablename + ";" else ""
   }
