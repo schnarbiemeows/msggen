@@ -120,7 +120,7 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomMiddleNameForPrimary():String = {
-    if(makeBinaryDecision(Configuration.MODE3_MIDDLENAME_PERCENT.toDouble)) {
+    if(makeBinaryDecision(props.get(Configuration.MODE3_MIDDLENAME_PERCENT).toString.toDouble)) {
       val middleNamesLength = middleNames.length
       val index = this.randomInteger(0,middleNamesLength)
       middleNames(index)

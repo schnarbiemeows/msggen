@@ -17,13 +17,13 @@ object App {
     * args[0] = String: = the full path to the main config file
     */
   def main(args: Array[String]) {
-    LogUtil.msggenMasterLoggerDEBUG("BEGIN - mssgen program");
+    //LogUtil.msggenMasterLoggerDEBUG("BEGIN - mssgen program");
     if(args(0)==null) {
-      LogUtil.msggenMasterLoggerDEBUG("config file location is missing, exiting program")
+      //LogUtil.msggenMasterLoggerDEBUG("config file location is missing, exiting program")
       System.exit(1)
     }
     val config: String = args(0)
-    LogUtil.msggenMasterLoggerDEBUG(s"config = ${config}\n");
+    //LogUtil.msggenMasterLoggerDEBUG(s"config = ${config}\n");
     val properties = PropertyLoader.getProperties(config)
     val mode:Int = properties.getProperty(Configuration.MODE).toInt
     LogUtil.msggenMasterLoggerDEBUG(s"Mode = ${mode}");

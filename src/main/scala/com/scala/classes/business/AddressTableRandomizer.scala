@@ -123,7 +123,7 @@ object AddressTableRandomizer extends Randomizer {
     record.accountId=(accountId)
     val address:SimpleAddress = new SimpleAddress
     address.addressLine1=(generateRandomStreetAddress1())
-    if(makeBinaryDecision(Configuration.MODE3_LINE2_ADDR_PERCENT.toDouble)) {
+    if(makeBinaryDecision(this.props.getProperty(Configuration.MODE3_LINE2_ADDR_PERCENT).toString.toDouble)) {
       address.addressLine2=(generateRandomStreetAddress2())
     }
     address.stateCode=(generateRandomState())

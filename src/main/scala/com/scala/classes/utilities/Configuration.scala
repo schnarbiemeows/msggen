@@ -12,6 +12,7 @@ object Configuration {
   val PROPERTY_FILE_LOCATION = "C:\\home\\schnarbies\\config\\config.properties"
   val SYSTEM = "system"
   val MODE = "mode"
+  val ROOT_LOGGER = "root.log.path"
   val DELIMITTER1 = ","
   val EQUALS = "="
   val CSV = "csv"

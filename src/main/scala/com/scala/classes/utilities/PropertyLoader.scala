@@ -21,13 +21,14 @@ object PropertyLoader {
     try {
       val prop = new Properties()
       fullpath = adjustConfigFilePath(configFileName)
-      LogUtil.msggenMasterLoggerDEBUG(s"loading properties from file: ${fullpath}")
+      println(s"loading properties from file: ${fullpath}")
       prop.load(new FileInputStream(fullpath))
       println("properties loaded")
+      setLogger(prop)
       prop
     } catch {
       case e: IOException =>
-        LogUtil.msggenThread1LoggerERROR(s"error loading properties from file: ${fullpath}")
+        //LogUtil.msggenThread1LoggerERROR(s"error loading properties from file: ${fullpath}")
         e.printStackTrace()
         sys.exit(1)
     }
@@ -65,5 +66,10 @@ object PropertyLoader {
     }
     println(s"file name = $configFileNameadjusted")
     configFileNameadjusted
+  }
+
+  def setLogger(prop: Properties): Unit = {
+    val rootLogger:String = prop.getProperty(Configuration.ROOT_LOGGER).toString
+    System.setProperty("rootlogger",rootLogger)
   }
 }
