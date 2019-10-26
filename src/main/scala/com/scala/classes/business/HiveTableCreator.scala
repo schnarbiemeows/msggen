@@ -15,7 +15,7 @@ import com.scala.classes.utilities.Configuration
   */
 object HiveTableCreator {
 
-  // TODO - add functionality to determine whether the data to load into a managed table is from HDFS or the local file system
+
   /**
     * main method to create the Hive script
     * @param template - Record template with the table data
