@@ -102,6 +102,7 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     */
   @throws(classOf[InvalidFieldNameException])
   def validateFieldNames():Boolean = {
+    // TODO - either implement this method or remove it;; it is not currently being used
     var isValidated = true
     if(null!=template.asInstanceOf[GenericRecordsTemplate].properties.get(Configuration.MODE4_STRING_DATA_RULE)) {
       val accepatbleCharacters:String = template.asInstanceOf[GenericRecordsTemplate].properties.get(Configuration.MODE4_STRING_DATA_RULE).toString

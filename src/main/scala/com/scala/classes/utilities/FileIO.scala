@@ -44,7 +44,7 @@ object FileIO {
       LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
       for(item <- input) {
-        outfile.write(s"${item.toString} \n")
+        outfile.write(s"${item.toString}\n")
       }
       runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
       LogUtil.logTime(s"writing to the output file took => ${runEndLocal._1} milliseconds")

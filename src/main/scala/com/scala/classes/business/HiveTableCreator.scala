@@ -15,6 +15,7 @@ import com.scala.classes.utilities.Configuration
   */
 object HiveTableCreator {
 
+  // TODO - add functionality to determine whether the data to load into a managed table is from HDFS or the local file system
   /**
     * main method to create the Hive script
     * @param template - Record template with the table data
@@ -25,7 +26,7 @@ object HiveTableCreator {
     val databasename:String = properties.getProperty(Configuration.MODE5_HIVE_DATABASE_NAME)
     val tablename:String = properties.getProperty(Configuration.MODE5_HIVE_TABLE_NAME)
     val external:String = makeExternal(properties.getProperty(Configuration.MODE5_HIVE_EXTERNAL_TABLE))
-    val location:String = properties.getProperty(Configuration.MODE5_HIVE_HDFS_LOCATION)
+    val location:String = properties.getProperty(Configuration.MODE5_HIVE_DATA_LOCATION)
     val hiveTypes = template.dataTypes.map(hiveMapper(_,properties.getProperty(Configuration.MODE5_HIVE_RAWDATA)))
     val closingparenthesisline = ")"
     val serde:String = makeserde(properties.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))

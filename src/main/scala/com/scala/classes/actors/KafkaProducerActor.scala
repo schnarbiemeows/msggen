@@ -31,13 +31,17 @@ class KafkaProducerActor(val properties: Properties) extends Actor{
     case KafkaProducerMessage(filename) => {
       LogUtil.msggenMasterLoggerDEBUG(s"inside KafkaProducerActor.receive method")
       fileNum+=1
+      val timeDelay = properties.getProperty(Configuration.MODE8_TIME_DELAY).toInt
       val adjustedFileName = PropertyLoader.revAdjustConfigFilePath(filename)
       LogUtil.msggenMasterLoggerDEBUG(s"reading in file : ${adjustedFileName}")
       val records:List[String] = FileIO.simpleReadInFile(adjustedFileName).toList
       LogUtil.msggenMasterLoggerDEBUG(s"pushing records to KafkaProducer")
       for(item <- records) {
         producer.pushMessageToTopic(item)
-        Thread.sleep(1000)
+        if(timeDelay>0) {
+          Thread.sleep(timeDelay)
+        }
+
       }
       LogUtil.msggenMasterLoggerDEBUG(s"finished pushing records to KafkaProducer")
       if(fileNum == numFiles) {
