@@ -4,8 +4,6 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.utilities.{NumUtility, StringUtils}
 
 import scala.collection.mutable.ArrayBuffer
@@ -17,10 +15,9 @@ object StringQualifiersValidator extends Validator {
 
   /**
     * main validation method
-    * @param properties - singleton Properties object
     * @return - Boolean
     */
-  override def validate(properties:Properties): Boolean = {true}
+  override def validate(): Boolean = {true}
 
   /**
     * method to validate that the qualifiers for the EnumString data type are valid

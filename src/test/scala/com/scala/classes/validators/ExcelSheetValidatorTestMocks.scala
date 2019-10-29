@@ -4,24 +4,22 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
 
 import scala.collection.mutable.ArrayBuffer
 
 /**
   * class used for creating mock objects to be used in tests
-  * @param properties - singleton Properties object
+
   */
-class ExcelSheetValidatorTestMocks(val properties: Properties) {
+class ExcelSheetValidatorTestMocks() {
 
   /**
     *
     * @return
     */
   def getBlankTemplate(): GenericRecordsTemplate = {
-    var template = new GenericRecordsTemplate(properties)
+    val template = new GenericRecordsTemplate()
     template.fields = Array()
     template.dataTypes = Array()
     template.dataFormats = Array()
@@ -33,7 +31,7 @@ class ExcelSheetValidatorTestMocks(val properties: Properties) {
     * @return
     */
   def getBasicTemplate(): GenericRecordsTemplate = {
-    var template = new GenericRecordsTemplate(properties)
+    val template = new GenericRecordsTemplate()
     template.fields = Array("field1","field2","field3")
     template.dataTypes = Array("EnumString","EnumString","EnumString")
     template.dataFormats = Array("NONE","NONE","NONE")

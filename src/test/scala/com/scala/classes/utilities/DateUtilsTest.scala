@@ -15,24 +15,11 @@ import org.junit.{Before, Test}
 @Test
 class DateUtilsTest {
 
-  var nullLocalDate:LocalDate = null
-  var localDate1:LocalDate = null
-  var localDate2:LocalDate = null
-  var localTime1:LocalTime = null
-  var result:String = null
-  var long1:Long = _
-  var long2:Long = _
-
   /**
     * initialization
     */
   @Before
   def initialize(): Unit = {
-    localDate1 = LocalDate.now()
-    localTime1 = LocalTime.now()
-    localDate2 = LocalDate.of(2018,1,1)
-    long1 = 1L
-    long2 = -1L
   }
 
   // TODO - need to add LocalDateTime test methods to this
@@ -42,7 +29,8 @@ class DateUtilsTest {
     */
   @Test
   def getStringFromDateTest(): Unit = {
-    result = DateUtils.getStringFromDate(localDate1)
+    val localDate1 = LocalDate.now()
+    val result = DateUtils.getStringFromDate(localDate1)
     assertNotNull(result)
   }
 
@@ -51,8 +39,9 @@ class DateUtilsTest {
     */
   @Test(expected = classOf[NullPointerException])
   def getDateFromStringTest():Unit = {
-    var format:String = "yyyy-MM-dd"
-    var localDate2:LocalDate = DateUtils.getDateFromString(result,format)
+    val result = null
+    val format:String = "yyyy-MM-dd"
+    val localDate2:LocalDate = DateUtils.getDateFromString(result,format)
     assertNotNull(localDate2)
   }
 
@@ -61,9 +50,10 @@ class DateUtilsTest {
     */
   @Test
   def getDateFromStringTest2():Unit = {
-    var format:String = "yyyy-MM-dd"
-    result = DateUtils.getStringFromDate(localDate1)
-    var localDate2:LocalDate = DateUtils.getDateFromString(result,format)
+    val format:String = "yyyy-MM-dd"
+    val localDate1 = LocalDate.now()
+    val result = DateUtils.getStringFromDate(localDate1)
+    val localDate2:LocalDate = DateUtils.getDateFromString(result,format)
     assertNotNull(localDate2)
     assertEquals(localDate2,localDate1)
   }
@@ -73,8 +63,11 @@ class DateUtilsTest {
     */
   @Test
   def addPeriodToLocalDateTest():Unit = {
-    var result1:LocalDate = DateUtils.addPeriodToLocalDate(localDate1,long1)
-    var result2:LocalDate = DateUtils.addPeriodToLocalDate(localDate1,long2)
+    val localDate1 = LocalDate.now()
+    val long1 = 1L
+    val long2 = -1L
+    val result1:LocalDate = DateUtils.addPeriodToLocalDate(localDate1,long1)
+    val result2:LocalDate = DateUtils.addPeriodToLocalDate(localDate1,long2)
     assertNotNull(result1)
     assertNotNull(result2)
     assert(result1.isAfter(result2))
@@ -85,8 +78,9 @@ class DateUtilsTest {
     */
   @Test
   def getAgeInDaysTest():Unit = {
-    var ageInDays:Long = DateUtils.getAgeInDays(localDate2)
-    var newborn:Long = DateUtils.getAgeInDays(LocalDate.now())
+    val localDate2 = LocalDate.of(2018,1,1)
+    val ageInDays:Long = DateUtils.getAgeInDays(localDate2)
+    val newborn:Long = DateUtils.getAgeInDays(LocalDate.now())
     assertNotNull(ageInDays)
     assert(ageInDays>0)
     assertEquals(newborn,0)
@@ -114,8 +108,9 @@ class DateUtilsTest {
     */
   @Test
   def getDifferenceInMicrosecondsTest():Unit = {
+    val localTime1 = LocalTime.now()
     Thread.sleep(1)
-    var result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInMicroseconds(localTime1)
+    val result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInMicroseconds(localTime1)
     assert(result._1>0)
     assertNotNull(result._2)
   }
@@ -125,8 +120,9 @@ class DateUtilsTest {
     */
   @Test
   def getDifferenceInMillisecondsTest():Unit = {
+    val localTime1 = LocalTime.now()
     Thread.sleep(1)
-    var result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInMilliseconds(localTime1)
+    val result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInMilliseconds(localTime1)
     assert(result._1>0)
     assertNotNull(result._2)
   }
@@ -136,8 +132,9 @@ class DateUtilsTest {
     */
   @Test
   def getDifferenceInSecondsTest():Unit = {
+    val localTime1 = LocalTime.now()
     Thread.sleep(1000)
-    var result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInSeconds(localTime1)
+    val result:Tuple2[Long, LocalTime] = DateUtils.getDifferenceInSeconds(localTime1)
     assert(result._1>0)
     assertNotNull(result._2)
   }
@@ -174,7 +171,7 @@ class DateUtilsTest {
   @Test
   def willStringParseToLocalDateTest():Unit = {
     var stringToConvert:String = "2019-04-12"
-    var format:String = "yyyy-MM-dd"
+    val format:String = "yyyy-MM-dd"
     var isValid:Boolean = DateUtils.willStringParseToLocalDate(stringToConvert,format)
     assertTrue(isValid)
     stringToConvert = "20xx-yy-mm"
@@ -188,7 +185,7 @@ class DateUtilsTest {
   @Test
   def willStringParseToLocalDateTimeTest():Unit = {
     var stringToConvert:String = "2019-04-12 00:00:00"
-    var format:String = "yyyy-MM-dd HH:mm:ss"
+    val format:String = "yyyy-MM-dd HH:mm:ss"
     var isValid:Boolean = DateUtils.willStringParseToLocalDateTime(stringToConvert,format)
     assertTrue(isValid)
     stringToConvert = "2019-04-12 00:00:000"

@@ -25,7 +25,7 @@ import scala.collection.mutable
   */
 class PrimaryMemberAndAddressMakerThread(val subIdSpLock:SubscriberIDsForSpousesLock,
                                          var counter1:Counter2Lock,
-                                         var ssnList:List[Int],
+                                         var ssnList:List[String],
                                          var subscriberIdList:List[Int],
                                          var subscriberIDsForSpouses:scala.collection.mutable.Stack[Int],
                                          var subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
@@ -113,7 +113,7 @@ class PrimaryMemberAndAddressMakerThread(val subIdSpLock:SubscriberIDsForSpouses
       */
   def makeMemberRecord(ssn:String, subId:String):SimpleMemberRecord = {
     //LogUtil.logByNum(s"${Thread.currentThread().getId} : making Primary Member Information record",threadNum%4)
-    var memberRecord:SimpleMemberRecord = MMMtableRandomizer.generateRandomPrimaryMember(ssn,subId)
+    val memberRecord:SimpleMemberRecord = MMMtableRandomizer.generateRandomPrimaryMember(ssn,subId)
     memberRecord
   }
 
@@ -135,16 +135,15 @@ class PrimaryMemberAndAddressMakerThread(val subIdSpLock:SubscriberIDsForSpouses
       * @param subId = subscriber ID # to give the primary
       * @return smaw
       */
-  def makeWrapperRecord(ssn:Int, subId:Int):SimpleMemberAddressWrapper = {
-    var smaw:SimpleMemberAddressWrapper = new SimpleMemberAddressWrapper()
-    val ssnStr = NumUtility.padIntToString(ssn,length)
+  def makeWrapperRecord(ssn:String, subId:Int):SimpleMemberAddressWrapper = {
+    //var smaw:SimpleMemberAddressWrapper = new SimpleMemberAddressWrapper()
     val accountIdStr = NumUtility.padIntToString(subId,length)+"00"
-    LogUtil.logByNum(s"${Thread.currentThread().getId} : making Primary Wrapper record for ssn = ${ssnStr} , account ID = ${accountIdStr} ",threadNum%4)
-    val memberRecord:SimpleMemberRecord = makeMemberRecord(ssnStr,accountIdStr)
-    val addressRecord:SimpleAddressRecord = makeAddressRecord(accountIdStr)
-    smaw.simpleMember=(memberRecord)
-    smaw.simpleAddressRecord=(addressRecord)
-    smaw
+    LogUtil.logByNum(s"${Thread.currentThread().getId} : making Primary Wrapper record for ssn = ${ssn} , account ID = ${accountIdStr} ",threadNum%4)
+    //val memberRecord:Option[SimpleMemberRecord] = makeMemberRecord(ssnStr,accountIdStr)
+    //val addressRecord:Option[SimpleAddressRecord] = makeAddressRecord(accountIdStr)
+    //smaw.simpleMember=(memberRecord)
+    //smaw.simpleAddressRecord=(addressRecord)
+    SimpleMemberAddressWrapper(makeMemberRecord(ssn,accountIdStr),makeAddressRecord(accountIdStr))
   }
 
 }

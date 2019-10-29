@@ -5,7 +5,6 @@
 package com.scala.classes.validators
 
 import java.io.File
-import java.util.Properties
 
 import com.scala.classes.posos.DataTypeFormats
 import com.scala.classes.utilities.{Configuration, NumUtility, StringUtils}
@@ -22,7 +21,7 @@ trait Validator {
     * main validation method
     * @return - Boolean
     */
-  def validate(properties:Properties):Boolean
+  def validate():Boolean
 
   /**
     * this method will search the DataTypeFormats.keywords Map according to the

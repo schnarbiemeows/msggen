@@ -4,19 +4,21 @@
 
 package com.scala.classes.actors
 
-import java.util.Properties
 import java.util.concurrent.ArrayBlockingQueue
 
 import akka.actor.{Actor, ActorRef, Props}
 import com.scala.classes.actors.messages._
 import com.scala.classes.posos.{Record, RecordsTemplate}
-import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil, StringUtils}
+import com.scala.classes.utilities._
 
 /**
   * this is an actor class. This class is the parent controller actor for a process
-  * that makes,copies, and then creates text file of data
+  * that makes,copies, and then creates text files of data
+  * @param template - the template containing the input spreadsheet data information
+  * @param finishedQueue - an ArrayBlockingQueue that this controller uses to tell the
+  *                      RecordMakerController that we are done creating data
   */
-class RecordsMakerControllerActor(val template: RecordsTemplate, val properties: Properties,
+class RecordsMakerControllerActor(val template: RecordsTemplate,
                                   val finishedQueue:ArrayBlockingQueue[String])
   extends Actor {
 
@@ -24,18 +26,18 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   /**
     * N = numThreads to use for making/copying Record data
     */
-  val numThreads:Int = properties.get(Configuration.MODE4_NUM_THREADS).toString.toInt
+  val numThreads:Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_THREADS).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG("")
   LogUtil.msggenMasterLoggerDEBUG(s"numTheads = ${numThreads}")
   /**
     * F = numFiles - number of output csv or json files to make with Record data
     */
-  val numFiles:Int = properties.get(Configuration.MODE4_NUM_FILES).toString.toInt
+  val numFiles:Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_FILES).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG(s"numFiles = ${numFiles}")
   /**
     * R = numRecordsPerFile - number of Record records in each output file
     */
-  val numRecordsPerFile:Int = properties.get(Configuration.MODE4_NUM_RECORDS).toString.toInt
+  val numRecordsPerFile:Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_RECORDS).toString.toInt
   LogUtil.msggenMasterLoggerDEBUG(s"numRecordsPerFile = ${numRecordsPerFile}")
   LogUtil.msggenMasterLoggerDEBUG("")
   /**
@@ -60,11 +62,11 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   /**
     * actor that will be used to pull records from recordArray2 and write them out to a file
     */
-  var fileWriter: ActorRef = context.actorOf(Props(new FileWriterActor(recordArray2,properties)))
+  var fileWriter: ActorRef = context.actorOf(Props(new FileWriterActor(recordArray2)))
   /**
     * actor that will be used to push records to a kafka topic
     */
-  val kafkActor:ActorRef = context.actorOf(Props(new KafkaProducerActor(properties)))
+  val kafkActor:ActorRef = context.actorOf(Props(new KafkaProducerActor()))
   /**
     * indexes and toggles used to keep track of how many records have been requested to
     * be made or copied, how many records have successfully been made or copied, how many
@@ -102,7 +104,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     case FinishedWritingFileMessage(filename) => {
       filesFinishedCount+=1
       LogUtil.msggenMasterLoggerDEBUG(s"files Finished Count = ${filesFinishedCount} , numFiles = ${numFiles}")
-      val mode = properties.getProperty(Configuration.MODE).toString.toInt
+      val mode = PropertyLoader.getProperty(Configuration.MODE).toString.toInt
       if(mode == 8) {
         kafkActor ! KafkaProducerMessage(filename)
       } else {
@@ -130,7 +132,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     LogUtil.msggenMasterLoggerDEBUG("")
     LogUtil.msggenMasterLoggerDEBUG("inside initiateRecordMaking")
     for(i <- 0 until actors.length) {
-      actors(i) ! MakeRecordMessage(makeRecordCount)
+      actors(i) ! MakeRecordMessage(makeRecordCount+","+fileArrayIndex)
       makeRecordCount+=1
     }
     inRecordMakingPhase = true
@@ -166,8 +168,8 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
   def initiateFileCreation():Unit = {
     LogUtil.msggenMasterLoggerDEBUG("")
     LogUtil.msggenMasterLoggerDEBUG("inside initiateFileCreation")
-    val currentDateTime = properties.get(Configuration.MODE4_OUTPUT_FILE).toString +
-      properties.get(Configuration.MODE4_FILE_PREPENDER).toString + "_" + StringUtils.removeColons(DateUtils.getStringFromTime(DateUtils.nowTime()))
+    val currentDateTime = PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE).toString +
+      PropertyLoader.getProperty(Configuration.MODE4_FILE_PREPENDER).toString + "_" + StringUtils.removeColons(DateUtils.getStringFromTime(DateUtils.nowTime()))
     LogUtil.msggenMasterLoggerDEBUG(s"calling WriteToFileMessage(${currentDateTime})")
     fileWriter ! WriteToFileMessage(currentDateTime,fileArrayIndex)
     fileArrayIndex+=1
@@ -185,7 +187,7 @@ class RecordsMakerControllerActor(val template: RecordsTemplate, val properties:
     LogUtil.msggenMasterLoggerDEBUG(s"inside incrementCheckAndCount, records made = ${recordMadeCount}")
     if(makeRecordCount<numRecordsPerFile) {
       LogUtil.msggenMasterLoggerDEBUG(s"sending another MakeRecordMessage(${makeRecordCount})")
-      actors(number) ! MakeRecordMessage(makeRecordCount)
+      actors(number) ! MakeRecordMessage(makeRecordCount+","+fileArrayIndex)
       makeRecordCount+=1
     } else {
       if (!inRecordCopyingPhase) {

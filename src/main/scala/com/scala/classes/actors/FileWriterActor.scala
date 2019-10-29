@@ -4,21 +4,18 @@
 
 package com.scala.classes.actors
 
-import java.util.Properties
-
 import akka.actor.Actor
 import com.scala.classes.actors.messages.{FinishedWritingFileMessage, WriteToFileMessage}
 import com.scala.classes.posos.Record
-import com.scala.classes.utilities.{Configuration, FileIO, LogUtil}
+import com.scala.classes.utilities.{Configuration, FileIO, LogUtil, PropertyLoader}
 
 /**
   * this is an actor class. Its purpose is to pull records from the inner array of a
   * double array of records, and then call a FileIO method for writing these records
   * out to either a CSV or a JSON file
   * @param recordArray2 - the double array that stores the records
-  * @param properties - singleton Properties object
   */
-class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) extends Actor{
+class FileWriterActor(recordArray2:Array[Array[Record]]) extends Actor{
   /**
     * actor's main method
     * @return
@@ -30,7 +27,7 @@ class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) e
       val successfull:Boolean = writeToFile(fileName,i)
       if(successfull) {
         LogUtil.msggenMasterLoggerDEBUG("successfully created our file")
-        val fileType = properties.get(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
+        val fileType = PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
         sender ! FinishedWritingFileMessage(fileName+"."+fileType)
       }
     }
@@ -44,7 +41,7 @@ class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) e
     */
   def writeToFile(fileName:String,index:Int):Boolean = {
     val successfull:Boolean = true
-    FileIO.writeGenericRecordToFile(recordArray2(index),fileName,properties)
+    FileIO.writeGenericRecordToFile(recordArray2(index),fileName)
     successfull
   }
 
@@ -59,9 +56,9 @@ class FileWriterActor(recordArray2:Array[Array[Record]],properties:Properties) e
     * in our Record array with this key
     */
   def mode7insertPrimaryKey():Unit = {
-    val mode:Int = properties.getProperty(Configuration.MODE).toString.toInt
+    val mode:Int = PropertyLoader.getProperty(Configuration.MODE).toString.toInt
     if(mode == 7) {
-      val primaryKeys:Array[String] = FileIO.simpleReadInFile(properties.getProperty(Configuration.MODE1_OUTPUT_FILE))
+      val primaryKeys:Array[String] = FileIO.simpleReadInFile(PropertyLoader.getProperty(Configuration.MODE1_OUTPUT_FILE))
       for((row,i) <- primaryKeys.zipWithIndex) {
         recordArray2(0)(i).fieldValues(0) = row
       }

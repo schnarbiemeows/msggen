@@ -4,10 +4,7 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.PropertyLoader
 import org.junit.Assert._
 import org.junit.{Before, Test}
 
@@ -19,18 +16,13 @@ import scala.collection.mutable.ArrayBuffer
 @Test
 class WholeNumberQualifiersValidatorTest {
 
-  var properties:Properties = _
-  var template:GenericRecordsTemplate = _
+  var template:GenericRecordsTemplate = new ExcelSheetValidatorTestMocks().getBlankTemplate()
 
   /**
     * initialization
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
-    var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
-    template = mocks.getBlankTemplate()
-
   }
 
   /**
@@ -177,6 +169,53 @@ class WholeNumberQualifiersValidatorTest {
     assertTrue(results._1)
   }
 
+  @Test
+  def validateRangedIntQualifiersTest(): Unit = {
+    // simple test
+    template.dataTypes = Array("RangedInt")
+    template.fields = Array("field1")
+    template.dataFormats = Array("linbase,linadd")
+    template.dataQualifiers = Array(ArrayBuffer("0","1"))
+    var results:Tuple2[Boolean,String] = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    println(results._2)
+    // test where you forget linadd
+    template.dataFormats = Array("linbase")
+    template.dataQualifiers = Array(ArrayBuffer("0"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test where you forget linbase
+    template.dataFormats = Array("linadd")
+    template.dataQualifiers = Array(ArrayBuffer("0"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test where you don't specify a number
+    template.dataFormats = Array("linadd,linbase")
+    template.dataQualifiers = Array(ArrayBuffer("0","a"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test where you don't specify a number
+    template.dataFormats = Array("linadd,linbase")
+    template.dataQualifiers = Array(ArrayBuffer("a","10"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test where you don't specify a whole number
+    template.dataFormats = Array("linadd,linbase")
+    template.dataQualifiers = Array(ArrayBuffer("1.2","10"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertFalse(results._1)
+    println(results._2)
+    // test where you specify a negative whole number
+    template.dataFormats = Array("linadd,linbase")
+    template.dataQualifiers = Array(ArrayBuffer("-1","10"))
+    results = WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(template.dataTypes(0),template.dataFormats(0),template.dataQualifiers(0))
+    assertTrue(results._1)
+    println(results._2)
+  }
   /**
     * method to test that the qualifiers for the ExternalInt data type are valid
     */

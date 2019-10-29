@@ -4,12 +4,10 @@
 
 package com.scala.classes.generators
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.PropertyLoader
+import com.scala.classes.utilities.{Configuration, PropertyLoader}
 import com.scala.classes.validators.ExcelSheetValidatorTestMocks
-import org.junit.Assert.assertNotNull
+import org.junit.Assert._
 import org.junit.{Before, Test}
 
 import scala.collection.mutable.ArrayBuffer
@@ -20,18 +18,13 @@ import scala.collection.mutable.ArrayBuffer
 @Test
 class WholeNumberTypeGeneratorTest {
 
-  var properties:Properties = _
-  var template:GenericRecordsTemplate = _
+  var template:GenericRecordsTemplate = new ExcelSheetValidatorTestMocks().getBlankTemplate()
 
   /**
     * initialization
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
-    var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
-    template = mocks.getBlankTemplate()
-
   }
 
   /**
@@ -115,6 +108,50 @@ class WholeNumberTypeGeneratorTest {
     println("DONE")
   }
 
+  @Test
+  def makeRandgedWholeNumberTest():Unit = {
+    // simple test
+    val dataType:String = "RangedInt"
+    template.dataFormats = Array("linbase,linadd")
+    template.dataQualifiers = Array(ArrayBuffer("0","1"))
+    var arrayNum:Int = 0
+    var fileNum:Int = 0
+    var results:String = WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum)
+    assertEquals(results.toLong,0)
+    println(results)
+    arrayNum = 12
+    fileNum = 3
+    PropertyLoader.setProperty(Configuration.MODE4_NUM_RECORDS,"50")
+    results = WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum)
+    assertEquals(results.toLong,162)
+    println(results)
+    arrayNum = 0
+    fileNum = 0
+    for(i<- 0 until 25) {
+      println(WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum))
+      arrayNum+=1
+    }
+    arrayNum = 0
+    fileNum = 3
+    for(i<- 0 until 25) {
+      println(WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum))
+      arrayNum+=1
+    }
+    template.dataQualifiers = Array(ArrayBuffer("0","-1"))
+    arrayNum = 0
+    fileNum = 0
+    for(i<- 0 until 25) {
+      println(WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum))
+      arrayNum+=1
+    }
+    template.dataQualifiers = Array(ArrayBuffer("100","-1"))
+    arrayNum = 0
+    fileNum = 0
+    for(i<- 0 until 25) {
+      println(WholeNumberTypeGenerator.makeRangedWholeNumber(dataType, template.dataFormats(0), template.dataQualifiers(0),arrayNum,fileNum))
+      arrayNum+=1
+    }
+  }
   /**
     * Junit tests for the ExternalLong data type
     */

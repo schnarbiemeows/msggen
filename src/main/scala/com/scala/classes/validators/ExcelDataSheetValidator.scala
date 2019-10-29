@@ -4,11 +4,9 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.exception._
-import com.scala.classes.posos.{DataTypes, GenericRecordsTemplate, RecordsTemplate}
-import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil}
+import com.scala.classes.posos.{DataTypes, RecordsTemplate}
+import com.scala.classes.utilities.{Configuration, DateUtils, LogUtil, PropertyLoader}
 
 /**
   * this class is a validation class for validating that all of the data in an
@@ -19,10 +17,10 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
 
   /**
     * main validation method for validating the spreadsheet object
-    * @param properties - singleton Properties object
+
     * @return - Boolean
     */
-  override def validate(properties: Properties): Boolean = {
+  override def validate(): Boolean = {
     val runStart = DateUtils.nowTime()
     var runStartLocal = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("entering ExcelDataSheetValidator.validate() method, validating the input template")
@@ -38,7 +36,7 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
         validateDataQualifiers()
         LogUtil.msggenMasterLoggerDEBUG("data values validated")
         if(mode == 7) {
-          validatePrimaryKeyFile(properties)
+          validatePrimaryKeyFile()
           LogUtil.msggenMasterLoggerDEBUG("primary key file validated")
         }
       }
@@ -76,17 +74,17 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     * @return - true or false
     */
   @throws(classOf[FileNotFoundException])
-  def validatePrimaryKeyFile(properties: Properties):Boolean = {
-    var isValidated = valdateFileExists(properties.getProperty(Configuration.MODE1_OUTPUT_FILE))
+  def validatePrimaryKeyFile():Boolean = {
+    var isValidated = valdateFileExists(PropertyLoader.getProperty(Configuration.MODE1_OUTPUT_FILE))
     if(!isValidated) {
       throw new FileNotFoundException(s"primary Key File is not present")
     }
-    val numberOfOutputFiles:Int = properties.getProperty(Configuration.MODE4_NUM_FILES).toString.toInt
+    val numberOfOutputFiles:Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_FILES).toString.toInt
     if(numberOfOutputFiles!=1) {
       throw new FileNotFoundException(s"you have to specify only 1 file for the mode4.numfiles configuration in order to use the primary key feature")
     }
-    val numberOfOutputRecords:Int = properties.getProperty(Configuration.MODE4_NUM_RECORDS).toString.toInt
-    val numberOfPrimaryValues:Int = properties.getProperty(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
+    val numberOfOutputRecords:Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_RECORDS).toString.toInt
+    val numberOfPrimaryValues:Int = PropertyLoader.getProperty(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
     if(numberOfOutputRecords!=numberOfPrimaryValues) {
       throw new FileNotFoundException(s"you have to specify the same value for both the mode1.numberofprimariestomake and mode4.numberofrecordsperfile configurations in order to use the primary key feature")
     }
@@ -104,8 +102,8 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
   def validateFieldNames():Boolean = {
     // TODO - either implement this method or remove it;; it is not currently being used
     var isValidated = true
-    if(null!=template.asInstanceOf[GenericRecordsTemplate].properties.get(Configuration.MODE4_STRING_DATA_RULE)) {
-      val accepatbleCharacters:String = template.asInstanceOf[GenericRecordsTemplate].properties.get(Configuration.MODE4_STRING_DATA_RULE).toString
+    if(PropertyLoader.getProperty(Configuration.MODE4_STRING_DATA_RULE).toBoolean) {
+      val accepatbleCharacters:String = PropertyLoader.getProperty(Configuration.MODE4_STRING_DATA_RULE).toString
       val fieldnames = template.fields
       for(item <- fieldnames) {
         val characters = item.toCharArray
@@ -146,13 +144,13 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     var isValidated = true
     val dataTypes = template.dataTypes
     val formats = template.dataFormats
-    var resultOfValidator:Tuple2[Boolean,String] = null
+    var resultOfValidator:Option[Tuple2[Boolean,String]] = None
     for(i <- 0 until dataTypes.length) {
       val dataType = dataTypes(i)
       val format = formats(i)
-      resultOfValidator = validateFormat(dataType,format)
-      if(resultOfValidator._1==false) {
-        throw new InvalidDataFormatException(s"index ${i} , ${dataType} format ${format} , is invalid : ${resultOfValidator._2}")
+      resultOfValidator = Some(validateFormat(dataType,format))
+      if(resultOfValidator.get._1==false) {
+        throw new InvalidDataFormatException(s"index ${i} , ${dataType} format ${format} , is invalid : ${resultOfValidator.get._2}")
       } else {
         LogUtil.msggenMasterLoggerDEBUG(s"index ${i} , ${dataType} format ${format} , is valid")
       }
@@ -172,37 +170,38 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     val dataTypes = template.dataTypes
     val formats = template.dataFormats
     val allQualifiers = template.dataQualifiers
-    var resultOfValidator:Tuple2[Boolean,String] = null
     for(i <- 0 until dataTypes.length){
       val field = fields(i)
       val dataType = dataTypes(i)
       val format = formats(i)
       val qualifiers = allQualifiers(i)
-      dataType match {
-        case "EnumString" => resultOfValidator = StringQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomString" => resultOfValidator = StringQualifiersValidator.validateRandomStringQualifiers(dataType,format,qualifiers)
-        case "ExternalString" => resultOfValidator = StringQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumInt" => resultOfValidator = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomInt" => resultOfValidator = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(dataType,format,qualifiers)
-        case "ExternalInt" => resultOfValidator = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumLong" => resultOfValidator = WholeNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomLong" => resultOfValidator = WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(dataType,format,qualifiers)
-        case "ExternalLong" => resultOfValidator = WholeNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumFloat" => resultOfValidator = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomFloat" => resultOfValidator = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(dataType,format,qualifiers)
-        case "ExternalFloat" => resultOfValidator = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumDouble" => resultOfValidator = DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomDouble" => resultOfValidator = DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(dataType,format,qualifiers)
-        case "ExternalDouble" => resultOfValidator = DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumDate" => resultOfValidator = DateTimeQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomDate" => resultOfValidator = DateTimeQualifiersValidator.validateRandomDateQualifiers(dataType,format,qualifiers)
-        case "ExternalDate" => resultOfValidator = DateTimeQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(dataType,format,qualifiers)
-        case "ExternalDateTime" => resultOfValidator = DateTimeQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
-        case "EnumMoney" => resultOfValidator = MoneyQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
-        case "RandomMoney" => resultOfValidator = MoneyQualifiersValidator.validateRandomMoneyQualifiers(dataType,format,qualifiers)
-        case "ExternalMoney" => resultOfValidator = MoneyQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+      val resultOfValidator:Tuple2[Boolean,String] = dataType match {
+        case "EnumString" => StringQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomString" => StringQualifiersValidator.validateRandomStringQualifiers(dataType,format,qualifiers)
+        case "ExternalString" => StringQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumInt" => WholeNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomInt" => WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(dataType,format,qualifiers)
+        case "RangedInt" => WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(dataType,format,qualifiers)
+        case "ExternalInt" => WholeNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumLong" => WholeNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomLong" => WholeNumberQualifiersValidator.validateRandomWholeNumberQualifiers(dataType,format,qualifiers)
+        case "RangedLong" => WholeNumberQualifiersValidator.validateRangedWholeNumberQualifiers(dataType,format,qualifiers)
+        case "ExternalLong" => WholeNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumFloat" => DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomFloat" => DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(dataType,format,qualifiers)
+        case "ExternalFloat" => DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumDouble" => DecimalNumberQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomDouble" => DecimalNumberQualifiersValidator.validateRandomDecimalNumberQualifiers(dataType,format,qualifiers)
+        case "ExternalDouble" => DecimalNumberQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumDate" => DateTimeQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomDate" => DateTimeQualifiersValidator.validateRandomDateQualifiers(dataType,format,qualifiers)
+        case "ExternalDate" => DateTimeQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumDateTime" => DateTimeQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomDateTime" => DateTimeQualifiersValidator.validateRandomDateTimeQualifiers(dataType,format,qualifiers)
+        case "ExternalDateTime" => DateTimeQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
+        case "EnumMoney" => MoneyQualifiersValidator.validateEnumTypeQualifiers(dataType,format,qualifiers)
+        case "RandomMoney" => MoneyQualifiersValidator.validateRandomMoneyQualifiers(dataType,format,qualifiers)
+        case "ExternalMoney" => MoneyQualifiersValidator.validateExternalTypeQualifiers(dataType,format,qualifiers)
       }
       if(resultOfValidator._1==false) {
         throw new InvalidDataQualifierException(s"field ${field} , has an invalid qualifier : ${resultOfValidator._2}")
@@ -212,5 +211,4 @@ class ExcelDataSheetValidator(val mode: Int, template: RecordsTemplate) extends 
     }
     isValidated
   }
-
 }

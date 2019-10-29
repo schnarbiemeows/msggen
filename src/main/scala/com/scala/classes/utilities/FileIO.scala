@@ -6,9 +6,8 @@ package com.scala.classes.utilities
 
 import java.io.{BufferedWriter, File, FileWriter}
 import java.time.LocalTime
-import java.util.{Iterator, Properties}
+import java.util.Iterator
 
-import com.google.gson.Gson
 import com.scala.classes.posos._
 import com.scala.classes.validators.StringQualifiersValidator.filterQualifiers
 import org.apache.poi.ss.usermodel._
@@ -73,15 +72,15 @@ object FileIO {
     * method to write an array of records out to either csv files or json files
     * @param records - array of records to process
     * @param filepath - full path to the file
-    * @param properties - singleton Properties object
+
     */
-  def writeGenericRecordToFile(records: Array[Record], filepath: String,properties:Properties): Unit = {
+  def writeGenericRecordToFile(records: Array[Record], filepath: String): Unit = {
     val runStart = DateUtils.nowTime()
     var runStartLocal = DateUtils.nowTime()
     var runEndLocal:Tuple2[Long, LocalTime] = (0,runStartLocal)
     LogUtil.msggenMasterLoggerDEBUG("writing generic records to a file")
     LogUtil.msggenMasterLoggerDEBUG(s"file path : ${filepath}")
-    val fileType = properties.get(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
+    val fileType = PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE).toString.toLowerCase
     LogUtil.msggenMasterLoggerDEBUG(s"file path : ${fileType}")
     var outfile:BufferedWriter = null
     try {
@@ -91,7 +90,7 @@ object FileIO {
       LogUtil.logTime(s"opening the output file took => ${runEndLocal._1} milliseconds")
       runStartLocal = runEndLocal._2
       LogUtil.msggenMasterLoggerDEBUG("BufferedWriter open")
-      if(records==null) {
+      if(records.isEmpty) {
         LogUtil.msggenMasterLoggerDEBUG("there are no records to process !! ")
       }
       LogUtil.msggenMasterLoggerDEBUG(s"records size is : ${records.length} ")
@@ -183,9 +182,9 @@ object FileIO {
         val memberdata:SimpleMemberRecord = item.simpleMember
         val addressdata:SimpleAddressRecord = item.simpleAddressRecord
         if(filetype=="JSON") {
-          val gson = new Gson
-          memberoutfile.write(s"${gson.toJson(memberdata)}\n")
-          addressoutfile.write(s"${gson.toJson(addressdata)}\n")
+          //val gson = new Gson
+          memberoutfile.write(s"${memberdata.toJSON()}\n")
+          addressoutfile.write(s"${addressdata.toJSON()}\n")
         } else {
           memberoutfile.write(s"${memberdata.toCSV()}\n")
           addressoutfile.write(s"${addressdata.toCSV()}\n")
@@ -418,18 +417,17 @@ object FileIO {
     * into that data type's qualifiers array. Then we can handle this data type
     * the same as an Enum type
     * @param record - template that contains table information about our data
-    * @param properties - singleton Properties object
+
     * @return - successful indicator
     */
-  def readInExternalFiles(record: RecordsTemplate, properties: Properties):Boolean = {
+  def readInExternalFiles(record: RecordsTemplate):Boolean = {
     val runStart = DateUtils.nowTime()
-    var runStartLocal = DateUtils.nowTime()
+    val runStartLocal = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("entering readInSpreadsheet() method")
     val fields = record.fields
     val dataTypes = record.dataTypes
     val allFormats = record.dataFormats
     val allQualifiers = record.dataQualifiers
-    var resultOfValidator:Tuple2[Boolean,String] = null
     for(i <- 0 until dataTypes.length) {
       val field = fields(i)
       val dataType = dataTypes(i)
@@ -452,7 +450,7 @@ object FileIO {
             */
           LogUtil.msggenMasterLoggerDEBUG("reading in .txt file")
           var counter:Int = formatsThatNeedQualifierChecks.length
-          var qualifiersSize:Int = qualifiers.length
+          val qualifiersSize:Int = qualifiers.length
           for (line <- bufferedSource.getLines) {
             if(counter<qualifiersSize) {
               qualifiers(counter)=line  // TODO - add code to split line by "," to array and then take nth element

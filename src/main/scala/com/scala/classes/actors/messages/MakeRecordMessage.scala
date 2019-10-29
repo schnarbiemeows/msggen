@@ -10,6 +10,6 @@ package com.scala.classes.actors.messages
   * in an array
   * @param number - index into the array where the record should go
   */
-case class MakeRecordMessage(number:Int) {
+case class MakeRecordMessage(number:String) {
 
 }

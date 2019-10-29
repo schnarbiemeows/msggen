@@ -27,6 +27,11 @@ object DataTypes {
     */
   val validRandoms:Set[String] = Set("RandomString", "RandomInt", "RandomLong" , "RandomFloat", "RandomDouble", "RandomDate", "RandomDateTime", "RandomMoney")
   /**
+    * for these data types, the program will generate a value that will increase/decrease starting from a base value
+    * and by a given increment
+    */
+  val validRanged:Set[String] = Set("RangedInt","RangedLong")
+  /**
     * for these data types, the user will be supplying a path to an external file which will have the values for
     * that particular data type. These fields are used like foreign key links to other tables
     * for the format, user will specify "NONE"
@@ -53,6 +58,6 @@ object DataTypes {
     */
   def isValidDataType(dataType: String):Boolean = {
     validEnums.contains(dataType)||validRandoms.contains(dataType)||
-      validExternals.contains(dataType)
+      validExternals.contains(dataType)||validRanged.contains(dataType)
   }
 }

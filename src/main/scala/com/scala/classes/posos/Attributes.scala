@@ -9,15 +9,15 @@ package com.scala.classes.posos
   */
 class Attributes {
 
-  var addresses: Addresses = null
-  var dob: String = null
-  var email: Array[String] = null
-  var firstName: String = null
-  var lastName: String = null
-  var middleName: String = null
-  var gender: Gender = null
-  var phone: PhoneNumber = null
-  var maritalStatus: MaritalStatus = null
-  var phiLvlCode: PhiLvlCode = null
+  var addresses:Option[Addresses] = None
+  var dob: Option[String] = None
+  var email: Option[Array[String]] = None
+  var firstName: Option[String] = None
+  var lastName: Option[String] = None
+  var middleName: Option[String] = None
+  var gender: Option[Gender] = None
+  var phone: Option[PhoneNumber] = None
+  var maritalStatus: Option[MaritalStatus] = None
+  var phiLvlCode: Option[PhiLvlCode] = None
 
 }

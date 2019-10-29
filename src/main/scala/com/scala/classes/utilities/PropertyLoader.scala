@@ -12,17 +12,21 @@ import java.util.Properties
 object PropertyLoader {
 
   /**
+    * our global properties
+    */
+  var props:Option[Properties] = None
+  /**
     * method for reading in the properties from a text file
     * @param configFileName - name of the config file to load
     * @return - Properties object of all of the file properties
     */
   def getProperties(configFileName:String): Properties = {
-    var fullpath: String = null
     try {
       val prop = new Properties()
-      fullpath = adjustConfigFilePath(configFileName)
+      val fullpath = adjustConfigFilePath(configFileName)
       println(s"loading properties from file: ${fullpath}")
       prop.load(new FileInputStream(fullpath))
+      props = Some(prop)
       println("properties loaded")
       setLogger(prop)
       prop
@@ -68,8 +72,36 @@ object PropertyLoader {
     configFileNameadjusted
   }
 
+  /**
+    * method to set the root logger in the System prperties, for the log42j logging system
+    * @param prop - value to set the rootlogger to
+    */
   def setLogger(prop: Properties): Unit = {
     val rootLogger:String = prop.getProperty(Configuration.ROOT_LOGGER).toString
     System.setProperty("rootlogger",rootLogger)
+  }
+
+  /**
+    * method to retrieve a given property
+    * @param property - property to retrieve
+    * @return - String
+    */
+  def getProperty(property: String): String = {
+    if(props==None) {
+      getProperties(Configuration.PROPERTY_FILE_LOCATION)
+    }
+    props.get.getProperty(property).toString
+  }
+
+  /**
+    * method(only used by test code) to set a property
+    * @param property - property to set
+    * @param value - value of this property
+    */
+  def setProperty(property: String, value: String): Unit = {
+    if(props==None) {
+      getProperties(Configuration.PROPERTY_FILE_LOCATION)
+    }
+    props.get.setProperty(property, value)
   }
 }

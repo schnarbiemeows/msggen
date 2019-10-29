@@ -4,32 +4,30 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.locks.PrimaryKeyLock
 import com.scala.classes.processes.PrimaryKeyMakerThread
-import com.scala.classes.utilities.{Configuration, DateUtils, FileIO, LogUtil}
+import com.scala.classes.utilities._
 import com.scala.classes.validators.PrimaryKeyMakerValidator
 
 /**
   * class that is used to make a primary key
   * @param mode - the mode of the program
-  * @param properties - singleton Properties object
+
   */
-class PrimaryKeyMakerMode(val mode: Int, val properties: Properties) extends Mode {
+class PrimaryKeyMakerMode(val mode: Int) extends Mode {
   /**
     * main run method
     */
   override def run(): Unit = {
     var runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("inside PrimaryKeyMakerMode main method");
-    if(PrimaryKeyMakerValidator.validate(properties)) {
+    if(PrimaryKeyMakerValidator.validate()) {
       LogUtil.msggenMasterLoggerDEBUG("configuration for the primary key maker mode validated");
-      val numberOfPrimaryKeys:Int = properties.get(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
+      val numberOfPrimaryKeys:Int = PropertyLoader.getProperty(Configuration.MODE1_NUM_PRIMARY_KEYS_TO_MAKE).toString.toInt
       LogUtil.msggenMasterLoggerDEBUG(s"number of unique primary keys to make = ${numberOfPrimaryKeys}");
-      val characters:String = properties.get(Configuration.MODE1_CHARACTERS).toString
-      val pkLength:Int = properties.get(Configuration.MODE1_PRIMARY_LENGTH).toString.toInt
-      val outputfile:String = properties.get(Configuration.MODE1_OUTPUT_FILE).toString
+      val characters:String = PropertyLoader.getProperty(Configuration.MODE1_CHARACTERS).toString
+      val pkLength:Int = PropertyLoader.getProperty(Configuration.MODE1_PRIMARY_LENGTH).toString.toInt
+      val outputfile:String = PropertyLoader.getProperty(Configuration.MODE1_OUTPUT_FILE).toString
       LogUtil.msggenMasterLoggerDEBUG(s"output file location for the primary keys = ${outputfile}");
       val primaryKeys:scala.collection.mutable.Set[String] = makeRandomPrimaryKeys(numberOfPrimaryKeys,characters,pkLength)
       val primaryKeyList:List[String] = primaryKeys.toList

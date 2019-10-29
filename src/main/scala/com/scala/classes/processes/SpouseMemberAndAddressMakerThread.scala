@@ -7,7 +7,7 @@ package com.scala.classes.processes
 import com.scala.classes.business.{AddressTableRandomizer, MMMtableRandomizer}
 import com.scala.classes.locks.{Counter2Lock, SubscriberIDsForSpousesLock}
 import com.scala.classes.posos.{SimpleAddressRecord, SimpleMemberAddressWrapper, SimpleMemberRecord}
-import com.scala.classes.utilities.{LogUtil, NumUtility}
+import com.scala.classes.utilities.LogUtil
 
 import scala.collection.mutable
 
@@ -24,7 +24,7 @@ import scala.collection.mutable
   */
 class SpouseMemberAndAddressMakerThread (val subIdSpLock:SubscriberIDsForSpousesLock,
                                          var counter1:Counter2Lock,
-                                         var ssnList:List[Int],
+                                         var ssnList:List[String],
                                          var subscriberIDsForSpouses:scala.collection.mutable.Stack[Int],
                                          var finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
                                          val threadNum:Int, var recordTotal:Int,val offset:Int) extends Runnable {
@@ -43,9 +43,9 @@ class SpouseMemberAndAddressMakerThread (val subIdSpLock:SubscriberIDsForSpouses
         val ssn = ssnList(offset+count)
         val primarySubId = getPrimaryFromStack()
         val primaryOpt:Option[SimpleMemberAddressWrapper] = finalMap.get(primarySubId)
-        var primary:SimpleMemberAddressWrapper = primaryOpt.getOrElse(new SimpleMemberAddressWrapper)
+        var primary:SimpleMemberAddressWrapper = primaryOpt.get
         var smaw: SimpleMemberAddressWrapper = makeWrapperRecord(ssn, primary)
-        finalMap.put(smaw.simpleMember.accountId.toLong,smaw)
+        finalMap.put(smaw.simpleMember.accountId.get.toLong,smaw)
       } else {
         LogUtil.logByNum(s"${Thread.currentThread().getId} : counter value: ${count} already maxxed out", threadNum%4)
       }
@@ -121,15 +121,14 @@ class SpouseMemberAndAddressMakerThread (val subIdSpLock:SubscriberIDsForSpouses
     * @param primary = primary object record
     * @return smaw
     */
-  def makeWrapperRecord(ssn:Int, primary:SimpleMemberAddressWrapper):SimpleMemberAddressWrapper = {
+  def makeWrapperRecord(ssn:String, primary:SimpleMemberAddressWrapper):SimpleMemberAddressWrapper = {
     LogUtil.logByNum(s"${Thread.currentThread().getId} : making Spouse Wrapper record",threadNum%4)
-    var smaw:SimpleMemberAddressWrapper = new SimpleMemberAddressWrapper()
-    val ssnStr = NumUtility.padIntToString(ssn,length)
-    val memberRecord:SimpleMemberRecord = makeMemberRecord(ssnStr,primary)
-    val addressRecord:SimpleAddressRecord = makeAddressRecord(memberRecord.accountId,primary)
-    smaw.simpleMember=(memberRecord)
-    smaw.simpleAddressRecord=(addressRecord)
-    smaw
+    //var smaw:SimpleMemberAddressWrapper = new SimpleMemberAddressWrapper()
+    val memberRecord:SimpleMemberRecord = makeMemberRecord(ssn,primary)
+    //val addressRecord:Option[SimpleAddressRecord] = makeAddressRecord(memberRecord.get.accountId.get,primary)
+    //smaw.simpleMember=(memberRecord)
+    //smaw.simpleAddressRecord=(addressRecord)
+    SimpleMemberAddressWrapper(memberRecord,makeAddressRecord(memberRecord.accountId.get,primary))
   }
 
 }

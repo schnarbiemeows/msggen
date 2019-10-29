@@ -9,13 +9,13 @@ package com.scala.classes.posos
   */
 class Address {
 
-  var addressLine1: String = null
-  var addressLine2: String = null
-  var addressType: AddressType = null
-  var city: String = null
-  var country: Country = null
-  var stateProvince: StateProvince = null
-  var zip4: String = null
-  var zip5: String = null
+  var addressLine1: Option[String] = None
+  var addressLine2: Option[String] = None
+  var addressType: Option[AddressType] = None
+  var city: Option[String] = None
+  var country: Option[Country] = None
+  var stateProvince: Option[StateProvince] = None
+  var zip4: Option[String] = None
+  var zip5: Option[String] = None
 
 }

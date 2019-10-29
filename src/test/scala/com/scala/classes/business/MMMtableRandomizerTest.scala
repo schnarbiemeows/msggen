@@ -4,10 +4,9 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
 import com.scala.classes.utilities.{Configuration, PropertyLoader}
+import com.scala.classes.validators.ExcelSheetValidatorTestMocks
 import org.junit.{Before, Test}
 
 /**
@@ -16,20 +15,18 @@ import org.junit.{Before, Test}
 @Test
 class MMMtableRandomizerTest {
 
-  var properties:Properties = _
-  var template:GenericRecordsTemplate = _
+  var template:GenericRecordsTemplate = new ExcelSheetValidatorTestMocks().getBlankTemplate()
 
   /**
     * initialization
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
   }
 
   @Test
   def test():Unit = {
-    val result = MMMtableRandomizer.makeBinaryDecision(properties.getProperty(Configuration.MODE3_LINE2_ADDR_PERCENT).toDouble)
+    val result = MMMtableRandomizer.makeBinaryDecision(PropertyLoader.getProperty(Configuration.MODE3_LINE2_ADDR_PERCENT).toDouble)
     assert(result != None)
     println(result)
   }

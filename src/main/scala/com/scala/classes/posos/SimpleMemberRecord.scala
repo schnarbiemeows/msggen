@@ -10,24 +10,28 @@ package com.scala.classes.posos
   */
 class SimpleMemberRecord {
 
-  // TODO - remove null references
-  var accountId: String = null
-  var socialSecurityNumber: String = null
-  var subscriberId: String = null
-  var dependentNumber: String = null
-  var alphaPrefix: String = null
-  var gender: String = null
-  var dob: String = null
-  var firstName: String = null
-  var middleName: String = null
-  var lastName: String = null
+  var accountId: Option[String] = None
+  var socialSecurityNumber: Option[String] = None
+  var subscriberId: Option[String] = None
+  var dependentNumber: Option[String] = None
+  var alphaPrefix: Option[String] = None
+  var gender: Option[String] = None
+  var dob: Option[String] = None
+  var firstName: Option[String] = None
+  var middleName: Option[String] = None
+  var lastName: Option[String] = None
 
   /**
     * this method will return the record as a csv string
     * @return - csv string
     */
   def toCSV():String = {
-    s"${accountId},${subscriberId},${alphaPrefix},${dependentNumber},${socialSecurityNumber},${firstName},${middleName},${lastName},${gender},${dob}"
+    s"${accountId.getOrElse("")},${subscriberId.getOrElse("")},${alphaPrefix.getOrElse("")}," +
+      s"${dependentNumber.getOrElse("")},${socialSecurityNumber.getOrElse("")},${firstName.getOrElse("")}," +
+      s"${middleName.getOrElse("")},${lastName.getOrElse("")},${gender.getOrElse("")},${dob.getOrElse("")}"
   }
 
+  def toJSON():String = {
+    s"""{ "accountId" : "${accountId.getOrElse("")}" , "subscriberId" : "${subscriberId.getOrElse("")}" , "alphaPrefix" : "${alphaPrefix.getOrElse("")}" , "dependentNumber" : "${dependentNumber.getOrElse("")}" , "socialSecurityNumber" : "${socialSecurityNumber.getOrElse("")}" , "firstName" : "${firstName.getOrElse("")}" , "middleName" : "${middleName.getOrElse("")}" , "lastName" : "${lastName.getOrElse("")}" , "gender" : "${gender.getOrElse("")}" , "dob" : "${dob.getOrElse("")}" }"""
+  }
 }

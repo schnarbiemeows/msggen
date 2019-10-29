@@ -18,24 +18,24 @@ object App {
     */
   def main(args: Array[String]) {
     //LogUtil.msggenMasterLoggerDEBUG("BEGIN - mssgen program");
-    if(args(0)==null) {
+    if(args.length==0) {
       //LogUtil.msggenMasterLoggerDEBUG("config file location is missing, exiting program")
       System.exit(1)
     }
     val config: String = args(0)
     //LogUtil.msggenMasterLoggerDEBUG(s"config = ${config}\n");
-    val properties = PropertyLoader.getProperties(config)
-    val mode:Int = properties.getProperty(Configuration.MODE).toInt
+    PropertyLoader.getProperties(config)
+    val mode:Int = PropertyLoader.getProperty(Configuration.MODE).toInt
     LogUtil.msggenMasterLoggerDEBUG(s"Mode = ${mode}");
     mode match {
-      case 0 => new SSNMakerMode(0,properties).run()
-      case 1 => new PrimaryKeyMakerMode(1,properties).run()
-      case 3 => new SimpleMMMode(3,properties).run()
-      case 4 => new StreamingMessagesMode(4,properties).run()
-      case 5 => new StreamingMessagesMode(5,properties).run()
-      case 6 => new HqlMakerMode(6,properties).run()
-      case 7 => new StreamingMessagesMode(7,properties).run()
-      case 8 => new StreamingMessagesMode(8,properties).run()
+      case 0 => new SSNMakerMode(0).run()
+      case 1 => new PrimaryKeyMakerMode(1).run()
+      case 3 => new SimpleMMMode(3).run()
+      case 4 => new StreamingMessagesMode(4).run()
+      case 5 => new StreamingMessagesMode(5).run()
+      case 6 => new HqlMakerMode(6).run()
+      case 7 => new StreamingMessagesMode(7).run()
+      case 8 => new StreamingMessagesMode(8).run()
       case default => println(s"mode ${default} is not a valid mode, so nothing to do here")
     }
     LogUtil.msggenMasterLoggerDEBUG("END - mssgen program");

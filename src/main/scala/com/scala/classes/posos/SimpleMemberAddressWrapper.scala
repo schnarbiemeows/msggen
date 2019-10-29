@@ -7,10 +7,10 @@ package com.scala.classes.posos
 /**
   * class of SimpleMemberAddressWrapper
   */
-class SimpleMemberAddressWrapper {
+case class SimpleMemberAddressWrapper(val simpleMember: SimpleMemberRecord, val simpleAddressRecord: SimpleAddressRecord) {
 
-  var simpleMember: SimpleMemberRecord = null
-  var simpleAddressRecord: SimpleAddressRecord = null
+  //var simpleMember: Option[SimpleMemberRecord] = None
+  //var simpleAddressRecord: Option[SimpleAddressRecord] = None
 
 
 }

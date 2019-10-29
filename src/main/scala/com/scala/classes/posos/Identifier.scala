@@ -9,7 +9,7 @@ package com.scala.classes.posos
   */
 class Identifier {
 
-  var id: String = null
-  var idType: String = null
+  var id: Option[String] = None
+  var idType: Option[String] = None
 
 }

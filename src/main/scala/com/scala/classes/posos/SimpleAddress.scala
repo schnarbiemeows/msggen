@@ -9,10 +9,10 @@ package com.scala.classes.posos
   */
 class SimpleAddress {
 
-  var addressLine1: String = null
-  var addressLine2: String = null
-  var city: String = null
-  var stateCode: String = null
-  var zip5: String = null
+  var addressLine1: Option[String] = None
+  var addressLine2: Option[String] = None
+  var city: Option[String] = None
+  var stateCode: Option[String] = None
+  var zip5: Option[String] = None
 
 }

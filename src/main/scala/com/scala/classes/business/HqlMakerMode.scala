@@ -4,18 +4,16 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.{Configuration, DateUtils, FileIO, LogUtil}
+import com.scala.classes.utilities._
 import com.scala.classes.validators.ExcelDataSheetValidator
 
-class HqlMakerMode(val mode: Int, val properties: Properties) extends Mode {
+class HqlMakerMode(val mode: Int) extends Mode {
 
   /**
     * our records to generate and export
     */
-  var records:GenericRecordsTemplate = new GenericRecordsTemplate(properties)
+  var records:GenericRecordsTemplate = new GenericRecordsTemplate()
   /**
     * main run method
     */
@@ -28,12 +26,12 @@ class HqlMakerMode(val mode: Int, val properties: Properties) extends Mode {
     // 1. read in excel spreadsheet data
     FileIO.readInSpreadsheet(records)
     // 2. validate the data
-    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate(properties)
+    val templateValidated:Boolean = new ExcelDataSheetValidator(mode,records).validate()
     if(templateValidated) {
       LogUtil.msggenMasterLoggerDEBUG("template validated")
       LogUtil.msggenMasterLoggerDEBUG("creating Hive table script")
-      val hiveList:List[String] = HiveTableCreator.makeTableArray(records,properties)
-      val filepath = properties.getProperty(Configuration.MODE5_HIVE_OUTPUTFILE)
+      val hiveList:List[String] = HiveTableCreator.makeTableArray(records)
+      val filepath = PropertyLoader.getProperty(Configuration.MODE5_HIVE_OUTPUTFILE)
       FileIO.outputAnyListToFile(hiveList,filepath)
       LogUtil.msggenMasterLoggerDEBUG("finished creating Hive table script")
     } else {

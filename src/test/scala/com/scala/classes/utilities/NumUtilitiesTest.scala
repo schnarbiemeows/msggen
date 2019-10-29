@@ -8,19 +8,17 @@ import org.junit.Assert._
 import org.junit.{Before, Test}
 
 /**
-  *
+  * class to test the NumUtility class
   */
 @Test
 class NumUtilitiesTest {
 
-  val properties = PropertyLoader.getProperties(Configuration.PROPERTY_FILE_LOCATION)
-
   /**
-    *
+    * initialization
     */
   @Before
   def initialize():Unit = {
-    NumUtility.initialize(properties)
+    NumUtility.initialize()
   }
 
   /**

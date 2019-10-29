@@ -19,7 +19,7 @@ object DecimalNumberTypeGenerator extends Generator {
     var length:Int = 10
     var min:Double = 0
     var max:Double = 0
-    var roundingType:String = null
+    var roundingType:Option[String] = None
     var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomDouble", format)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
@@ -35,12 +35,12 @@ object DecimalNumberTypeGenerator extends Generator {
     }
     for (i <- 0 until formatsNotNeedingQualifiers.length) {
       formatsNotNeedingQualifiers(i) match {
-        case "roundup" => roundingType = "roundup"
-        case "rounddown" => roundingType = "rounddown"
-        case "roundhalf" => roundingType = "roundhalf"
+        case "roundup" => roundingType = Some("roundup")
+        case "rounddown" => roundingType = Some("rounddown")
+        case "roundhalf" => roundingType = Some("roundhalf")
       }
     }
-    val result = padNumberWithZeros(randomDouble(min,max,signDigits,roundingType).toString,length)
+    val result = padNumberWithZeros(randomDouble(min,max,signDigits,roundingType.getOrElse("roundhalf")).toString,length)
     val randomNum = randomDouble(0,1,2,"rounddown")
     if(randomNum<nullPercentage) "" else result
   }

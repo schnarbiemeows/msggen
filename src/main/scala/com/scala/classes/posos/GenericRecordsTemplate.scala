@@ -3,9 +3,7 @@
  */
 
 package com.scala.classes.posos
-import java.util.Properties
-
-import com.scala.classes.utilities.Configuration
+import com.scala.classes.utilities.{Configuration, PropertyLoader}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -19,9 +17,9 @@ import scala.collection.mutable.ArrayBuffer
   * 2. assorted meta-data like how many files we want to make, how many records in
   * each file, etc..
   * 3. A list of all of the records that are generated
-  * @param properties - singleton Properties object
+
   */
-class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate {
+class GenericRecordsTemplate() extends RecordsTemplate {
   /**
     * the names of the fields we are generating records for
     */
@@ -46,25 +44,25 @@ class GenericRecordsTemplate(val properties:Properties) extends RecordsTemplate 
   /**
     * location of our source file
     */
-  override val sourcefile:String = properties.get(Configuration.MODE4_SRC_FILE).toString
+  override val sourcefile:String = PropertyLoader.getProperty(Configuration.MODE4_SRC_FILE).toString
   /**
     * location of any external source file, will be NONE if we have none
     */
-  override val externalFile:String = properties.get(Configuration.MODE4_SRC_FILE).toString
+  override val externalFile:String = PropertyLoader.getProperty(Configuration.MODE4_SRC_FILE).toString
   /**
     * number of total files to make
     */
-  override val numfiles: Int = properties.get(Configuration.MODE4_NUM_FILES).toString.toInt
+  override val numfiles: Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_FILES).toString.toInt
   /**
     * number of records in each file
     */
-  override val numrecords: Int = properties.get(Configuration.MODE4_NUM_RECORDS).toString.toInt
+  override val numrecords: Int = PropertyLoader.getProperty(Configuration.MODE4_NUM_RECORDS).toString.toInt
   /**
     * output folder to locate the generated files
     */
   override val outputFileFolder:String = {
-    val name:String = properties.get(Configuration.MODE4_OUTPUT_FILE).toString
-    val os:String = properties.get(Configuration.SYSTEM).toString
+    val name:String = PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE).toString
+    val os:String = PropertyLoader.getProperty(Configuration.SYSTEM).toString
     val output:String = result(os,name)
     output
   }

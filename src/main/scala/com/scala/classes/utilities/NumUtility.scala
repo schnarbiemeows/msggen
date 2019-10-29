@@ -3,7 +3,6 @@
  */
 
 package com.scala.classes.utilities
-import java.util.Properties
 
 /**
   * Utility class for Numeric utilities
@@ -13,10 +12,9 @@ object NumUtility extends Randomizer {
   val ONE:Double = 1.0
   val ZERO:Double = 0.0
   /**
-    * method to initialize configuration Properties
-    * @param props - singleton Properties object
+    * method to initialize nothing atm
     */
-  override def initialize(props: Properties): Unit = {}
+  override def initialize(): Unit = {}
 
   /**
     * method to convert a Long or Int to a String and pad it with leading zeroes, if needed

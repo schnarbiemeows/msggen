@@ -5,7 +5,6 @@
 package com.scala.classes.validators
 
 import java.time.{LocalDate, LocalDateTime}
-import java.util.Properties
 
 import com.scala.classes.utilities.{DateUtils, NumUtility, StringUtils}
 
@@ -19,10 +18,9 @@ object DateTimeQualifiersValidator extends Validator {
 
   /**
     * main validation method
-    * @param properties - singleton Properties object
     * @return - Boolean
     */
-  override def validate(properties: Properties): Boolean = {true}
+  override def validate(): Boolean = {true}
 
   /**
     *
@@ -38,10 +36,10 @@ object DateTimeQualifiersValidator extends Validator {
     var formatSpecified:String = ""
     var endWasSpecified:Boolean = false
     var endSpecifiedValid:Boolean = false
-    var endSpecified:LocalDate = null
+    var endSpecified:Option[LocalDate] = None
     var startWasSpecified:Boolean = false
     var startSpecifiedValid:Boolean = false
-    var startSpecified:LocalDate = null
+    var startSpecified:Option[LocalDate] = None
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
@@ -91,7 +89,7 @@ object DateTimeQualifiersValidator extends Validator {
                 message = s"start DateTime specified is not valid for the ${dataType} data type"
               } else {
                 startSpecifiedValid = true
-                startSpecified = DateUtils.getDateFromString(qualifiers(i), formatSpecified)
+                startSpecified = Some(DateUtils.getDateFromString(qualifiers(i), formatSpecified))
               }
             }
             case "end" => {
@@ -100,7 +98,7 @@ object DateTimeQualifiersValidator extends Validator {
                 message = s"end DateTime specified is not valid for the ${dataType} data type"
               } else {
                 endSpecifiedValid = true
-                endSpecified = DateUtils.getDateFromString(qualifiers(i), formatSpecified)
+                endSpecified = Some(DateUtils.getDateFromString(qualifiers(i), formatSpecified))
               }
             }
             case default => {}
@@ -111,7 +109,7 @@ object DateTimeQualifiersValidator extends Validator {
             isValidated = false
             message = s"start Date and/or end Date specified is not valid for the format specified for the ${dataType} data type"
           } else {
-            if (startSpecified.compareTo(endSpecified) > 0) {
+            if (startSpecified.get.compareTo(endSpecified.get) > 0) {
               isValidated = false
               message = s"the specified start Date comes after the specified end Date for the ${dataType} data type"
             }
@@ -136,10 +134,10 @@ object DateTimeQualifiersValidator extends Validator {
     var formatSpecified:String = ""
     var endWasSpecified:Boolean = false
     var endSpecifiedValid:Boolean = false
-    var endSpecified:LocalDateTime = null
+    var endSpecified:Option[LocalDateTime] = None
     var startWasSpecified:Boolean = false
     var startSpecifiedValid:Boolean = false
-    var startSpecified:LocalDateTime = null
+    var startSpecified:Option[LocalDateTime] = None
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
@@ -189,7 +187,7 @@ object DateTimeQualifiersValidator extends Validator {
                 message = s"start DateTime specified is not valid for the ${dataType} data type"
               } else {
                 startSpecifiedValid = true
-                startSpecified = DateUtils.getDateTimeFromString(qualifiers(i), formatSpecified)
+                startSpecified = Some(DateUtils.getDateTimeFromString(qualifiers(i), formatSpecified))
               }
             }
             case "end" => {
@@ -198,7 +196,7 @@ object DateTimeQualifiersValidator extends Validator {
                 message = s"end DateTime specified is not valid for the ${dataType} data type"
               } else {
                 endSpecifiedValid = true
-                endSpecified = DateUtils.getDateTimeFromString(qualifiers(i), formatSpecified)
+                endSpecified = Some(DateUtils.getDateTimeFromString(qualifiers(i), formatSpecified))
               }
             }
             case default => {}
@@ -209,7 +207,7 @@ object DateTimeQualifiersValidator extends Validator {
             isValidated = false
             message = s"start DateTime and/or end DateTime specified is not valid for the format specified for the ${dataType} data type"
           } else {
-            if (startSpecified.compareTo(endSpecified) > 0) {
+            if (startSpecified.get.compareTo(endSpecified.get) > 0) {
               isValidated = false
               message = s"the specified start DateTime comes after the specified end DateTime for the ${dataType} data type"
             }

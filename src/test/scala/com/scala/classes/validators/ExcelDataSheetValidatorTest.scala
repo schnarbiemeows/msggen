@@ -4,11 +4,8 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.exception.{InvalidDataTypeException, InvalidFieldNameException, MismatchedColumnLengthException}
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.PropertyLoader
 import org.junit.Assert._
 import org.junit.{Before, Test}
 
@@ -18,8 +15,7 @@ import org.junit.{Before, Test}
 @Test
 class ExcelDataSheetValidatorTest {
 
-  var properties:Properties = _
-  var template:GenericRecordsTemplate = _
+  var template:GenericRecordsTemplate = new ExcelSheetValidatorTestMocks().getBlankTemplate()
   var validator:ExcelDataSheetValidator = _
   var mocks:ExcelSheetValidatorTestMocks = _
   val mode:Int = 4
@@ -28,10 +24,6 @@ class ExcelDataSheetValidatorTest {
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
-    mocks = new ExcelSheetValidatorTestMocks(properties)
-    template = mocks.getBasicTemplate()
-
   }
 
   import org.junit.Test

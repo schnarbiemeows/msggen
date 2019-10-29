@@ -9,10 +9,10 @@ package com.scala.classes.posos
   */
 class MasterMemberRecord {
 
-  var attributes: Attributes = null
-  var createdTime: String = null
-  var updatedTime: String = null
+  var attributes: Option[Attributes] = None
+  var createdTime:Option[String] = None
+  var updatedTime:Option[String] = None
   var sources: Array[Source] = Array[Source]()
-  var uri: String = null
+  var uri:Option[String] = None
 
 }

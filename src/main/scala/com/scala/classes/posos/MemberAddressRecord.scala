@@ -9,29 +9,29 @@ package com.scala.classes.posos
   */
 class MemberAddressRecord {
 
-  var firstname: String = null
-  var lastname: String = null
-  var middlename: String = null
-  var address1: Address = null
-  var address2: Address = null
-  var address3: Address = null
-  var ssn: String = null
-  var subscriberRelationshiplookupcode: String = null
-  var subscriberRelationshipvalue: String = null
-  var dob: String = null
-  var email: String = null
+  var firstname:Option[String] = None
+  var lastname:Option[String] = None
+  var middlename:Option[String] = None
+  var address1: Option[Address] = None
+  var address2: Option[Address] = None
+  var address3: Option[Address] = None
+  var ssn:Option[String] = None
+  var subscriberRelationshiplookupcode:Option[String] = None
+  var subscriberRelationshipvalue:Option[String] = None
+  var dob:Option[String] = None
+  var email:Option[String] = None
   var identifiers: Array[Identifier] = Array[Identifier]()
-  var genderlookupcode: String = null
-  var gendervalue: String = null
-  var phone:PhoneNumber = null
-  var maritalstatuslookupcode: String = null
-  var maritalstatusvalue: String = null
-  var phisecuritycodelookupcode: String = null
-  var phisecuritycodevalue: String = null
-  var uri: String = null
+  var genderlookupcode:Option[String] = None
+  var gendervalue:Option[String] = None
+  var phone:Option[PhoneNumber] = None
+  var maritalstatuslookupcode:Option[String] = None
+  var maritalstatusvalue:Option[String] = None
+  var phisecuritycodelookupcode:Option[String] = None
+  var phisecuritycodevalue:Option[String] = None
+  var uri:Option[String] = None
   var sources: Array[Source] = Array[Source]()
-  var createdtime: String = null
-  var updatedtime: String = null
-  var loaddt: String = null
+  var createdtime:Option[String] = None
+  var updatedtime:Option[String] = None
+  var loaddt:Option[String] = None
 
 }

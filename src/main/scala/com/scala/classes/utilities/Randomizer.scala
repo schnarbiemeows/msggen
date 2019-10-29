@@ -5,7 +5,6 @@
 package com.scala.classes.utilities
 
 import java.time.LocalDate
-import java.util.Properties
 import java.util.concurrent.TimeUnit
 
 import scala.util.Random
@@ -18,9 +17,8 @@ trait Randomizer {
 
   /**
     * initialize properties
-    * @param props - program properties
     */
-  def initialize(props: Properties)
+  def initialize()
 
   /**
     * method to generate a random alphanumeric String of a given length

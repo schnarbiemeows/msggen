@@ -9,8 +9,8 @@ package com.scala.classes.posos
   */
 class PhoneNumber {
 
-  var formattedNumber: String = null
-  var phoneNumberType: PhoneNumberType = null
+  var formattedNumber: Option[String] = None
+  var phoneNumberType: Option[PhoneNumberType] = None
 
 }
 

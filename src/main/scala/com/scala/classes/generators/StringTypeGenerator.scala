@@ -19,7 +19,7 @@ object StringTypeGenerator extends Generator{
     */
   def makeRandomString(format: String,qualifiers:ArrayBuffer[String]):String = {
     var length:Int = 10
-    var chars:String = null
+    var chars:Option[String] = None
     var toUpper:Boolean = false
     var toLower:Boolean = false
     var nullPercentage:Double = 0.0
@@ -29,7 +29,7 @@ object StringTypeGenerator extends Generator{
     for (i <- 0 until formatsThatNeedQualifierChecks.length) {
       formatsThatNeedQualifierChecks(i) match {
         case "length" => length = qualifiers(i).toInt
-        case "chars" => chars = qualifiers(i).toString
+        case "chars" => chars = Some(qualifiers(i).toString)
         case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
@@ -40,7 +40,7 @@ object StringTypeGenerator extends Generator{
         case _ => None
       }
     }
-    var result = if(chars==null) randomAlphaNumeric(length) else randomAlphaNumeric(length,chars)
+    var result = if(chars==None) randomAlphaNumeric(length) else randomAlphaNumeric(length,chars.get)
     result = if(toUpper) result.toUpperCase else if(toLower) result.toLowerCase else result
     val randomNum = randomDouble(0,1,2,"rounddown")
     if(randomNum<nullPercentage) "" else result

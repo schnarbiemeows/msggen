@@ -4,10 +4,8 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.posos.{DataTypes, RecordsTemplate}
-import com.scala.classes.utilities.Configuration
+import com.scala.classes.utilities.{Configuration, PropertyLoader}
 
 /**
   * this class is used during modes 5, and will generate a Hive table creation
@@ -19,19 +17,18 @@ object HiveTableCreator {
   /**
     * main method to create the Hive script
     * @param template - Record template with the table data
-    * @param properties - singleton Properties object
     * @return - List[String] of the text to be in the file
     */
-  def makeTableArray(template:RecordsTemplate, properties:Properties):List[String] = {
-    val databasename:String = properties.getProperty(Configuration.MODE5_HIVE_DATABASE_NAME)
-    val tablename:String = properties.getProperty(Configuration.MODE5_HIVE_TABLE_NAME)
-    val external:String = makeExternal(properties.getProperty(Configuration.MODE5_HIVE_EXTERNAL_TABLE))
-    val location:String = properties.getProperty(Configuration.MODE5_HIVE_DATA_LOCATION)
-    val hiveTypes = template.dataTypes.map(hiveMapper(_,properties.getProperty(Configuration.MODE5_HIVE_RAWDATA)))
+  def makeTableArray(template:RecordsTemplate):List[String] = {
+    val databasename:String = PropertyLoader.getProperty(Configuration.MODE5_HIVE_DATABASE_NAME)
+    val tablename:String = PropertyLoader.getProperty(Configuration.MODE5_HIVE_TABLE_NAME)
+    val external:String = makeExternal(PropertyLoader.getProperty(Configuration.MODE5_HIVE_EXTERNAL_TABLE))
+    val location:String = PropertyLoader.getProperty(Configuration.MODE5_HIVE_DATA_LOCATION)
+    val hiveTypes = template.dataTypes.map(hiveMapper(_,PropertyLoader.getProperty(Configuration.MODE5_HIVE_RAWDATA)))
     val closingparenthesisline = ")"
-    val serde:String = makeserde(properties.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
-    val serdeproperties:String = makeserdeproperties(properties.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
-    val storedAs:String = makestoredAs(properties.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
+    val serde:String = makeserde(PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
+    val serdeproperties:String = makeserdeproperties(PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
+    val storedAs:String = makestoredAs(PropertyLoader.getProperty(Configuration.MODE4_OUTPUT_FILE_TYPE))
     val locationStr = "location \'"+location+"\' ;"
     val count = determineCount(hiveTypes,serde)
     val hiveText:Array[String] = new Array[String](count)

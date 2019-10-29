@@ -25,7 +25,7 @@ import scala.collection.mutable
   */
 class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependentsLock,
                                       val counter1:Counter2Lock,
-                                      var ssnList:List[Int],
+                                      var ssnList:List[String],
                                       var subscriberIdList:List[Int],
                                       var subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
                                       var finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
@@ -47,11 +47,11 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
         val deptNum = getDependentNumValue(primarySubId)
         val primaryOpt:Option[SimpleMemberAddressWrapper] = finalMap.get(primarySubId.toLong*100)
         if(primaryOpt==None) println(s"nothing here for sub ID = ${primarySubId}")
-        var primary:SimpleMemberAddressWrapper = primaryOpt.getOrElse(new SimpleMemberAddressWrapper)
-        var smaw:SimpleMemberAddressWrapper = makeWrapperRecord(ssn, primary,deptNum)
-        var accountId:Long = smaw.simpleMember.accountId.toLong
+        var primary:SimpleMemberAddressWrapper = primaryOpt.get
+        val smaw:SimpleMemberAddressWrapper = makeWrapperRecord(ssn, primary,deptNum)
+        val accountId:Long = smaw.simpleMember.accountId.get.toLong
         LogUtil.msggenMasterLoggerDEBUG(s"${Thread.currentThread().getId} : putting -> ${accountId} into MAP for counter = ${count}")
-        finalMap.put(smaw.simpleMember.accountId.toLong,smaw)
+        finalMap.put(accountId,smaw)
       } else {
         LogUtil.logByNum(s"${Thread.currentThread().getId} : counter value: ${count} already maxxed out", threadNum%4)
       }
@@ -118,7 +118,7 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
     */
   def makeMemberRecord(ssn:String, primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberRecord = {
     LogUtil.logByNum(s"${Thread.currentThread().getId} : making Dependent Member Information record",threadNum%4)
-    var memberRecord:SimpleMemberRecord = MMMtableRandomizer.generateRandomDependent(ssn,primary,deptNum)
+    val memberRecord:SimpleMemberRecord = MMMtableRandomizer.generateRandomDependent(ssn,primary,deptNum)
     memberRecord
   }
 
@@ -140,15 +140,10 @@ class DependentMemberAndAddressThread(val subIdDeptLock:SubscriberIDsForDependen
     * @param primary - primary member Object
     * @return smaw
     */
-  def makeWrapperRecord(ssn:Int, primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberAddressWrapper = {
+  def makeWrapperRecord(ssn:String, primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberAddressWrapper = {
     LogUtil.logByNum(s"${Thread.currentThread().getId} : making Dependent Wrapper record",threadNum%4)
-    var smaw:SimpleMemberAddressWrapper = new SimpleMemberAddressWrapper()
-    val ssnStr = NumUtility.padIntToString(ssn,length)
-    val memberRecord:SimpleMemberRecord = makeMemberRecord(ssnStr,primary,deptNum)
-    val addressRecord:SimpleAddressRecord = makeAddressRecord(memberRecord.accountId,primary)
-    smaw.simpleMember=(memberRecord)
-    smaw.simpleAddressRecord=(addressRecord)
-    smaw
+    val memberRecord:SimpleMemberRecord = makeMemberRecord(ssn,primary,deptNum)
+    SimpleMemberAddressWrapper(memberRecord,makeAddressRecord(memberRecord.accountId.get,primary))
   }
 
 }

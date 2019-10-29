@@ -4,19 +4,13 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.posos.{SimpleAddress, SimpleAddressRecord, SimpleMemberAddressWrapper}
-import com.scala.classes.utilities.{Configuration, LogUtil, Randomizer}
+import com.scala.classes.utilities.{Configuration, LogUtil, PropertyLoader, Randomizer}
 
 /**
   * Singleton Class for creating random SimpleAddress object information
   */
 object AddressTableRandomizer extends Randomizer {
-  /**
-    * configuration properties
-    */
-  var props:Properties = _
 
   /**
     * addressLine1, part 1
@@ -105,10 +99,8 @@ object AddressTableRandomizer extends Randomizer {
 
   /**
     * initialize
-    * @param inputprops = input properties
     */
-  override def initialize(inputprops: Properties): Unit = {
-    this.props=inputprops
+  override def initialize(): Unit = {
     LogUtil.msggenThread2LoggerDEBUG("Address Arrays initialized")
   }
 
@@ -119,18 +111,15 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForPrimary(accountId: String): SimpleAddressRecord = {
-    val record:SimpleAddressRecord = new SimpleAddressRecord
-    record.accountId=(accountId)
     val address:SimpleAddress = new SimpleAddress
-    address.addressLine1=(generateRandomStreetAddress1())
-    if(makeBinaryDecision(this.props.getProperty(Configuration.MODE3_LINE2_ADDR_PERCENT).toString.toDouble)) {
-      address.addressLine2=(generateRandomStreetAddress2())
+    address.addressLine1=Some(generateRandomStreetAddress1())
+    if(makeBinaryDecision(PropertyLoader.getProperty(Configuration.MODE3_LINE2_ADDR_PERCENT).toString.toDouble)) {
+      address.addressLine2=Some(generateRandomStreetAddress2())
     }
-    address.stateCode=(generateRandomState())
-    address.city=(generateRandomCity(address.stateCode))
-    address.zip5=(padZipCode(generateRandomZipCode()))
-    record.address=(address)
-    record
+    address.stateCode=Some(generateRandomState())
+    address.city=(generateRandomCity(address.stateCode.get))
+    address.zip5=Some(padZipCode(generateRandomZipCode()))
+    SimpleAddressRecord(accountId,address)
   }
 
   /**
@@ -140,10 +129,7 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForSpouse(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
-    val record = new SimpleAddressRecord
-    record.address=(primary.simpleAddressRecord.address)
-    record.accountId=(accountId)
-    record
+    SimpleAddressRecord(accountId,primary.simpleAddressRecord.address)
   }
 
   /**
@@ -155,16 +141,13 @@ object AddressTableRandomizer extends Randomizer {
     * @return record:SimpleAddressRecord
     */
   def generateRandomAddressForDependent(accountId: String, primary:SimpleMemberAddressWrapper): SimpleAddressRecord = {
-    val chance:Double = this.props.getProperty(Configuration.MODE3_NUMBER_OF_DEPENDENTS).toDouble
-    var record = new SimpleAddressRecord
+    val chance:Double = PropertyLoader.getProperty(Configuration.MODE3_NUMBER_OF_DEPENDENTS).toDouble
     if(makeBinaryDecision(chance)) {
       LogUtil.msggenMasterLoggerDEBUG(s"generating a different address for a dependent ${accountId}");
-      record = generateRandomAddressForPrimary(accountId)
+      generateRandomAddressForPrimary(accountId)
     } else {
-      record.address=(primary.simpleAddressRecord.address)
-      record.accountId=(accountId)
+      SimpleAddressRecord(accountId,primary.simpleAddressRecord.address)
     }
-    record
   }
 
   /**
@@ -205,16 +188,15 @@ object AddressTableRandomizer extends Randomizer {
     * @param stateCode = state code to generate a city for
     * @return String
     */
-  def generateRandomCity(stateCode: String): String = {
+  def generateRandomCity(stateCode: String): Option[String] = {
     val stateCitiesOption:Option[Array[String]] = usStates.get(stateCode)
-    var stateCitieslength:Int = 0
-    val stateCities:Array[String] = stateCitiesOption.getOrElse(null)
-    if(stateCities!=null) {
-      stateCitieslength = stateCities.size
-      var index = this.randomInteger(0,stateCitieslength)
-      stateCities(index)
+    if(stateCitiesOption!=None) {
+      val stateCities = stateCitiesOption.get
+      val stateCitieslength = stateCities.size
+      val index = this.randomInteger(0,stateCitieslength)
+      Some(stateCities(index))
     } else {
-      null
+      None
     }
   }
 

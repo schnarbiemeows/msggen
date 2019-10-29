@@ -25,7 +25,7 @@ object MoneyTypeGenerator extends Generator {
     var signDigits:Int = 2
     var min:Float = 0
     var max:Float = 0
-    var roundingType:String = null
+    var roundingType:Option[String] = None
     var nullPercentage:Double = 0.0
     val splitLists:Tuple2[Array[String],Array[String]] = filterQualifiers("RandomMoney", format)
     val formatsThatNeedQualifierChecks:Array[String] = splitLists._1
@@ -39,13 +39,13 @@ object MoneyTypeGenerator extends Generator {
     }
     for (i <- 0 until formatsNotNeedingQualifiers.length) {
       formatsNotNeedingQualifiers(i) match {
-        case "roundup" => roundingType = "roundup"
-        case "rounddown" => roundingType = "rounddown"
-        case "roundhalf" => roundingType = "roundhalf"
+        case "roundup" => roundingType = Some("roundup")
+        case "rounddown" => roundingType = Some("rounddown")
+        case "roundhalf" => roundingType = Some("roundhalf")
         case _ => None
       }
     }
-    val result = padMoneyWithZeros(randomFloat(min,max,signDigits,roundingType).toString)
+    val result = padMoneyWithZeros(randomFloat(min,max,signDigits,roundingType.getOrElse("roundhalf")).toString)
     val randomNum = randomDouble(0,1,2,"rounddown")
     if(randomNum<nullPercentage) "" else result
   }

@@ -5,7 +5,6 @@
 package com.scala.classes.actors.controllers
 
 import java.time.LocalTime
-import java.util.Properties
 import java.util.concurrent.ArrayBlockingQueue
 
 import akka.actor.{ActorSystem, Props}
@@ -17,9 +16,8 @@ import com.scala.classes.utilities.{DateUtils, LogUtil}
 /**
   * this class is used as a primary to initiate the actor system that will generate records
   * @param template - Record template
-  * @param properties - singleton Properties object
   */
-class RecordMakerController(val template: RecordsTemplate, val properties: Properties) {
+class RecordMakerController(val template: RecordsTemplate) {
 
   /**
     * main method to invoke the actors
@@ -36,7 +34,7 @@ class RecordMakerController(val template: RecordsTemplate, val properties: Prope
     val system = ActorSystem("RecordMakingActorSystem")
     LogUtil.msggenMasterLoggerDEBUG("creating the primary record making controller")
     val recordsMakerControllerActor = system.actorOf(Props(new RecordsMakerControllerActor(template,
-      properties,blockingQueue)), name = "recordsMakerControllerActor")
+      blockingQueue)), name = "recordsMakerControllerActor")
     runEndLocal = DateUtils.getDifferenceInMilliseconds(runStartLocal)
     LogUtil.logTime(s"creating the actor system took => ${runEndLocal._1} milliseconds")
     runStartLocal = runEndLocal._2

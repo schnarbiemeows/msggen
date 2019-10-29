@@ -4,17 +4,14 @@
 
 package com.scala.classes.business
 
-import java.util.Properties
-
 import com.scala.classes.posos.{SimpleMemberAddressWrapper, SimpleMemberRecord}
-import com.scala.classes.utilities.{Configuration, LogUtil, Randomizer}
+import com.scala.classes.utilities.{Configuration, LogUtil, PropertyLoader, Randomizer}
 
 /**
   * Singleton Class for creating random SimpleMemberRecord object information
   */
 object MMMtableRandomizer extends Randomizer {
 
-  var props:Properties = _
   val firstNames = Array("James","John","Robert","Michal","Andy","David","Richard","Charles","Joe","Daniel","Paul","Mark","Mary","Patricia","Elizabeth","Barbara","Jennifer","Maria","Susan","Margaret","Dorothy","Lisa","Karen","Betty","Archie","Brent","Christian","Ashley","Samantha","Rebecca","Frank","Felicia","George","Gertrude","Clarabell","Hunter","Hillary","Ivan","Isabell","Jessica","Lance","Mobey","Marsha","Melissa","Ollie","Nancy","Nigel","Patrick","Patsy","Quincy","Renaldo","Sam","Scooter","Todd","Trevor","William","Wendy","Zack","Chester")
   val middleNames = Array("A.","B.","C.","D.","E.","F.","G.","H.","I.","J.","K.","L.","M.","N.","O.","P.","R.","S.","T.","U.","V.","W.","Y.")
   val lastNames = Array("Smith","Jones","Brown","Johnson","Williams","Miller","Taylor","Wilson","Davis","Macfee","Buckley","Chesterfield","Samuels","Princeton","Dobson","Peabody","Norton","White","Black","Green","Tyson","Clark","Eagerly","Franklin","George","Hilliard","Hilman","Islee","Jackson","Kingsley","Lawson","Lee","Lawrence","Okeefe","Oakley","Zimmerman","Yeardley","Yates","Vance","Underwood","Evers","Dupree","Nunes","Alexander","Applewood","Asher","Ainge","Blackwell","Johnson","Mcdowell","Macdonald")
@@ -22,10 +19,8 @@ object MMMtableRandomizer extends Randomizer {
 
   /**
     * initialize
-    * @param inputprops - properties from properties file
     */
-  override def initialize(inputprops: Properties): Unit = {
-    this.props=inputprops
+  override def initialize(): Unit = {
     LogUtil.msggenThread2LoggerDEBUG("Member arrays initialized")
   }
 
@@ -38,16 +33,16 @@ object MMMtableRandomizer extends Randomizer {
     */
   def generateRandomPrimaryMember(ssn:String,accountId:String):SimpleMemberRecord = {
     val person:SimpleMemberRecord = new SimpleMemberRecord
-    person.accountId=(accountId)
-    person.subscriberId=(accountId.substring(0,9))
-    person.socialSecurityNumber=(ssn)
-    person.dependentNumber=(accountId.substring(9,11))
-    person.firstName=(generateRandomFirstNameForPrimary)
-    person.middleName=(generateRandomMiddleNameForPrimary())
-    person.lastName=(generateRandomLastNameForPrimary())
-    person.alphaPrefix=(generateRandomAlphaPrefix)
-    person.gender=(generateRandomGender)
-    person.dob=(generateDateOfBirth)
+    person.accountId=Some(accountId)
+    person.subscriberId=Some(accountId.substring(0,9))
+    person.socialSecurityNumber=Some(ssn)
+    person.dependentNumber=Some(accountId.substring(9,11))
+    person.firstName=Some(generateRandomFirstNameForPrimary)
+    person.middleName=Some(generateRandomMiddleNameForPrimary())
+    person.lastName=Some(generateRandomLastNameForPrimary())
+    person.alphaPrefix=Some(generateRandomAlphaPrefix)
+    person.gender=Some(generateRandomGender)
+    person.dob=Some(generateDateOfBirth)
     person
   }
 
@@ -63,19 +58,19 @@ object MMMtableRandomizer extends Randomizer {
     */
   def generateRandomSpouse(ssn:String,primary:SimpleMemberAddressWrapper):SimpleMemberRecord = {
     val person:SimpleMemberRecord = new SimpleMemberRecord
-    val ageRange:Int = this.props.getProperty(Configuration.MODE3_SPOUSE_AGERANGE).toInt
-    val accountIdStr = primary.simpleMember.accountId.substring(0,9)+"01"
-    person.accountId=(accountIdStr)
-    person.subscriberId=(accountIdStr.substring(0,9))
-    person.socialSecurityNumber=(ssn)
-    person.dependentNumber=(accountIdStr.substring(9,11))
-    person.firstName=(generateRandomFirstNameForPrimary)
-    person.middleName=(generateRandomMiddleNameForPrimary())
+    val ageRange:Int = PropertyLoader.getProperty(Configuration.MODE3_SPOUSE_AGERANGE).toInt
+    val accountIdStr = primary.simpleMember.accountId.get.substring(0,9)+"01"
+    person.accountId=Some(accountIdStr)
+    person.subscriberId=Some(accountIdStr.substring(0,9))
+    person.socialSecurityNumber=Some(ssn)
+    person.dependentNumber=Some(accountIdStr.substring(9,11))
+    person.firstName=Some(generateRandomFirstNameForPrimary)
+    person.middleName=Some(generateRandomMiddleNameForPrimary())
     person.lastName=(primary.simpleMember.lastName)
     person.alphaPrefix=(primary.simpleMember.alphaPrefix)
     val switchgender = (gender:String) => {if(gender == "F") "M" else "F"}
-    person.gender=(switchgender(primary.simpleMember.gender))
-    person.dob=(randomDOBForSpouse(primary.simpleMember.dob,ageRange))
+    person.gender=Some(switchgender(primary.simpleMember.gender.get))
+    person.dob=Some(randomDOBForSpouse(primary.simpleMember.dob.get,ageRange))
     person
   }
 
@@ -92,17 +87,17 @@ object MMMtableRandomizer extends Randomizer {
   def generateRandomDependent(ssn:String,primary:SimpleMemberAddressWrapper,deptNum:Int):SimpleMemberRecord = {
     val person:SimpleMemberRecord = new SimpleMemberRecord
     val deptnumStr:String = deptNumToString(deptNum)
-    val accountIdStr = primary.simpleMember.accountId.substring(0,9)+deptnumStr
-    person.accountId=(accountIdStr)
-    person.subscriberId=(accountIdStr.substring(0,9))
-    person.socialSecurityNumber=(ssn)
-    person.dependentNumber=(accountIdStr.substring(9,11))
-    person.firstName=(generateRandomFirstNameForPrimary)
-    person.middleName=(generateRandomMiddleNameForPrimary())
+    val accountIdStr = primary.simpleMember.accountId.get.substring(0,9)+deptnumStr
+    person.accountId=Some(accountIdStr)
+    person.subscriberId=Some(accountIdStr.substring(0,9))
+    person.socialSecurityNumber=Some(ssn)
+    person.dependentNumber=Some(accountIdStr.substring(9,11))
+    person.firstName=Some(generateRandomFirstNameForPrimary)
+    person.middleName=Some(generateRandomMiddleNameForPrimary())
     person.lastName=(primary.simpleMember.lastName)
     person.alphaPrefix=(primary.simpleMember.alphaPrefix)
-    person.gender=(generateRandomGender)
-    person.dob=(generateDateOfBirthForDependent)
+    person.gender=Some(generateRandomGender)
+    person.dob=Some(generateDateOfBirthForDependent)
     person
   }
   /**
@@ -120,7 +115,7 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateRandomMiddleNameForPrimary():String = {
-    if(makeBinaryDecision(props.get(Configuration.MODE3_MIDDLENAME_PERCENT).toString.toDouble)) {
+    if(makeBinaryDecision(PropertyLoader.getProperty(Configuration.MODE3_MIDDLENAME_PERCENT).toString.toDouble)) {
       val middleNamesLength = middleNames.length
       val index = this.randomInteger(0,middleNamesLength)
       middleNames(index)
@@ -163,7 +158,8 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateDateOfBirth():String = {
-    this.randomDOB(props.get(Configuration.MODE3_PRIMARY_MINAGE).toString.toInt,props.get(Configuration.MODE3_PRIMARY_MAXAGE).toString.toInt)
+    this.randomDOB(PropertyLoader.getProperty(Configuration.MODE3_PRIMARY_MINAGE).toString.toInt,
+      PropertyLoader.getProperty(Configuration.MODE3_PRIMARY_MAXAGE).toString.toInt)
   }
 
   /**
@@ -171,7 +167,7 @@ object MMMtableRandomizer extends Randomizer {
     * @return String
     */
   def generateDateOfBirthForDependent():String = {
-    this.randomDOB(0,props.get(Configuration.MODE3_CHILD_MAXAGE).toString.toInt)
+    this.randomDOB(0,PropertyLoader.getProperty(Configuration.MODE3_CHILD_MAXAGE).toString.toInt)
   }
 
   /**

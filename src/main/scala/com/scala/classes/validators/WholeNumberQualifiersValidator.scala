@@ -4,8 +4,6 @@
 
 package com.scala.classes.validators
 
-import java.util.Properties
-
 import com.scala.classes.utilities.{NumUtility, StringUtils}
 
 import scala.collection.mutable.ArrayBuffer
@@ -19,10 +17,9 @@ object WholeNumberQualifiersValidator extends Validator {
 
   /**
     * main validation method
-    * @param properties - singleton Properties object
     * @return - Boolean
     */
-  override def validate(properties:Properties): Boolean = {true}
+  override def validate(): Boolean = {true}
 
   /**
     * method to validate that the qualifiers for the RandomInt and RandomLong data types are valid
@@ -41,20 +38,20 @@ object WholeNumberQualifiersValidator extends Validator {
     val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
     if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
       isValidated = false
-      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the RandomLong data type"
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the ${dataType} data type"
     } else {
       for (i <- 0 until formatsThatNeedQualifierChecks.length) {
         formatsThatNeedQualifierChecks(i) match {
           case "length" => {
             if (!StringUtils.isInteger(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the length format is not an integer for the ${dataType} data type"
+              message = s"qualifier specified for the length format is not a whole number for the ${dataType} data type"
             }
           }
           case "min" => {
             if (!StringUtils.isLong(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the min format is not an integer for the ${dataType} data type"
+              message = s"qualifier specified for the min format is not a whole number for the ${dataType} data type"
             } else {
               hasmin = true
               minval = qualifiers(i).toLong
@@ -63,7 +60,7 @@ object WholeNumberQualifiersValidator extends Validator {
           case "max" => {
             if (!StringUtils.isLong(qualifiers(i))) {
               isValidated = false
-              message = s"qualifier specified for the max format is not an integer for the ${dataType} data type"
+              message = s"qualifier specified for the max format is not a whole number for the ${dataType} data type"
             } else {
               hasmax = true
               maxval = qualifiers(i).toLong
@@ -94,6 +91,52 @@ object WholeNumberQualifiersValidator extends Validator {
         if(minval>maxval) {
           isValidated = false
           message = s"min value = ${minval} is greater than max value = ${maxval} for the ${dataType} data type"
+        }
+      }
+    }
+    (isValidated,message)
+  }
+
+  def validateRangedWholeNumberQualifiers(dataType: String, format: String, qualifiers: ArrayBuffer[String]):Tuple2[Boolean,String] = {
+    var isValidated = true
+    var message:String = "NONE"
+    var haslinbase:Boolean = false
+    var haslinadd:Boolean = false
+    val formatsThatNeedQualifierChecks:Array[String] = filterQualifiers(dataType, format)
+    if(qualifiers.length!=formatsThatNeedQualifierChecks.length) {
+      isValidated = false
+      message = s"qualifiers.length : ${qualifiers.length} != : ${formatsThatNeedQualifierChecks.length} formatsThatNeedQualifierChecks.length for the ${dataType} data type"
+    } else {
+      for (i <- 0 until formatsThatNeedQualifierChecks.length) {
+        formatsThatNeedQualifierChecks(i) match {
+          case "length" => {
+            if (!StringUtils.isInteger(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the length format is not a whole number for the ${dataType} data type"
+            }
+          }
+          case "linbase" => {
+            if (!StringUtils.isLong(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the linbase format is not a whole number for the ${dataType} data type"
+            } else {
+              haslinbase = true
+            }
+          }
+          case "linadd" => {
+            if (!StringUtils.isLong(qualifiers(i))) {
+              isValidated = false
+              message = s"qualifier specified for the linadd format is not a whole number for the ${dataType} data type"
+            } else {
+              haslinadd = true
+            }
+          }
+        }
+      }
+      if(isValidated) {
+        if(haslinbase&&(!haslinadd)||(!haslinbase)&&haslinadd) {
+          isValidated = false
+          message = s"${dataType} data type must have values specified for both linbase and linadd, or neither specified"
         }
       }
     }

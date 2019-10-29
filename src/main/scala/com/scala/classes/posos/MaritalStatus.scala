@@ -9,7 +9,7 @@ package com.scala.classes.posos
   */
 class MaritalStatus {
 
-  var lookupCode: String = null
-  var value: String = null
+  var lookupCode: Option[String] = None
+  var value: Option[String] = None
 
 }

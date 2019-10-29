@@ -6,7 +6,7 @@ package com.scala.classes.processes
 
 import com.scala.classes.business.SSNRandomizer
 import com.scala.classes.locks.SSNlock
-import com.scala.classes.utilities.LogUtil
+import com.scala.classes.utilities.{LogUtil, NumUtility}
 
 /**
   * Thread class for generating Social Security Numbers
@@ -16,7 +16,7 @@ import com.scala.classes.utilities.LogUtil
   * @param numberOfSsns = number of social security #s to make
   */
 class SSNMakerThread(val lock: SSNlock,
-                     val ssnset: scala.collection.mutable.Set[Int],
+                     val ssnset: scala.collection.mutable.Set[String],
                      val threadNum:Int,
                      val numberOfSsns: Int) extends Runnable {
 
@@ -36,7 +36,7 @@ class SSNMakerThread(val lock: SSNlock,
         validNum = false
         while (validNum == false) {
           val newNum:Int = SSNRandomizer.randomInteger(0, maxSsnValue)
-          validNum = checkThenAddToSet(newNum)
+          validNum = checkThenAddToSet(NumUtility.padIntToString(newNum,9))
         }
       }
       LogUtil.logByNum(s"${Thread.currentThread().getId} : DONE generating social security numbers",threadNum%4)
@@ -47,7 +47,7 @@ class SSNMakerThread(val lock: SSNlock,
     * @param num - number to check
     * @return good
     */
-  def checkThenAddToSet(num:Int):Boolean = {
+  def checkThenAddToSet(num:String):Boolean = {
     var good:Boolean = false
     // minimize the critical section
     lock.synchronized {

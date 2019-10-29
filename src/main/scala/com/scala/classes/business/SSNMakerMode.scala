@@ -3,29 +3,26 @@
  */
 
 package com.scala.classes.business
-import java.util.Properties
-
 import com.scala.classes.locks.SSNlock
 import com.scala.classes.processes.SSNMakerThread
-import com.scala.classes.utilities.{Configuration, FileIO, LogUtil}
+import com.scala.classes.utilities.{Configuration, FileIO, LogUtil, PropertyLoader}
 
 
 /**
   * Class for making a file of Social Security Numbers
   * @param mode - run mode of the program
-  * @param properties - singleton Properties object
   */
-class SSNMakerMode(val mode: Int, val properties: Properties) extends Mode {
+class SSNMakerMode(val mode: Int) extends Mode {
 
   /**
     * main run method
     */
   override def run(): Unit = {
     LogUtil.msggenThread2LoggerDEBUG("inside SSNMakerMode");
-    val numToMake: Int = properties.get(Configuration.MODE0_SSN_NUMBER_TO_MAKE).toString.toInt
-    val ssns:scala.collection.mutable.Set[Int] = makeRandomSSNs(numToMake)
-    val filepath:String = properties.get(Configuration.MODE0_SSN_OUTPUT_FILE).toString
-    val ssnList:List[Int] = ssns.toList
+    val numToMake: Int = PropertyLoader.getProperty(Configuration.MODE0_SSN_NUMBER_TO_MAKE).toString.toInt
+    val ssns:scala.collection.mutable.Set[String] = makeRandomSSNs(numToMake)
+    val filepath:String = PropertyLoader.getProperty(Configuration.MODE0_SSN_OUTPUT_FILE).toString
+    val ssnList:List[String] = ssns.toList
     FileIO.outputAnyListToFile(ssnList,filepath)
   }
 
@@ -34,12 +31,12 @@ class SSNMakerMode(val mode: Int, val properties: Properties) extends Mode {
     * @param numberOfSsns = number of SS #'s to make
     * @return - ssnSet
     */
-  def makeRandomSSNs(numberOfSsns: Int): scala.collection.mutable.Set[Int] = {
+  def makeRandomSSNs(numberOfSsns: Int): scala.collection.mutable.Set[String] = {
     LogUtil.msggenThread2LoggerDEBUG("making random SSN")
     // locks
     val lock:SSNlock = new SSNlock()
     // set to store SS #'s in
-    val ssnSet:scala.collection.mutable.Set[Int] = scala.collection.mutable.Set[Int]()
+    val ssnSet:scala.collection.mutable.Set[String] = scala.collection.mutable.Set[String]()
     // make 4 runnables
     val run1:SSNMakerThread = new SSNMakerThread(lock,ssnSet,0,numberOfSsns/4)
     val run2:SSNMakerThread = new SSNMakerThread(lock,ssnSet,1,numberOfSsns/4)

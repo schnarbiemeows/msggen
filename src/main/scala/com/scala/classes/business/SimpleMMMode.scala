@@ -3,8 +3,6 @@
  */
 
 package com.scala.classes.business
-import java.util.Properties
-
 import com.scala.classes.locks._
 import com.scala.classes.posos.SimpleMemberAddressWrapper
 import com.scala.classes.processes._
@@ -15,13 +13,11 @@ import scala.collection.mutable
 /**
   * this class controls the workflow for creating Master Member and Member Address
   * data files
-  *
   * @param mode - the mode of the program
-  * @param properties - singleton Properties object
   */
-class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
-  var ssns:scala.collection.mutable.Set[Int] = null
-  var ssnList:List[Int] = null
+class SimpleMMMode(val mode: Int) extends Mode {
+  var ssns:scala.collection.mutable.Set[String] = null
+  var ssnList:List[String] = null
   var primarySubscriberIDs:scala.collection.mutable.Set[Int] = null
   var subscriberIDsForSpouses:scala.collection.mutable.Stack[Int] = new scala.collection.mutable.Stack[Int]
   var subscriberIDList:List[Int] = null
@@ -42,12 +38,12 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     LogUtil.msggenMasterLoggerDEBUG("inside SimpleMMMode main method");
     // determine the number of social security numbers to make
     // determine the number of subscriber ID numbers to make
-    val numSubsToMake:Int = properties.get(Configuration.MODE3_NUMBER_OF_PRIMARIES).toString.toInt
+    val numSubsToMake:Int = PropertyLoader.getProperty(Configuration.MODE3_NUMBER_OF_PRIMARIES).toString.toInt
     // determine the number of spouses to make
-    val numSpousesToMake:Int = properties.get(Configuration.MODE3_NUMBER_OF_SPOUSES).toString.toInt
+    val numSpousesToMake:Int = PropertyLoader.getProperty(Configuration.MODE3_NUMBER_OF_SPOUSES).toString.toInt
     // determine the number of dependents to make
-    val numDependentsToMake:Int = properties.get(Configuration.MODE3_NUMBER_OF_DEPENDENTS).toString.toInt
-    val numToMake:Int = properties.get(Configuration.MODE3_NUM_RECORDS).toString.toInt
+    val numDependentsToMake:Int = PropertyLoader.getProperty(Configuration.MODE3_NUMBER_OF_DEPENDENTS).toString.toInt
+    val numToMake:Int = PropertyLoader.getProperty(Configuration.MODE3_NUM_RECORDS).toString.toInt
     LogUtil.msggenMasterLoggerDEBUG(s"### of Primaries to make = ${numSubsToMake}");
     LogUtil.msggenMasterLoggerDEBUG(s"### of Spouses to make = ${numSpousesToMake}");
     LogUtil.msggenMasterLoggerDEBUG(s"### of Dependents to make = ${numDependentsToMake}");
@@ -70,13 +66,12 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
       makeDependents(ssnList, subscriberIDList, subscriberIdToDependentNumberMap, finalMap, numDependentsToMake, counter)
       // display to the logs the members made
       showMeFinalMap(finalMap)
-      LogUtil.msggenMasterLoggerDEBUG("Writing Account IDs to a file")
       // write the account ID #s to a file for the Streaming Messages Mode(StreamingMessagesMode)
-      FileIO.outputAccountIdsToFile(finalMap, properties.get(Configuration.MODE0_SSN_OUTPUT_FILE).toString)
+      FileIO.outputAccountIdsToFile(finalMap, PropertyLoader.getProperty(Configuration.MODE0_SSN_OUTPUT_FILE).toString)
       LogUtil.msggenMasterLoggerDEBUG("DONE - writing Account IDs to a file")
       LogUtil.msggenMasterLoggerDEBUG("Writing Memeber and Address information to files")
       // write the Member and Address information to files
-      FileIO.writeMemberAndAddressFiles(finalMap, "JSON", properties.get(Configuration.MODE3_MASTER_MEMBER_FILE_LOC).toString, properties.get(Configuration.MODE3_MEMBER_ADDRESS_FILE_LOC).toString)
+      FileIO.writeMemberAndAddressFiles(finalMap, "JSON", PropertyLoader.getProperty(Configuration.MODE3_MASTER_MEMBER_FILE_LOC).toString, PropertyLoader.getProperty(Configuration.MODE3_MEMBER_ADDRESS_FILE_LOC).toString)
       LogUtil.msggenMasterLoggerDEBUG("DONE - writing Member and Address information to files")
     } else {
       LogUtil.msggenMasterLoggerDEBUG(s"The number of primaries : ${numSubsToMake} must be greater than or equal to the number of spouses : ${numSpousesToMake}")
@@ -92,14 +87,14 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @param upper = upper bound for SS# value
     * @return ssnSet:scala.collection.mutable.Set[Int]
     */
-  def makeRandomSSNs(numberOfSsns: Int, lower: Int = 0, upper: Int = 999999999): scala.collection.mutable.Set[Int] = {
+  def makeRandomSSNs(numberOfSsns: Int, lower: Int = 0, upper: Int = 999999999): scala.collection.mutable.Set[String] = {
     // TODO - make number of threads variable
     val runStart = DateUtils.nowTime()
     LogUtil.msggenMasterLoggerDEBUG("making random SSN")
     // locks
     val lock:SSNlock = new SSNlock()
     // return set
-    var ssnSet:scala.collection.mutable.Set[Int] = scala.collection.mutable.Set[Int]()
+    var ssnSet:scala.collection.mutable.Set[String] = scala.collection.mutable.Set[String]()
     // create 4 runnables
     var run1:SSNMakerThread = new SSNMakerThread(lock,ssnSet,0,numberOfSsns/4)
     var run2:SSNMakerThread = new SSNMakerThread(lock,ssnSet,1,numberOfSsns/4)
@@ -196,7 +191,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @param finalMap = our final map of primaries, spouses, and dependents
     * @param numSubsToMake = the number of primary members to make
     */
-  def makePrimaries(ssnList:List[Int],
+  def makePrimaries(ssnList:List[String],
                     subscriberIDList:List[Int],
                     subscriberIDsForSpouses:scala.collection.mutable.Stack[Int],
                     subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
@@ -209,8 +204,8 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     val subIdSpLock:SubscriberIDsForSpousesLock = new SubscriberIDsForSpousesLock()
     val counter:Counter2Lock = new Counter2Lock(0)
     // initialize our member and address randomizer objects
-    MMMtableRandomizer.initialize(properties)
-    AddressTableRandomizer.initialize(properties)
+    MMMtableRandomizer.initialize()
+    AddressTableRandomizer.initialize()
     // create 4 runnables
     var run1:PrimaryMemberAndAddressMakerThread = new PrimaryMemberAndAddressMakerThread(subIdSpLock, counter,
       ssnList,subscriberIDList,subscriberIDsForSpouses,subscriberIdToDependentNumberMap,finalMap,0,numSubsToMake)
@@ -259,7 +254,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @param numSubsToMake = the number of spouses to make
     * @param counterStart = offset counter indexed into the ssnList
     */
-  def makeSpouses(ssnList:List[Int],
+  def makeSpouses(ssnList:List[String],
                     subscriberIDsForSpouses:scala.collection.mutable.Stack[Int],
                     finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],
                     numSubsToMake: Int, counterStart:Int):Unit = {
@@ -318,7 +313,7 @@ class SimpleMMMode(val mode: Int, val properties: Properties) extends Mode {
     * @param numSubsToMake = the number of dependents to make
     * @param offset = offset counter indexed into the ssnList
     */
-  def makeDependents(ssnList:List[Int],
+  def makeDependents(ssnList:List[String],
                      subscriberIDList:List[Int],
                      subscriberIdToDependentNumberMap:mutable.HashMap[Int, Int],
                      finalMap:mutable.HashMap[Long, SimpleMemberAddressWrapper],

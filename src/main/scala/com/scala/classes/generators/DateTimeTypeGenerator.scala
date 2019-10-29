@@ -27,10 +27,10 @@ object DateTimeTypeGenerator extends Generator {
     var endWasSpecified: Boolean = false
     var startWasSpecified: Boolean = false
     var nowSpecified: Boolean = false
-    var format: String = null
-    var start: String = null
-    var end: String = null
-    var result: String = null
+    var format: Option[String] = None
+    var start: Option[String] = None
+    var end: Option[String] = None
+    var result: Option[String] = None
     var nullPercentage:Double = 0.0
     val splitLists: Tuple2[Array[String], Array[String]] = filterQualifiers("RandomDateTime", formatString)
     val formatsThatNeedQualifierChecks: Array[String] = splitLists._1
@@ -44,42 +44,42 @@ object DateTimeTypeGenerator extends Generator {
     for (i <- 0 until formatsThatNeedQualifierChecks.length) {
       formatsThatNeedQualifierChecks(i) match {
         case "format" => {
-          format = qualifiers(i)
+          format = Some(qualifiers(i))
         }
         case "start" => {
           startWasSpecified = true
-          start = qualifiers(i)
+          start = Some(qualifiers(i))
         }
         case "end" => {
           endWasSpecified = true
-          end = qualifiers(i)
+          end = Some(qualifiers(i))
         }
         case "nullable" => nullPercentage = qualifiers(i).toDouble
       }
     }
     if(nowSpecified) {
-      if(format!=null) {
-        result = generateNowDateTime(format)
+      if(format!=None) {
+        result = Some(generateNowDateTime(format.get))
       } else {
-        result = generateNowDateTime()
+        result = Some(generateNowDateTime())
       }
     }
     else
     {
-      if(format==null) { format = Configuration.DEFAULT_DATE_TIME_FORMAT }
+      if(format==None) { format = Some(Configuration.DEFAULT_DATE_TIME_FORMAT) }
       if (startWasSpecified && endWasSpecified) {
-        result = randomDateTime(start, end, format)
+        result = Some(randomDateTime(start.get, end.get, format.get))
       } else {
         if (startWasSpecified) {
-          result = randomDateTimeNoEnd(start, format)
+          result = Some(randomDateTimeNoEnd(start.get, format.get))
         } else if (endWasSpecified) {
-          result = randomDateTimeNoStart(end, format)
+          result = Some(randomDateTimeNoStart(end.get, format.get))
         } else {
-          result = randomDateTime(format)
+          result = Some(randomDateTime(format.get))
         }
       }
     }
     val randomNum = randomDouble(0,1,2,"rounddown")
-    if(randomNum<nullPercentage) "" else result
+    if(randomNum<nullPercentage) "" else result.getOrElse("")
   }
 }

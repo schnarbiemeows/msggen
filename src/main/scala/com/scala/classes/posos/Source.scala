@@ -9,7 +9,7 @@ package com.scala.classes.posos
   */
 class Source {
 
-  var sourceType: String = null
-  var sourceValue: String = null
+  var sourceType: Option[String] = None
+  var sourceValue: Option[String] = None
 
 }

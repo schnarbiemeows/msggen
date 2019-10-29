@@ -4,10 +4,7 @@
 
 package com.scala.classes.generators
 
-import java.util.Properties
-
 import com.scala.classes.posos.GenericRecordsTemplate
-import com.scala.classes.utilities.PropertyLoader
 import com.scala.classes.validators.ExcelSheetValidatorTestMocks
 import org.junit.Assert.assertNotNull
 import org.junit.{Before, Test}
@@ -20,18 +17,13 @@ import scala.collection.mutable.ArrayBuffer
 @Test
 class StringTypeGeneratorTest {
 
-  var properties:Properties = _
-  var template:GenericRecordsTemplate = _
+  var template:GenericRecordsTemplate = new ExcelSheetValidatorTestMocks().getBlankTemplate()
 
   /**
     * initialization
     */
   @Before
   def initialize():Unit = {
-    properties = PropertyLoader.getProperties("C:\\home\\schnarbies\\config\\config.properties")
-    var mocks:ExcelSheetValidatorTestMocks = new ExcelSheetValidatorTestMocks(properties)
-    template = mocks.getBlankTemplate()
-
   }
 
   /**
