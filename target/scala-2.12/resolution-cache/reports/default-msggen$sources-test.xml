@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="default"
+		module="msggen$sources"
+		revision="1.0"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
+		date="20191008182101"/>
+	<dependencies>
+		<module organisation="org.specs2" name="specs2-junit_2.12">
+			<revision name="4.2.0" status="release" pubdate="20180503144501" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="29">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3631" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-junit_2.12\ivy-4.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/specs2/specs2-junit_2.12/4.2.0/specs2-junit_2.12-4.2.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.2.0" rev-constraint-default="4.2.0" rev-constraint-dynamic="4.2.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-junit_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="9982" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-junit_2.12\srcs\specs2-junit_2.12-4.2.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/specs2/specs2-junit_2.12/4.2.0/specs2-junit_2.12-4.2.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scalamock" name="scalamock_2.12">
+			<revision name="4.4.0" status="release" pubdate="20190816125742" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://scalamock.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="24">
+				<license name="MIT" url="https://opensource.org/licenses/MIT"/>
+				<metadata-artifact status="no" details="" size="3059" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalamock\scalamock_2.12\ivy-4.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scalamock/scalamock_2.12/4.4.0/scalamock_2.12-4.4.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.4.0" rev-constraint-default="4.4.0" rev-constraint-dynamic="4.4.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scalamock_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="82461" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalamock\scalamock_2.12\srcs\scalamock_2.12-4.4.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scalamock/scalamock_2.12/4.4.0/scalamock_2.12-4.4.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-core_2.12">
+			<revision name="4.2.0" status="release" pubdate="20180503144545" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="23">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3478" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-core_2.12\ivy-4.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/specs2/specs2-core_2.12/4.2.0/specs2-core_2.12-4.2.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.2.0" rev-constraint-default="4.2.0" rev-constraint-dynamic="4.2.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-core_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="110601" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-core_2.12\srcs\specs2-core_2.12-4.2.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/specs2/specs2-core_2.12/4.2.0/specs2-core_2.12-4.2.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scalacheck" name="scalacheck_2.12">
+			<revision name="1.14.1" status="release" pubdate="20190917224133" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scalacheck.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="22">
+				<license name="BSD 3-clause" url="https://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="2828" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalacheck\scalacheck_2.12\ivy-1.14.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scalacheck/scalacheck_2.12/1.14.1/scalacheck_2.12-1.14.1.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.14.1" rev-constraint-default="1.14.1" rev-constraint-dynamic="1.14.1" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scalacheck_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="63115" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalacheck\scalacheck_2.12\srcs\scalacheck_2.12-1.14.1-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scalacheck/scalacheck_2.12/1.14.1/scalacheck_2.12-1.14.1-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-matcher_2.12">
+			<revision name="4.2.0" status="release" pubdate="20180503144613" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="19">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2834" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-matcher_2.12\ivy-4.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/specs2/specs2-matcher_2.12/4.2.0/specs2-matcher_2.12-4.2.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.2.0" rev-constraint-default="4.2.0" rev-constraint-dynamic="4.2.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-matcher_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="64494" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-matcher_2.12\srcs\specs2-matcher_2.12-4.2.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/specs2/specs2-matcher_2.12/4.2.0/specs2-matcher_2.12-4.2.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scalatest" name="scalatest_2.12">
+			<revision name="3.0.5" status="release" pubdate="20180129082347" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scalatest.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="18">
+				<license name="the Apache License, ASL Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="4781" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalatest\scalatest_2.12\ivy-3.0.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.5/scalatest_2.12-3.0.5.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="3.0.5" rev-constraint-default="3.0.5" rev-constraint-dynamic="3.0.5" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scalatest_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1641808" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalatest\scalatest_2.12\srcs\scalatest_2.12-3.0.5-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.5/scalatest_2.12-3.0.5-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-sbt" name="test-interface">
+			<revision name="1.0" status="release" pubdate="20130628184435" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-sbt.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="30">
+				<license name="BSD" url="https://github.com/sbt/test-interface/blob/master/LICENSE"/>
+				<metadata-artifact status="no" details="" size="2621" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-sbt\test-interface\ivy-1.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.0" rev-constraint-default="1.0" rev-constraint-dynamic="1.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="test-interface" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="18792" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-sbt\test-interface\srcs\test-interface-1.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scalactic" name="scalactic_2.12">
+			<revision name="3.0.5" status="release" pubdate="20180129082214" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scalatest.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="20">
+				<license name="the Apache License, ASL Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3002" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalactic\scalactic_2.12\ivy-3.0.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.5/scalactic_2.12-3.0.5.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="3.0.5" rev-constraint-default="3.0.5" rev-constraint-dynamic="3.0.5" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scalactic_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="201169" time="0" location="C:\Users\dylan\.ivy2\cache\org.scalactic\scalactic_2.12\srcs\scalactic_2.12-3.0.5-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.5/scalactic_2.12-3.0.5-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-common_2.12">
+			<revision name="4.2.0" status="release" pubdate="20180503144555" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="17">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3429" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-common_2.12\ivy-4.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/specs2/specs2-common_2.12/4.2.0/specs2-common_2.12-4.2.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.2.0" rev-constraint-default="4.2.0" rev-constraint-dynamic="4.2.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-common_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="162106" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-common_2.12\srcs\specs2-common_2.12-4.2.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/specs2/specs2-common_2.12/4.2.0/specs2-common_2.12-4.2.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-xml_2.12">
+			<revision name="1.0.6" status="release" pubdate="20161101102105" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="21">
+				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="3024" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\ivy-1.0.6.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.0.6" rev-constraint-default="1.0.6" rev-constraint-dynamic="1.0.6" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scala-xml_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="109199" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-xml_2.12\srcs\scala-xml_2.12-1.0.6-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-parser-combinators_2.12">
+			<revision name="1.1.0" status="release" pubdate="20180201161040" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="26">
+				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="2964" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-parser-combinators_2.12\ivy-1.1.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.1.0/scala-parser-combinators_2.12-1.1.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.1.0" rev-constraint-default="1.1.0" rev-constraint-dynamic="1.1.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scala-parser-combinators_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="46978" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-parser-combinators_2.12\srcs\scala-parser-combinators_2.12-1.1.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.1.0/scala-parser-combinators_2.12-1.1.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2-fp_2.12">
+			<revision name="4.2.0" status="release" pubdate="20180503144457" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="25">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2671" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-fp_2.12\ivy-4.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/specs2/specs2-fp_2.12/4.2.0/specs2-fp_2.12-4.2.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.2.0" rev-constraint-default="4.2.0" rev-constraint-dynamic="4.2.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="specs2-fp_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="16544" time="0" location="C:\Users\dylan\.ivy2\cache\org.specs2\specs2-fp_2.12\srcs\specs2-fp_2.12-4.2.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/specs2/specs2-fp_2.12/4.2.0/specs2-fp_2.12-4.2.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.logging.log4j" name="log4j-api-scala_2.12">
+			<revision name="11.0" status="release" pubdate="20170716122851" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="15">
+				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="7738" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-api-scala_2.12\ivy-11.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api-scala_2.12/11.0/log4j-api-scala_2.12-11.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="11.0" rev-constraint-default="11.0" rev-constraint-dynamic="11.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="log4j-api-scala_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="15557" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-api-scala_2.12\srcs\log4j-api-scala_2.12-11.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api-scala_2.12/11.0/log4j-api-scala_2.12-11.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-reflect">
+			<revision name="2.12.6" status="release" pubdate="20180427043633" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="13">
+				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
+				<metadata-artifact status="no" details="" size="2670" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang\scala-reflect\ivy-2.12.6.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.12.6" rev-constraint-default="2.12.6" rev-constraint-dynamic="2.12.6" callerrev="1.0" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/"/>
+				<artifacts>
+					<artifact name="scala-reflect" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="587933" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang\scala-reflect\srcs\scala-reflect-2.12.6-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.google.code.gson" name="gson">
+			<revision name="2.8.5" status="release" pubdate="20180521230859" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="9">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3685" time="0" location="C:\Users\dylan\.ivy2\cache\com.google.code.gson\gson\ivy-2.8.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.8.5" rev-constraint-default="2.8.5" rev-constraint-dynamic="2.8.5" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="gson" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="156280" time="0" location="C:\Users\dylan\.ivy2\cache\com.google.code.gson\gson\srcs\gson-2.8.5-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.5/gson-2.8.5-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.logging.log4j" name="log4j-core">
+			<revision name="2.11.0" status="release" pubdate="20180311184434" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="7">
+				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="35842" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-core\ivy-2.11.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.11.0/log4j-core-2.11.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.11.0" rev-constraint-default="2.11.0" rev-constraint-dynamic="2.11.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="log4j-core" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1205403" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-core\srcs\log4j-core-2.11.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.11.0/log4j-core-2.11.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.logging.log4j" name="log4j-api">
+			<revision name="2.11.0" status="release" pubdate="20180311184340" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="8">
+				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="30532" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-api\ivy-2.11.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.11.0/log4j-api-2.11.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.11.0" rev-constraint-default="2.11.0" rev-constraint-dynamic="2.11.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="log4j-api" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="244574" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.logging.log4j\log4j-api\srcs\log4j-api-2.11.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.11.0/log4j-api-2.11.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.poi" name="poi-ooxml">
+			<revision name="3.15-beta2" status="release" pubdate="20160625162234" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://poi.apache.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="6">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3043" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.poi\poi-ooxml\ivy-3.15-beta2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/poi/poi-ooxml/3.15-beta2/poi-ooxml-3.15-beta2.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="3.15-beta2" rev-constraint-default="3.15-beta2" rev-constraint-dynamic="3.15-beta2" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="poi-ooxml" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="967349" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.poi\poi-ooxml\srcs\poi-ooxml-3.15-beta2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/poi/poi-ooxml/3.15-beta2/poi-ooxml-3.15-beta2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.github.virtuald" name="curvesapi">
+			<revision name="1.04" status="release" pubdate="20160526002706" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/virtuald/curvesapi" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="11">
+				<license name="BSD License" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="2974" time="0" location="C:\Users\dylan\.ivy2\cache\com.github.virtuald\curvesapi\ivy-1.04.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/github/virtuald/curvesapi/1.04/curvesapi-1.04.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.04" rev-constraint-default="1.04" rev-constraint-dynamic="1.04" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="curvesapi" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="201324" time="0" location="C:\Users\dylan\.ivy2\cache\com.github.virtuald\curvesapi\srcs\curvesapi-1.04-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/github/virtuald/curvesapi/1.04/curvesapi-1.04-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.akka" name="akka-actor_2.12">
+			<revision name="2.6.0-M8" status="release" pubdate="20190929025630" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.0-M8" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="5">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3411" time="0" location="C:\Users\dylan\.ivy2\cache\com.typesafe.akka\akka-actor_2.12\ivy-2.6.0-M8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.12/2.6.0-M8/akka-actor_2.12-2.6.0-M8.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.6.0-M8" rev-constraint-default="2.6.0-M8" rev-constraint-dynamic="2.6.0-M8" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.0-M8"/>
+				<artifacts>
+					<artifact name="akka-actor_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="494954" time="0" location="C:\Users\dylan\.ivy2\cache\com.typesafe.akka\akka-actor_2.12\srcs\akka-actor_2.12-2.6.0-M8-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.12/2.6.0-M8/akka-actor_2.12-2.6.0-M8-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-java8-compat_2.12">
+			<revision name="0.8.0" status="release" pubdate="20161029181227" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="16">
+				<license name="BSD 3-clause" url="http://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="3072" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-java8-compat_2.12\ivy-0.8.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-java8-compat_2.12/0.8.0/scala-java8-compat_2.12-0.8.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="0.8.0" rev-constraint-default="0.8.0" rev-constraint-dynamic="0.8.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="scala-java8-compat_2.12" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="63853" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang.modules\scala-java8-compat_2.12\srcs\scala-java8-compat_2.12-0.8.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-java8-compat_2.12/0.8.0/scala-java8-compat_2.12-0.8.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="config">
+			<revision name="1.3.5-RC1" status="release" pubdate="20190904091552" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lightbend/config" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="14">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3184" time="0" location="C:\Users\dylan\.ivy2\cache\com.typesafe\config\ivy-1.3.5-RC1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/config/1.3.5-RC1/config-1.3.5-RC1.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.3.5-RC1" rev-constraint-default="1.3.5-RC1" rev-constraint-dynamic="1.3.5-RC1" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="config" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="176877" time="0" location="C:\Users\dylan\.ivy2\cache\com.typesafe\config\srcs\config-1.3.5-RC1-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/typesafe/config/1.3.5-RC1/config-1.3.5-RC1-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.poi" name="poi">
+			<revision name="3.15-beta2" status="release" pubdate="20160625161820" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://poi.apache.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="3">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3222" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.poi\poi\ivy-3.15-beta2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/poi/poi/3.15-beta2/poi-3.15-beta2.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="3.15-beta2" rev-constraint-default="3.15-beta2" rev-constraint-dynamic="3.15-beta2" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="poi" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="2303540" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.poi\poi\srcs\poi-3.15-beta2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/poi/poi/3.15-beta2/poi-3.15-beta2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="commons-codec" name="commons-codec">
+			<revision name="1.10" status="release" pubdate="20141106091535" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://commons.apache.org/proper/commons-codec/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="10">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="10706" time="0" location="C:\Users\dylan\.ivy2\cache\commons-codec\commons-codec\ivy-1.10.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.10" rev-constraint-default="1.10" rev-constraint-dynamic="1.10" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="commons-codec" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="301032" time="0" location="C:\Users\dylan\.ivy2\cache\commons-codec\commons-codec\srcs\commons-codec-1.10-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.12.6" status="release" pubdate="20180427044006" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/" downloaded="false" searched="false" default="false" conf="default, master(*), compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="1">
+				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
+				<metadata-artifact status="no" details="" size="2501" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.6.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="2.12.6" rev-constraint-default="2.12.6" rev-constraint-dynamic="2.12.6" callerrev="1.0" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/"/>
+				<artifacts>
+					<artifact name="scala-library" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="992293" time="0" location="C:\Users\dylan\.ivy2\cache\org.scala-lang\scala-library\srcs\scala-library-2.12.6-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.kafka" name="kafka-clients">
+			<revision name="1.0.0" status="release" pubdate="20171027123112" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://kafka.apache.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3696" time="0" location="C:\Users\dylan\.ivy2\cache\org.apache.kafka\kafka-clients\ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/1.0.0/kafka-clients-1.0.0.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="kafka-clients" type="src" ext="jar" extra-classifier="sources" status="successful" details="" size="1050762" time="1580" location="C:\Users\dylan\.ivy2\cache\org.apache.kafka\kafka-clients\srcs\kafka-clients-1.0.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/1.0.0/kafka-clients-1.0.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.slf4j" name="slf4j-api">
+			<revision name="1.7.25" status="release" pubdate="20170316123632" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="4">
+				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="5431" time="0" location="C:\Users\dylan\.ivy2\cache\org.slf4j\slf4j-api\ivy-1.7.25.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.7.25" rev-constraint-default="1.7.25" rev-constraint-dynamic="1.7.25" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="slf4j-api" type="src" ext="jar" extra-classifier="sources" status="successful" details="" size="55539" time="400" location="C:\Users\dylan\.ivy2\cache\org.slf4j\slf4j-api\srcs\slf4j-api-1.7.25-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="junit" name="junit">
+			<revision name="4.12" status="release" pubdate="20141204111743" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://junit.org" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="27">
+				<license name="Eclipse Public License 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
+				<metadata-artifact status="no" details="" size="3354" time="0" location="C:\Users\dylan\.ivy2\cache\junit\junit\ivy-4.12.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="4.12" rev-constraint-default="4.12" rev-constraint-dynamic="4.12" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="junit" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="200355" time="0" location="C:\Users\dylan\.ivy2\cache\junit\junit\srcs\junit-4.12-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.hamcrest" name="hamcrest-core">
+			<revision name="1.3" status="release" pubdate="20120709170802" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="28">
+				<license name="New BSD License" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="2647" time="0" location="C:\Users\dylan\.ivy2\cache\org.hamcrest\hamcrest-core\ivy-1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.3" rev-constraint-default="1.3" rev-constraint-dynamic="1.3" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="hamcrest-core" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="32624" time="0" location="C:\Users\dylan\.ivy2\cache\org.hamcrest\hamcrest-core\srcs\hamcrest-core-1.3-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.xerial.snappy" name="snappy-java">
+			<revision name="1.1.4" status="release" pubdate="20170522120501" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/xerial/snappy-java" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="12">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3487" time="0" location="C:\Users\dylan\.ivy2\cache\org.xerial.snappy\snappy-java\ivy-1.1.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.4/snappy-java-1.1.4.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.1.4" rev-constraint-default="1.1.4" rev-constraint-dynamic="1.1.4" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="snappy-java" type="src" ext="jar" extra-classifier="sources" status="successful" details="" size="1499472" time="1417" location="C:\Users\dylan\.ivy2\cache\org.xerial.snappy\snappy-java\srcs\snappy-java-1.1.4-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.4/snappy-java-1.1.4-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.lz4" name="lz4-java">
+			<revision name="1.4" status="release" pubdate="20170802161907" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lz4/lz4-java" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="2">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2767" time="0" location="C:\Users\dylan\.ivy2\cache\org.lz4\lz4-java\ivy-1.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/lz4/lz4-java/1.4/lz4-java-1.4.pom"/>
+				<caller organisation="default" name="msggen$sources" conf="test, compile, runtime" rev="1.4" rev-constraint-default="1.4" rev-constraint-dynamic="1.4" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="lz4-java" type="src" ext="jar" extra-classifier="sources" status="successful" details="" size="59248" time="395" location="C:\Users\dylan\.ivy2\cache\org.lz4\lz4-java\srcs\lz4-java-1.4-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/lz4/lz4-java/1.4/lz4-java-1.4-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>
