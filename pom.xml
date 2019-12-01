@@ -133,6 +133,7 @@
   </dependencies>
 
   <build>
+    <finalName>msggen-noexec</finalName>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
@@ -174,7 +175,7 @@
           <junitxml>.</junitxml>
           <filereports>TestSuiteReport.txt</filereports>
           <!-- Comma separated list of JUnit test class names to execute -->
-          <jUnitClasses>samples.AppTest</jUnitClasses>
+          <jUnitClasses>MsgGenTestSuite</jUnitClasses>
         </configuration>
         <executions>
           <execution>
@@ -184,6 +185,30 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>msggen</finalName>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.scala.App</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
       </plugin>
     </plugins>
   </build>
