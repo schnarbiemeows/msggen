@@ -1,0 +1,25 @@
+pipeline {
+	agent any
+	stages {
+		stage("cleaning stage") {
+			steps {
+				bat "mvn clean"
+			}
+		}
+		stage("prepare-agent stage") {
+			steps {
+				bat "mvn prepare-agent"
+			}
+		}
+		stage("sonar analysis stage") {
+			steps {
+				bat "mvn sonar:sonar"
+			}
+		}
+		stage("packaging stage") {
+			steps {
+				bat "mvn package"
+			}
+		}
+	}
+}
